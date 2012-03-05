@@ -19,7 +19,6 @@ import android.database.Cursor;
 import android.os.Bundle;
 import android.support.v4.app.FragmentActivity;
 import android.support.v4.widget.SimpleCursorAdapter;
-import android.util.Log;
 import android.view.View;
 import android.view.View.OnClickListener;
 import android.widget.Button;
@@ -253,9 +252,7 @@ public class AssignmentEditFragment extends FragmentActivity {
 			@Override
 			public void onTimeSet(TimePicker view, int hourOfDay, int minute) {
 				calendar.set(Calendar.HOUR_OF_DAY, hourOfDay);
-				Log.d("Saving Time", "Hour:" + hourOfDay);
 				calendar.set(Calendar.MINUTE, minute);
-				Log.d("Saving Time", "Minute: " + minute);
 				updateTimeButtonText();
 			}
 		}, calendar.get(Calendar.HOUR_OF_DAY), calendar.get(Calendar.MINUTE), false);

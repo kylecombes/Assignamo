@@ -43,7 +43,6 @@ public class MainActivity extends FragmentActivity {
      */
     private boolean checkForExistingDatabase() {
     	java.io.File dbFile = new java.io.File("/data/data/" + getApplicationContext().getPackageName() + "/databases/" + MainActivity.DATABASE_NAME);
-    	android.util.Log.d("onCreate", "File name: " + dbFile.toString());
     	if (!dbFile.exists()) {
     		DbAdapter a = new DbAdapter(this, DATABASE_NAME, DATABASE_VERSION, "temp", DATABASE_CREATE, KEY_ROWID);
     		a.open();
