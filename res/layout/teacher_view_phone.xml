@@ -1,0 +1,82 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:orientation="vertical" >
+
+    <TextView
+        android:id="@+id/teacher_view_subject"
+        android:layout_gravity="right"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="@string/teacher_subject"
+        android:textAppearance="?android:attr/textAppearanceSmall"
+        android:paddingRight="5dip" />
+    
+    <TextView
+        android:id="@+id/teacher_view_name"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="@string/name"
+        android:textAppearance="?android:attr/textAppearanceLarge"
+        android:paddingLeft="5dip"
+        android:paddingBottom="2dip" />
+
+    <TextView
+        android:id="@+id/teacher_view_room"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="@string/room"
+        android:textAppearance="?android:attr/textAppearanceSmall"
+        android:paddingLeft="5dip"
+        android:paddingBottom="10dip" />
+    
+    <TextView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="@string/teacher_email"
+        android:textAppearance="?android:attr/textAppearanceMedium"
+        android:paddingTop="5dip"
+        android:paddingLeft="5dip" />
+    
+    <TextView
+        android:id="@+id/teacher_view_email"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="@string/teacher_email"
+        android:textAppearance="?android:attr/textAppearanceSmall"
+        android:paddingLeft="5dip" />
+
+    <TextView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="@string/teacher_phone"
+        android:textAppearance="?android:attr/textAppearanceMedium"
+        android:paddingTop="10dip"
+        android:paddingLeft="5dip" />
+    
+    <TextView
+        android:id="@+id/teacher_view_phone_number"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="@string/teacher_phone"
+        android:textAppearance="?android:attr/textAppearanceSmall"
+        android:paddingLeft="5dip" />
+
+    <TextView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="@string/notes"
+        android:textAppearance="?android:attr/textAppearanceMedium"
+        android:paddingTop="10dip"
+        android:paddingLeft="5dip" />
+    
+    <TextView
+        android:id="@+id/teacher_view_notes"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="@string/notes"
+        android:textAppearance="?android:attr/textAppearanceSmall"
+        android:paddingLeft="5dip" />
+
+</LinearLayout>

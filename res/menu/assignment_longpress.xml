@@ -1,0 +1,9 @@
+<?xml version="1.0" encoding="utf-8"?>
+<menu xmlns:android="http://schemas.android.com/apk/res/android" >
+    <item android:id="@+id/assignment_context_menu_mark"
+        android:title="@string/assignment_context_menu_mark_as_completed" />
+    <item android:id="@+id/assignment_context_menu_edit"
+        android:title="@string/assignment_edit" />
+    <item android:id="@+id/assignment_context_menu_delete"
+        android:title="@string/assignment_delete" />
+</menu>

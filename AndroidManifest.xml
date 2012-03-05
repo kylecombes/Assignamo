@@ -1,0 +1,57 @@
+<?xml version="1.0" encoding="utf-8"?>
+<manifest xmlns:android="http://schemas.android.com/apk/res/android"
+    package="com.awesomeapplets.assignamo"
+    android:versionCode="1"
+    android:versionName="0.1" >
+
+    <uses-sdk android:minSdkVersion="10"
+        android:targetSdkVersion="15" />
+
+    <application
+        android:icon="@drawable/icon"
+        android:label="@string/app_name" >
+        <activity
+            android:name=".MainActivity"
+            android:label="@string/app_name"
+            android:theme="@style/Theme.PageIndicatorNoTitle" >
+            <intent-filter>
+                <action android:name="android.intent.action.MAIN" />
+
+                <category android:name="android.intent.category.LAUNCHER" />
+            </intent-filter>
+        </activity>
+        <activity
+            android:name=".AssignmentViewFragment"
+			android:theme="@style/Theme.PageIndicatorNoTitle" />
+        <activity
+            android:name=".AssignmentEditFragment"  />
+        <activity
+            android:name=".preferences.BookEditFragment" />
+        <activity
+            android:name=".preferences.BookViewFragment"
+			android:theme="@style/Theme.PageIndicatorNoTitle" />
+        <activity
+            android:name=".preferences.BookListActivity"
+            android:label="@string/pref_manage_books" />
+        <activity
+            android:name=".preferences.CourseListActivity"
+            android:label="@string/pref_manage_courses" />
+        <activity
+            android:name=".preferences.CourseEditFragment" />
+        <activity
+            android:name=".preferences.CourseViewFragment"
+            android:theme="@style/Theme.PageIndicatorNoTitle" />
+        <activity
+            android:name=".preferences.TeacherListActivity"
+            android:label="@string/pref_manage_teachers" />
+        <activity
+            android:name=".preferences.TeacherEditActivity" />
+        <activity
+            android:name=".preferences.TeacherViewFragment"
+			android:theme="@style/Theme.PageIndicatorNoTitle" />
+        <activity
+            android:name=".preferences.Preferences"
+            android:label="@string/preferences" />
+    </application>
+
+</manifest>

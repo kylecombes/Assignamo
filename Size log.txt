@@ -1,0 +1,2 @@
+Before cleaning up code and removing unused Fragment activities: 596KB
+After: 592KB

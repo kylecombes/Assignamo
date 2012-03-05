@@ -1,0 +1,151 @@
+<?xml version="1.0" encoding="utf-8"?>
+<ScrollView xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent">
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="vertical" >
+
+    <TextView
+        android:id="@+id/add_book_header"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:gravity="center"
+        android:text="@string/book_edit_add_book"
+        android:textAppearance="?android:attr/textAppearanceMedium" />
+
+    <TextView
+        android:id="@+id/add_book_title"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="@string/title"
+        android:textAppearance="?android:attr/textAppearanceSmall" />
+
+    <EditText
+        android:id="@+id/add_book_title_field"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:inputType="textAutoCorrect|textCapWords" >
+
+        <requestFocus />
+    </EditText>
+
+    <TextView
+        android:id="@+id/add_book_author_label"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="@string/add_book_author"
+        android:textAppearance="?android:attr/textAppearanceSmall" />
+
+    <EditText
+        android:id="@+id/add_book_author_field"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:inputType="textAutoCorrect|textCapWords" />
+
+    <TextView
+        android:id="@+id/add_book_description_label"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="@string/description"
+        android:textAppearance="?android:attr/textAppearanceSmall" />
+
+    <EditText
+        android:id="@+id/add_book_description_field"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:inputType="textAutoCorrect|textMultiLine|textCapSentences"
+        android:minLines="4"
+        android:gravity="top" />
+	
+    <TableLayout
+        android:id="@+id/add_book_pages_chapters_table"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content" >
+
+        <TableRow
+            android:id="@+id/add_book_labels_row"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content" >
+            
+		    <TextView
+		        android:id="@+id/add_book_pages_label"
+		        android:layout_width="wrap_content"
+		        android:layout_height="wrap_content"
+		        android:text="@string/add_book_pages"
+		        android:textAppearance="?android:attr/textAppearanceSmall" />
+		   
+		    <TextView
+		        android:id="@+id/add_book_chapters_label"
+		        android:layout_width="wrap_content"
+		        android:layout_height="wrap_content"
+		        android:text="@string/add_book_chapters"
+		        android:textAppearance="?android:attr/textAppearanceSmall" />
+		
+        </TableRow>
+
+        <TableRow
+            android:id="@+id/add_book_fields_row"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content" >
+         
+		    <EditText
+		        android:id="@+id/add_book_pages_field"
+		        android:layout_width="match_parent"
+		        android:layout_height="wrap_content"
+		        android:inputType="number" />
+		    <EditText
+		        android:id="@+id/add_book_chapters_field"
+		        android:layout_width="match_parent"
+		        android:layout_height="wrap_content"
+		        android:inputType="number" />
+        </TableRow>
+    </TableLayout>
+
+    <TextView
+        android:id="@+id/add_book_type_label"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="@string/add_book_type"
+        android:textAppearance="?android:attr/textAppearanceSmall" />
+
+    <Spinner
+        android:id="@+id/add_book_type_spinner"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content" />
+
+    <TextView
+        android:id="@+id/add_book_ISBN_label"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="@string/add_book_ISBN"
+        android:textAppearance="?android:attr/textAppearanceSmall" />
+
+    <EditText
+        android:id="@+id/add_book_ISBN_field"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:inputType="number" />
+    
+	<TableLayout 
+	    android:id="@+id/book_add_buttons_table"
+	    android:layout_width="fill_parent"
+	    android:layout_height="wrap_content">
+        <TableRow>
+		    <Button
+		        android:id="@+id/book_add_save_button"
+		        android:layout_width="wrap_content"
+		        android:layout_height="wrap_content"
+		        android:text="@string/save" />
+		
+		    <Button
+		        android:id="@+id/book_add_cancel_button"
+		        android:layout_width="wrap_content"
+		        android:layout_height="wrap_content"
+		        android:text="@string/cancel" />
+	    </TableRow>
+    </TableLayout>
+
+</LinearLayout>
+</ScrollView>

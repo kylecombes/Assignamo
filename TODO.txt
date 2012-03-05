@@ -1,0 +1,29 @@
+No "No Books" or "No Teachers" message.
+Add support for Gym and Library Room Numbers.
+Auto-convert words like "the", "in", "of", etc. to lowercase as long as they are not the first word?
+Format phone number field (Teacher) when entering text
+View label for Managing books, courses, and teachers
+Empty ListView labels
+Spinner when loading
+Background image
+First-time setup wizard
+Course view
+Reminders!!
+Finish preferences:
+	Add icons
+	Come up with better labels
+	Change color of tabs
+	Custom date/time format?
+Better teacher view
+Link teacher with contact
+Custom title bar color
+Date not saving right on assignments
+Time displaying in wrong format on Assignment Edit button
+ALL tab only displaying assignments in first course after rotating
+Tab names shortened
+Fix "close() not called" and "invalid statement in fillWindow()"
+
+
+-------------- Bugs: ----------------
+When there are no courses, cannot add an assignment due to the fact that there are no courses to link it to. Crashes.
+When hitting Back from the assignment view, it returns to the first screen but the tab number is saved.

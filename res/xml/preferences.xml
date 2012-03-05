@@ -1,0 +1,81 @@
+<?xml version="1.0" encoding="utf-8"?>
+<PreferenceScreen xmlns:android="http://schemas.android.com/apk/res/android" >
+    
+    <!-- Manage Preference Screen -->
+    <PreferenceScreen
+        android:key="pref_manage_screen"
+        android:title="@string/pref_category_manage_title"
+        android:summary="@string/pref_manage_screen_summary" >
+    <PreferenceCategory
+        android:key="pref_category_manage_key"
+        android:title="@string/pref_category_manage_title" >
+        <Preference
+            android:key="pref_manage_books_key"
+            android:title="@string/pref_manage_books_title"
+            android:summary="@string/pref_manage_books_summary">
+            <intent
+                android:action="anroid.intent.action.VIEW"
+                android:targetPackage="com.awesomeapplets.assignamo"
+                android:targetClass="com.awesomeapplets.assignamo.preferences.BookListActivity"/>
+        </Preference>
+        <Preference
+            android:key="pref_manage_courses_key"
+            android:title="@string/pref_manage_courses_title"
+            android:summary="@string/pref_manage_courses_summary">
+            <intent
+                android:action="android.intent.action.VIEW"
+                android:targetPackage="com.awesomeapplets.assignamo"
+                android:targetClass="com.awesomeapplets.assignamo.preferences.CourseListActivity" />
+        </Preference>
+        <Preference
+            android:key="pref_manage_teachers_key"
+            android:title="@string/pref_manage_teachers_title"
+            android:summary="@string/pref_manage_teachers_summary">
+            <intent
+                android:action="android.intent.actions.VIEW"
+                android:targetPackage="com.awesomeapplets.assignamo"
+                android:targetClass="com.awesomeapplets.assignamo.preferences.TeacherListActivity"/>
+        </Preference>
+    </PreferenceCategory>
+    </PreferenceScreen>
+	
+    <!-- Appearance Preference Screen -->
+    <PreferenceScreen
+        android:key="pref_appearance_screen"
+        android:title="@string/pref_appearance_screen_title"
+        android:summary="@string/pref_appearance_screen_summary" >
+    <PreferenceCategory
+        android:key="pref_appearance_screen_key"
+        android:title="@string/pref_appearance_assignments_title" >
+        <Preference
+            android:key="pref_appearance_example_key"
+            android:title="@string/pref_appearance_example_title"/>
+        <CheckBoxPreference
+            android:key="pref_appearance_casual_format"
+            android:title="@string/pref_appearance_casual_title"
+            android:summary="@string/pref_appearance_casual_summary"
+            android:defaultValue="true" />
+        <CheckBoxPreference
+            android:key="pref_appearance_show_time"
+            android:title="@string/pref_appearance_show_time_title"
+            android:summary="@string/pref_appearance_show_time_summary"
+            android:defaultValue="true" />
+    </PreferenceCategory>
+    </PreferenceScreen>
+    
+    <!-- About Screen -->
+    <PreferenceScreen
+        android:key="pref_about_screen_key"
+        android:title="@string/pref_about_screen_title" >
+        <Preference
+            android:key="pref_contact_key"
+            android:title="@string/pref_contact_title"
+            android:summary="@string/contact_email" />
+        <Preference
+            android:key="pref_visit_key"
+            android:title="@string/pref_visit_title"
+            android:summary="@string/website" />
+        <Preference
+            android:key="pref_app_version_key" />
+    </PreferenceScreen>
+</PreferenceScreen>
