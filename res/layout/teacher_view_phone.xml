@@ -11,7 +11,8 @@
         android:layout_height="wrap_content"
         android:text="@string/teacher_subject"
         android:textAppearance="?android:attr/textAppearanceSmall"
-        android:paddingRight="5dip" />
+        android:paddingRight="5dip"
+        android:paddingBottom="10dip" />
     
     <TextView
         android:id="@+id/teacher_view_name"
