@@ -63,7 +63,7 @@ public class TeacherListActivity extends ListActivity {
 	
 	public void openDatabase() {
 		if (teacherDb == null)
-			teacherDb = new DbAdapter(this, Values.DATABASE_NAME, Values.DATABASE_VERSION, Values.BOOK_TABLE, new String[0], Values.KEY_ROWID);
+			teacherDb = new DbAdapter(this, Values.DATABASE_NAME, Values.DATABASE_VERSION, Values.TEACHER_TABLE, new String[0], Values.KEY_ROWID);
 		teacherDb.open();
 	}
 	
@@ -73,7 +73,7 @@ public class TeacherListActivity extends ListActivity {
 	}
 	
     public void fillData() {
-    	Cursor teachersCursor = teacherDb.fetchAll(Values.BOOK_FETCH);
+    	Cursor teachersCursor = teacherDb.fetchAll(Values.TEACHER_FETCH);
     	startManagingCursor(teachersCursor);
     	
     	// Create and array to specify the fields we want (only the TITLE)
