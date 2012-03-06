@@ -1,6 +1,5 @@
 package com.awesomeapplets.assignamo.preferences;
 
-import com.awesomeapplets.assignamo.MainActivity;
 import com.awesomeapplets.assignamo.R;
 import com.awesomeapplets.assignamo.database.DbAdapter;
 import com.awesomeapplets.assignamo.database.Values;
@@ -55,8 +54,8 @@ public class BookListActivity extends ListActivity {
 	
 	public void openDatabase() {
 		if (bookDb == null)
-			bookDb = new DbAdapter(this, MainActivity.DATABASE_NAME, MainActivity.DATABASE_VERSION,
-					Values.BOOK_TABLE, new String[0], MainActivity.KEY_ROWID);
+			bookDb = new DbAdapter(this, Values.DATABASE_NAME, Values.DATABASE_VERSION,
+					Values.BOOK_TABLE, new String[0], Values.KEY_ROWID);
 		bookDb.open();
 	}
 	
@@ -66,7 +65,7 @@ public class BookListActivity extends ListActivity {
 	}
 	
     public void fillData() {
-    	Cursor booksCursor = bookDb.fetchAll(new String[] { MainActivity.KEY_ROWID, Values.KEY_TITLE,
+    	Cursor booksCursor = bookDb.fetchAll(new String[] { Values.KEY_ROWID, Values.KEY_TITLE,
     			Values.KEY_DESCRIPTION});
     	startManagingCursor(booksCursor);
     	
@@ -85,7 +84,7 @@ public class BookListActivity extends ListActivity {
     protected void onListItemClick(ListView l, View v, int position, long id) {
 		super.onListItemClick(l, v, position, id);
 		Intent i = new Intent(this, BookViewFragment.class);
-		i.putExtra(MainActivity.KEY_ROWID, id);
+		i.putExtra(Values.KEY_ROWID, id);
 		startActivity(i);
 	}
     
@@ -125,7 +124,7 @@ public class BookListActivity extends ListActivity {
 			return true;
 		case R.id.book_context_menu_edit:
 			Intent i = new Intent(this, BookEditFragment.class);
-			i.putExtra(MainActivity.KEY_ROWID, info.id);
+			i.putExtra(Values.KEY_ROWID, info.id);
 			startActivity(i);
 			return true;
 		}

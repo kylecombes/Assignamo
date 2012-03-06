@@ -6,14 +6,16 @@ import com.awesomeapplets.assignamo.database.Values;
 import com.awesomeapplets.assignamo.preferences.Preferences;
 
 import android.content.Intent;
+import android.content.SharedPreferences;
+import android.content.SharedPreferences.Editor;
 import android.database.Cursor;
 import android.os.Bundle;
+import android.preference.PreferenceManager;
 import android.support.v4.app.ListFragment;
 import android.view.ContextMenu;
 import android.view.ContextMenu.ContextMenuInfo;
 import android.view.LayoutInflater;
 import android.view.Menu;
-import android.view.MenuInflater;
 import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
@@ -27,7 +29,9 @@ public class AssignmentListFragment extends ListFragment {
 
 	public static DbAdapter assignmentDb;
 	
+	// The course we are displaying assignments for. If all, -1.
 	short course = -1;
+	
 	
 	/**
 	 * Create an assignment list that shows all assignments.
@@ -55,8 +59,9 @@ public class AssignmentListFragment extends ListFragment {
 	@Override
 	public void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
-		if (savedInstanceState != null)
+		if (savedInstanceState != null) {
 			course = savedInstanceState.getShort(Values.ASSIGNMENT_KEY_COURSE);
+		}
 	}
 
 	/** Called when the activity becomes visible. */
@@ -86,8 +91,8 @@ public class AssignmentListFragment extends ListFragment {
 	public void openDatabase() {
 		if (assignmentDb == null)
 			assignmentDb = new DbAdapter(getActivity(),
-					MainActivity.DATABASE_NAME, MainActivity.DATABASE_VERSION,
-					Values.ASSIGNMENT_TABLE, new String[0], MainActivity.KEY_ROWID);
+					Values.DATABASE_NAME, Values.DATABASE_VERSION,
+					Values.ASSIGNMENT_TABLE, new String[0], Values.KEY_ROWID);
 		assignmentDb.open();
 	}
 
@@ -98,11 +103,18 @@ public class AssignmentListFragment extends ListFragment {
 
 	public void fillData() {
 		Cursor assignmentsCursor;
+		boolean showingAll = PreferenceManager.getDefaultSharedPreferences(getActivity()).getBoolean(Values.ASSIGNMENT_KEY_SHOWING_COMPLETED, false);
 		if (course < 0)
+			if (showingAll)
 			assignmentsCursor = assignmentDb.fetchAll(Values.ASSIGNMENT_FETCH);
+			else
+				assignmentsCursor = assignmentDb.fetchIncompleteAssignments(Values.ASSIGNMENT_FETCH);
 		else
 			// Fetch all the assignments for the set course
-			assignmentsCursor = assignmentDb.fetchAllWhere(Values.ASSIGNMENT_FETCH, Values.ASSIGNMENT_KEY_COURSE + "=" + course);
+			if (showingAll)
+				assignmentsCursor = assignmentDb.fetchAllWhere(Values.ASSIGNMENT_FETCH, Values.ASSIGNMENT_KEY_COURSE + "=" + course);
+			else
+				assignmentsCursor = assignmentDb.fetchIncompleteAssignments(Values.ASSIGNMENT_FETCH, Values.ASSIGNMENT_KEY_COURSE);
 		getActivity().startManagingCursor(assignmentsCursor);
 
 		// Create and array to specify the fields we want
@@ -137,25 +149,40 @@ public class AssignmentListFragment extends ListFragment {
 	public void onListItemClick(ListView l, View v, int position, long id) {
 		super.onListItemClick(l, v, position, id);
 		Intent i = new Intent(getActivity(), AssignmentViewFragment.class);
-		i.putExtra(MainActivity.KEY_ROWID, id);
+		i.putExtra(Values.KEY_ROWID, id);
 		startActivity(i);
-		// startActivityForResult(i, ACTIVITY_EDIT);
 	}
 
-	public void onCreateOptionsMenu(Menu menu, MenuInflater inflater) {
-		inflater.inflate(R.menu.assignment_menu, menu);
+	public void onPrepareOptionsMenu(Menu menu) {
+		menu.clear();
+		menu.add(0, 0, 0, R.string.assignment_add).setIcon(android.R.drawable.ic_menu_add);
+		//menu.add(0, 1, 0, R.string.assignment_add_book).setIcon(android.R.drawable.ic_menu_add);
+		if (PreferenceManager.getDefaultSharedPreferences(getActivity()).getBoolean(Values.ASSIGNMENT_KEY_SHOWING_COMPLETED, false))
+			menu.add(0, 2, 0, R.string.show_all_assignments).setIcon(android.R.drawable.button_onoff_indicator_on);
+		else
+			menu.add(0, 2, 0, R.string.show_all_assignments).setIcon(android.R.drawable.button_onoff_indicator_off);
+		menu.add(0, 3, 0, R.string.preferences).setIcon(android.R.drawable.ic_menu_preferences);
 	}
 
 	@Override
 	public boolean onOptionsItemSelected(MenuItem item) {
 		switch (item.getItemId()) {
-		case R.id.assignment_menu_add:
-			// addAssignment("Test", "My class", "A test assignment",
-			// "Some day", -1);
+		case 0:
 			Intent iA = new Intent(getActivity(), AssignmentEditFragment.class);
 			startActivity(iA);
 			return true;
-		case R.id.menu_settings:
+		case 2:
+			SharedPreferences prefs = PreferenceManager.getDefaultSharedPreferences(getActivity());
+			Editor prefEditor = prefs.edit();
+			boolean curVal = prefs.getBoolean(Values.ASSIGNMENT_KEY_SHOWING_COMPLETED, false);
+			if (curVal)
+				prefEditor.putBoolean(Values.ASSIGNMENT_KEY_SHOWING_COMPLETED, false);
+			else
+				prefEditor.putBoolean(Values.ASSIGNMENT_KEY_SHOWING_COMPLETED, true);
+			prefEditor.commit();
+			fillData();
+			return true;
+		case 3:
 			Intent iP = new Intent(getActivity(), Preferences.class);
 			startActivity(iP);
 			return true;
@@ -163,20 +190,34 @@ public class AssignmentListFragment extends ListFragment {
 		return true;
 	}
 
-	public void onCreateContextMenu(ContextMenu menu, View v,
-			ContextMenuInfo menuInfo) {
-		// super.onCreateContextMenu(menu, v, menuInfo);
-		MenuInflater mi = getActivity().getMenuInflater();
-		mi.inflate(R.menu.assignment_longpress, menu);
+	public void onCreateContextMenu(ContextMenu menu, View v, ContextMenuInfo menuInfo) {
+		AdapterContextMenuInfo info = (AdapterContextMenuInfo) menuInfo;
+		if (DbUtils.isAssignmentCompleted(getActivity(), info.id))
+			menu.add(0, 0, 0, R.string.assignment_context_menu_mark_as_incomplete);
+		else
+			menu.add(0, 0, 0, R.string.assignment_context_menu_mark_as_completed);
+		menu.add(0, 1, 0, R.string.assignment_edit);
+		menu.add(0, 2, 0, R.string.assignment_delete);
 	}
 
 	@Override
 	public boolean onContextItemSelected(MenuItem item) {
+		AdapterContextMenuInfo info = (AdapterContextMenuInfo) item.getMenuInfo();
+		
 		switch (item.getItemId()) {
-		case R.id.assignment_context_menu_delete:
-			// Delete the task
-			AdapterContextMenuInfo info = (AdapterContextMenuInfo) item
-					.getMenuInfo();
+		case 0:
+			if (DbUtils.isAssignmentCompleted(getActivity(), info.id))
+				DbUtils.setAssignmentState(getActivity(), info.id, false);
+			else
+				DbUtils.setAssignmentState(getActivity(), info.id, true);
+			return true;
+		case 1: // Edit the assignment
+			Intent i = new Intent(getActivity(), AssignmentEditFragment.class);
+			i.putExtra(Values.KEY_ROWID, info.id);
+			startActivity(i);
+			return true;
+		case 2:
+			// Delete the assignment
 			assignmentDb.delete(info.id);
 			fillData();
 			return true;

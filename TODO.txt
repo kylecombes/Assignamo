@@ -22,6 +22,7 @@ Time displaying in wrong format on Assignment Edit button
 ALL tab only displaying assignments in first course after rotating
 Tab names shortened
 Fix "close() not called" and "invalid statement in fillWindow()"
+Update assignment lists in other tabs on assignment delete
 
 
 -------------- Bugs: ----------------

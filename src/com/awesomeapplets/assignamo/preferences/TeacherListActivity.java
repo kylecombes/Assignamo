@@ -1,7 +1,6 @@
 package com.awesomeapplets.assignamo.preferences;
 
 
-import com.awesomeapplets.assignamo.MainActivity;
 import com.awesomeapplets.assignamo.R;
 import com.awesomeapplets.assignamo.database.DbAdapter;
 import com.awesomeapplets.assignamo.database.*;
@@ -64,7 +63,7 @@ public class TeacherListActivity extends ListActivity {
 	
 	public void openDatabase() {
 		if (teacherDb == null)
-			teacherDb = new DbAdapter(this, MainActivity.DATABASE_NAME, MainActivity.DATABASE_VERSION, Values.BOOK_TABLE, new String[0], MainActivity.KEY_ROWID);
+			teacherDb = new DbAdapter(this, Values.DATABASE_NAME, Values.DATABASE_VERSION, Values.BOOK_TABLE, new String[0], Values.KEY_ROWID);
 		teacherDb.open();
 	}
 	
@@ -92,7 +91,7 @@ public class TeacherListActivity extends ListActivity {
     public void onListItemClick(ListView l, View v, int position, long id) {
 		super.onListItemClick(l, v, position, id);
 		Intent i = new Intent(this, TeacherViewFragment.class);
-		i.putExtra(MainActivity.KEY_ROWID, id);
+		i.putExtra(Values.KEY_ROWID, id);
 		startActivity(i);
 	}
     
@@ -132,7 +131,7 @@ public class TeacherListActivity extends ListActivity {
 			return true;
     	case R.id.teacher_context_menu_edit:
     		Intent i = new Intent(getApplicationContext(), TeacherEditActivity.class);
-    		i.putExtra(MainActivity.KEY_ROWID, info.id);
+    		i.putExtra(Values.KEY_ROWID, info.id);
     		startActivity(i);
 		}
     	return true;

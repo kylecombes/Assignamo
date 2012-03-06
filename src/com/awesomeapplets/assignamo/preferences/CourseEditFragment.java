@@ -2,15 +2,14 @@ package com.awesomeapplets.assignamo.preferences;
 
 import java.util.Calendar;
 
-import com.awesomeapplets.assignamo.MainActivity;
 import com.awesomeapplets.assignamo.R;
 import com.awesomeapplets.assignamo.database.DbAdapter;
+import com.awesomeapplets.assignamo.database.DbUtils;
 import com.awesomeapplets.assignamo.database.Values;
 
 import android.app.AlertDialog;
 import android.app.DatePickerDialog;
 import android.content.ContentValues;
-import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
 import android.database.Cursor;
@@ -47,8 +46,8 @@ public class CourseEditFragment extends FragmentActivity {
 		
 	public void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
-		dbAdapter = new DbAdapter(getBaseContext(), MainActivity.DATABASE_NAME, MainActivity.DATABASE_VERSION,
-				Values.COURSE_TABLE, MainActivity.DATABASE_CREATE, MainActivity.KEY_ROWID);
+		dbAdapter = new DbAdapter(getBaseContext(), Values.DATABASE_NAME, Values.DATABASE_VERSION,
+				Values.COURSE_TABLE, Values.DATABASE_CREATE, Values.KEY_ROWID);
 		calendar = Calendar.getInstance();
 
 		if (!teacherExists()) {
@@ -118,10 +117,7 @@ public class CourseEditFragment extends FragmentActivity {
 	
 	private void populateFields() {
 
-		MDbAdapter courseDbAdapter = new MDbAdapter(getBaseContext(), MainActivity.DATABASE_NAME, MainActivity.DATABASE_VERSION,
-				Values.BOOK_TABLE, MainActivity.DATABASE_CREATE, MainActivity.KEY_ROWID);
-		courseDbAdapter.open();
-		courseCursor = courseDbAdapter.getTeachers();
+		courseCursor = DbUtils.getTeachers(getApplicationContext());
 		startManagingCursor(courseCursor);
 		
 		// create an array to specify which fields we want to display
@@ -133,9 +129,7 @@ public class CourseEditFragment extends FragmentActivity {
 		  new SimpleCursorAdapter(this, android.R.layout.simple_spinner_item, courseCursor, from, to, 0 );
 		adapter.setDropDownViewResource( android.R.layout.simple_spinner_dropdown_item );
 		teacherSpinner.setAdapter(adapter);
-		
-	    courseDbAdapter.close();
-	    
+			    
 		if (rowId != null) {
 			dbAdapter.open();
 			Cursor data = dbAdapter.fetch(rowId, Values.COURSE_FETCH);
@@ -181,19 +175,13 @@ public class CourseEditFragment extends FragmentActivity {
 		if (rowId == null) {
 			Bundle extras = getIntent().getExtras();
 			rowId = extras != null
-					? extras.getLong(MainActivity.KEY_ROWID)
+					? extras.getLong(Values.KEY_ROWID)
 					: null;
 		}
 	}
 	
 	private boolean teacherExists() {
-		MDbAdapter d = new MDbAdapter(getApplicationContext(), MainActivity.DATABASE_NAME, MainActivity.DATABASE_VERSION, Values.TEACHER_TABLE, MainActivity.DATABASE_CREATE, MainActivity.KEY_ROWID);
-		d.open();
-		boolean b = false;
-		if (d.getTeachers().getCount() > 0)
-			b = true;
-		d.close();
-		return b;
+		return DbUtils.getTeachersAsArray(getApplicationContext()).length > 0;
 	}
 	
 	private DatePickerDialog showDatePicker() {
@@ -223,16 +211,4 @@ public class CourseEditFragment extends FragmentActivity {
     	return dbAdapter.add(values);
     }
     
-	private class MDbAdapter extends DbAdapter {
-		
-		public MDbAdapter(Context context, String databaseName, short databaseVersion, String tableName, String databaseCreate[], String rowId){
-			super(context, databaseName, databaseVersion, tableName, databaseCreate, rowId);
-		}
-		
-		public Cursor getTeachers() {
-			return db.query( Values.TEACHER_TABLE, new String[]{KEY_ROWID, Values.KEY_NAME}, null, null, null, null, null );
-		}
-		
-	}
-	
 }

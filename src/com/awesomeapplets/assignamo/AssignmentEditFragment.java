@@ -52,8 +52,8 @@ public class AssignmentEditFragment extends FragmentActivity {
 		
 	public void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
-		dbAdapter = new DbAdapter(getBaseContext(), MainActivity.DATABASE_NAME, MainActivity.DATABASE_VERSION,
-				Values.ASSIGNMENT_TABLE, MainActivity.DATABASE_CREATE, MainActivity.KEY_ROWID);
+		dbAdapter = new DbAdapter(getBaseContext(), Values.DATABASE_NAME, Values.DATABASE_VERSION,
+				Values.ASSIGNMENT_TABLE, Values.DATABASE_CREATE, Values.KEY_ROWID);
 		calendar = Calendar.getInstance();
 		
 		if (!courseExists()) {
@@ -176,7 +176,7 @@ public class AssignmentEditFragment extends FragmentActivity {
 		if (rowId == null) {
 			Bundle extras = getIntent().getExtras();
 			if (extras != null) {
-				rowId = extras.getLong(MainActivity.KEY_ROWID);
+				rowId = extras.getLong(Values.KEY_ROWID);
 				newBook = false;
 			}
 			newBook = true;

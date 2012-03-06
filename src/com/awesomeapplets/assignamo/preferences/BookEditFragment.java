@@ -1,6 +1,5 @@
 package com.awesomeapplets.assignamo.preferences;
 
-import com.awesomeapplets.assignamo.MainActivity;
 import com.awesomeapplets.assignamo.R;
 import com.awesomeapplets.assignamo.database.DbAdapter;
 import com.awesomeapplets.assignamo.database.Values;
@@ -55,11 +54,11 @@ public class BookEditFragment extends FragmentActivity {
 	public void onResume() {
 		super.onResume();
 		bookDbAdapter = new DbAdapter(getBaseContext(),
-				MainActivity.DATABASE_NAME,
-				MainActivity.DATABASE_VERSION,
+				Values.DATABASE_NAME,
+				Values.DATABASE_VERSION,
 				Values.BOOK_TABLE,
-				MainActivity.DATABASE_CREATE,
-				MainActivity.KEY_ROWID);
+				Values.DATABASE_CREATE,
+				Values.KEY_ROWID);
 		bookDbAdapter.open();
 	}
 	
@@ -123,7 +122,7 @@ public class BookEditFragment extends FragmentActivity {
 		if (rowId == null) {
 			Bundle extras = getIntent().getExtras();
 			rowId = extras != null
-					? extras.getLong(MainActivity.KEY_ROWID)
+					? extras.getLong(Values.KEY_ROWID)
 					: null;
 		}
 	}
@@ -131,11 +130,11 @@ public class BookEditFragment extends FragmentActivity {
 	private void populateFields() {
 		if (rowId != null) {
 			DbAdapter db = new DbAdapter(getApplicationContext(),
-					MainActivity.DATABASE_NAME,
-					MainActivity.DATABASE_VERSION,
+					Values.DATABASE_NAME,
+					Values.DATABASE_VERSION,
 					Values.BOOK_TABLE,
-					MainActivity.DATABASE_CREATE,
-					MainActivity.KEY_ROWID);
+					Values.DATABASE_CREATE,
+					Values.KEY_ROWID);
 			db.open();
 			Cursor bookData = db.fetch(rowId, Values.BOOK_FETCH);
 			titleField.setText(bookData.getString(bookData.getColumnIndexOrThrow(Values.KEY_TITLE)));

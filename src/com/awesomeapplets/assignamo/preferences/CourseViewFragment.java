@@ -1,6 +1,5 @@
 package com.awesomeapplets.assignamo.preferences;
 
-import com.awesomeapplets.assignamo.MainActivity;
 import com.awesomeapplets.assignamo.R;
 import com.awesomeapplets.assignamo.database.DbAdapter;
 import com.awesomeapplets.assignamo.database.Values;
@@ -8,6 +7,8 @@ import com.awesomeapplets.assignamo.database.Values;
 import android.content.Intent;
 import android.database.Cursor;
 import android.os.Bundle;
+import android.text.SpannableString;
+import android.text.style.RelativeSizeSpan;
 import android.view.Menu;
 import android.view.MenuInflater;
 import android.view.MenuItem;
@@ -16,9 +17,6 @@ import android.widget.TextView.BufferType;
 
 public class CourseViewFragment extends ViewFragment {
 	
-	private long rowId;
-	private DbAdapter dbAdapter;
-	
 	private TextView nameLabel;
 	private TextView teacherLabel;
 	private TextView descriptionLabel;
@@ -26,8 +24,8 @@ public class CourseViewFragment extends ViewFragment {
 	
 	public void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
-		dbAdapter = new DbAdapter(getBaseContext(), MainActivity.DATABASE_NAME, MainActivity.DATABASE_VERSION,
-				Values.COURSE_TABLE, MainActivity.DATABASE_CREATE, MainActivity.KEY_ROWID);
+		dbAdapter = new DbAdapter(getBaseContext(), Values.DATABASE_NAME, Values.DATABASE_VERSION,
+				Values.COURSE_TABLE, Values.DATABASE_CREATE, Values.KEY_ROWID);
 		
 		setContentView(R.layout.course_view_phone);
 		nameLabel = (TextView)findViewById(R.id.course_view_name);
@@ -36,7 +34,7 @@ public class CourseViewFragment extends ViewFragment {
 		roomLabel = (TextView)findViewById(R.id.course_view_room);
 		
 		if (savedInstanceState != null)
-			rowId = savedInstanceState.getLong(MainActivity.KEY_ROWID);
+			rowId = savedInstanceState.getLong(Values.KEY_ROWID);
 	}
 	
 	@Override
@@ -65,7 +63,7 @@ public class CourseViewFragment extends ViewFragment {
 		switch (item.getItemId()) {
 		case R.id.view_edit:
 			Intent i = new Intent(getApplicationContext(), CourseEditFragment.class);
-			i.putExtra(MainActivity.KEY_ROWID, rowId);
+			i.putExtra(Values.KEY_ROWID, rowId);
 			startActivity(i);
 			break;
 		case R.id.view_delete:
@@ -78,7 +76,7 @@ public class CourseViewFragment extends ViewFragment {
 	@Override
 	public void onSaveInstanceState(Bundle outState) {
 		super.onSaveInstanceState(outState);
-		outState.putLong(MainActivity.KEY_ROWID, rowId);
+		outState.putLong(Values.KEY_ROWID, rowId);
 	}
 	
 	
@@ -90,15 +88,20 @@ public class CourseViewFragment extends ViewFragment {
 		teacherLabel.setText(getTeacher(cursor.getShort(cursor.getColumnIndexOrThrow(Values.COURSE_KEY_TEACHER))));
 		descriptionLabel.setText(getDescription(cursor.getString(cursor.getColumnIndexOrThrow(Values.KEY_DESCRIPTION))),
 				BufferType.SPANNABLE);
-		roomLabel.setText(getRoom(cursor.getShort(cursor.getColumnIndexOrThrow(Values.KEY_ROOM))));
+		roomLabel.setText(getRoom(cursor.getShort(cursor.getColumnIndexOrThrow(Values.KEY_ROOM))),
+				BufferType.SPANNABLE);
 		
 	}
 	
-	private String getRoom(short id) {
+	private SpannableString getRoom(short id) {
 		if (id >= 0)
-			return id + "";
-		else
-			return getString(R.string.course_view_no_room);
+			return new SpannableString(id + "");
+		else {
+			String str = getString(R.string.course_view_no_room);
+			SpannableString rStr = getItalicizedString(str);
+			rStr.setSpan(new RelativeSizeSpan(0.8f), 0, str.length(), 0);
+			return rStr;
+		}
 	}
 	
 }

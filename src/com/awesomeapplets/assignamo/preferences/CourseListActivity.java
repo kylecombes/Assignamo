@@ -1,6 +1,5 @@
 package com.awesomeapplets.assignamo.preferences;
 
-import com.awesomeapplets.assignamo.MainActivity;
 import com.awesomeapplets.assignamo.R;
 import com.awesomeapplets.assignamo.database.DbAdapter;
 import com.awesomeapplets.assignamo.database.DbUtils;
@@ -67,14 +66,14 @@ public class CourseListActivity extends ListActivity {
 	public void onListItemClick(ListView l, View v, int position, long id) {
 		super.onListItemClick(l, v, position, id);
 		Intent i = new Intent(this, CourseViewFragment.class);
-		i.putExtra(MainActivity.KEY_ROWID, id);
+		i.putExtra(Values.KEY_ROWID, id);
 		startActivity(i);
 	}
 	
 	public void openDatabase() {
 		if (courseDb == null)
-			courseDb = new DbAdapter(this, MainActivity.DATABASE_NAME, Values.DATABASE_VERSION,
-					Values.COURSE_TABLE, new String[0], MainActivity.KEY_ROWID);
+			courseDb = new DbAdapter(this, Values.DATABASE_NAME, Values.DATABASE_VERSION,
+					Values.COURSE_TABLE, new String[0], Values.KEY_ROWID);
 		courseDb.open();
 	}
 	
@@ -101,7 +100,7 @@ public class CourseListActivity extends ListActivity {
 			public boolean setViewValue(View view, Cursor cursor, int columnIndex) {
 				// TODO Auto-generated method stub
 				if (columnIndex == 2) {
-					String[] teachers = DbUtils.getTeachers(getApplicationContext());
+					String[] teachers = DbUtils.getTeachersAsArray(getApplicationContext());
 					short value = cursor.getShort(columnIndex);
 					TextView textView = (TextView)view;
 					textView.setText(teachers[value]);
@@ -146,7 +145,7 @@ public class CourseListActivity extends ListActivity {
 			return true;
     	case R.id.course_context_menu_edit:
     		Intent i = new Intent(this, CourseEditFragment.class);
-    		i.putExtra(MainActivity.KEY_ROWID, info.id);
+    		i.putExtra(Values.KEY_ROWID, info.id);
     		startActivity(i);
     		return true;
 		}

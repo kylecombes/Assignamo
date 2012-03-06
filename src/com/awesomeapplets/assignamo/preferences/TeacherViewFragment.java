@@ -1,19 +1,12 @@
 package com.awesomeapplets.assignamo.preferences;
 
-import com.awesomeapplets.assignamo.MainActivity;
 import com.awesomeapplets.assignamo.R;
 import com.awesomeapplets.assignamo.database.DbAdapter;
 import com.awesomeapplets.assignamo.database.Values;
 
 import android.content.Intent;
 import android.database.Cursor;
-import android.graphics.Typeface;
 import android.os.Bundle;
-import android.support.v4.app.FragmentActivity;
-import android.text.SpannableString;
-import android.text.style.StyleSpan;
-import android.view.Menu;
-import android.view.MenuInflater;
 import android.view.MenuItem;
 import android.widget.TextView;
 import android.widget.TextView.BufferType;
@@ -29,7 +22,7 @@ public class TeacherViewFragment extends ViewFragment {
 	
 	public void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
-		dbAdapter = new DbAdapter(getBaseContext(), MainActivity.DATABASE_NAME, MainActivity.DATABASE_VERSION, Values.TEACHER_TABLE, MainActivity.DATABASE_CREATE, MainActivity.KEY_ROWID);
+		dbAdapter = new DbAdapter(getBaseContext(), Values.DATABASE_NAME, Values.DATABASE_VERSION, Values.TEACHER_TABLE, Values.DATABASE_CREATE, Values.KEY_ROWID);
 		
 		setContentView(R.layout.teacher_view_phone);
 		nameLabel = (TextView)findViewById(R.id.teacher_view_name);
@@ -41,7 +34,7 @@ public class TeacherViewFragment extends ViewFragment {
 		
 		
 		if (savedInstanceState != null)
-			rowId = savedInstanceState.getLong(MainActivity.KEY_ROWID);
+			rowId = savedInstanceState.getLong(Values.KEY_ROWID);
 	}
 	
 	@Override
@@ -63,7 +56,7 @@ public class TeacherViewFragment extends ViewFragment {
 		switch (item.getItemId()) {
 		case R.id.view_edit:
 			Intent i = new Intent(getApplicationContext(), TeacherEditActivity.class);
-			i.putExtra(MainActivity.KEY_ROWID, rowId);
+			i.putExtra(Values.KEY_ROWID, rowId);
 			startActivity(i);
 			break;
 		case R.id.view_delete:

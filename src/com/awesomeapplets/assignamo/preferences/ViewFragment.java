@@ -1,9 +1,9 @@
 package com.awesomeapplets.assignamo.preferences;
 
-import com.awesomeapplets.assignamo.MainActivity;
 import com.awesomeapplets.assignamo.R;
 import com.awesomeapplets.assignamo.database.DbAdapter;
 import com.awesomeapplets.assignamo.database.DbUtils;
+import com.awesomeapplets.assignamo.database.Values;
 
 import android.graphics.Typeface;
 import android.os.Bundle;
@@ -24,13 +24,13 @@ public abstract class ViewFragment extends FragmentActivity {
 	@Override
 	public void onSaveInstanceState(Bundle outState) {
 		super.onSaveInstanceState(outState);
-		outState.putLong(MainActivity.KEY_ROWID, rowId);
+		outState.putLong(Values.KEY_ROWID, rowId);
 	}
 	
 	protected void setRowIdFromIntent() {
 			Bundle extras = getIntent().getExtras();
 			rowId = extras != null
-					? extras.getLong(MainActivity.KEY_ROWID)
+					? extras.getLong(Values.KEY_ROWID)
 					: null;
 	}
 	
@@ -40,7 +40,7 @@ public abstract class ViewFragment extends FragmentActivity {
 	 * @return the name of the teacher
 	 */
 	protected String getTeacher(short id) {
-		String[] teachers = DbUtils.getTeachers(getApplicationContext());
+		String[] teachers = DbUtils.getTeachersAsArray(getApplicationContext());
 		return teachers[id];
 	}
 

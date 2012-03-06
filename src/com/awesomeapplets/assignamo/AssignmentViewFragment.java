@@ -7,6 +7,7 @@ import com.awesomeapplets.assignamo.database.DateAdapter;
 import com.awesomeapplets.assignamo.database.DbAdapter;
 import com.awesomeapplets.assignamo.database.Values;
 import com.awesomeapplets.assignamo.database.DbUtils;
+import com.awesomeapplets.assignamo.preferences.ViewFragment;
 
 import android.content.Intent;
 import android.content.SharedPreferences;
@@ -14,7 +15,6 @@ import android.database.Cursor;
 import android.graphics.Typeface;
 import android.os.Bundle;
 import android.preference.PreferenceManager;
-import android.support.v4.app.FragmentActivity;
 import android.text.SpannableString;
 import android.text.style.RelativeSizeSpan;
 import android.text.style.StyleSpan;
@@ -24,10 +24,7 @@ import android.view.MenuItem;
 import android.widget.TextView;
 import android.widget.TextView.BufferType;
 
-public class AssignmentViewFragment extends FragmentActivity {
-	
-	private Long rowId;
-	private DbAdapter dbAdapter;
+public class AssignmentViewFragment extends ViewFragment {
 	
 	private static String DATE_FORMAT = "c, MMMMM dd, yyyy";
 	private static String TIME_FORMAT = "hh:mm a";
@@ -40,8 +37,8 @@ public class AssignmentViewFragment extends FragmentActivity {
 	
 	public void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
-		dbAdapter = new DbAdapter(getBaseContext(), MainActivity.DATABASE_NAME, MainActivity.DATABASE_VERSION,
-				Values.ASSIGNMENT_TABLE, MainActivity.DATABASE_CREATE, MainActivity.KEY_ROWID);
+		dbAdapter = new DbAdapter(getBaseContext(), Values.DATABASE_NAME, Values.DATABASE_VERSION,
+				Values.ASSIGNMENT_TABLE, Values.DATABASE_CREATE, Values.KEY_ROWID);
 		
 		setContentView(R.layout.assignment_view_phone);
 		courseLabel = (TextView)findViewById(R.id.assignment_view_course);
@@ -51,7 +48,7 @@ public class AssignmentViewFragment extends FragmentActivity {
 		descriptionLabel = (TextView)findViewById(R.id.assignment_view_description);
 		
 		if (savedInstanceState != null)
-			rowId = savedInstanceState.getLong(MainActivity.KEY_ROWID);
+			rowId = savedInstanceState.getLong(Values.KEY_ROWID);
 	}
 	
 	@Override
@@ -68,21 +65,14 @@ public class AssignmentViewFragment extends FragmentActivity {
 		populateFields();
 	}
 	
-	private void setRowIdFromIntent() {
-			Bundle extras = getIntent().getExtras();
-			rowId = extras != null
-					? extras.getLong(MainActivity.KEY_ROWID)
-					: null;
-	}
-	
 	@Override
 	public void onSaveInstanceState(Bundle outState) {
 		super.onSaveInstanceState(outState);
-		outState.putLong(MainActivity.KEY_ROWID, rowId);
+		outState.putLong(Values.KEY_ROWID, rowId);
 	}
 	
 	
-	private void populateFields() {
+	protected void populateFields() {
 		dbAdapter.open();
 		Cursor cursor = dbAdapter.fetch(rowId, Values.ASSIGNMENT_FETCH);
 		//startManagingCursor(cursor);
@@ -114,8 +104,8 @@ public class AssignmentViewFragment extends FragmentActivity {
 		final float RELATIVE_SIZE = 1.0f;
 		
 		Calendar calendar = Calendar.getInstance();
-		if (rowId != null)
-			calendar.setTimeInMillis(DateAdapter.convertMinutesToMills(time));
+		//if (rowId != null)
+		calendar.setTimeInMillis(DateAdapter.convertMinutesToMills(time));
 		
 		SimpleDateFormat dateFormat = new SimpleDateFormat(DATE_FORMAT);
 		SimpleDateFormat timeFormat = new SimpleDateFormat(TIME_FORMAT);
@@ -174,7 +164,7 @@ public class AssignmentViewFragment extends FragmentActivity {
 		switch (item.getItemId()) {
 		case R.id.view_edit:
 			Intent i = new Intent(getApplicationContext(), AssignmentEditFragment.class);
-			i.putExtra(MainActivity.KEY_ROWID, rowId);
+			i.putExtra(Values.KEY_ROWID, rowId);
 			startActivity(i);
 			break;
 		case R.id.view_delete:

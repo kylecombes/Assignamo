@@ -1,6 +1,5 @@
 package com.awesomeapplets.assignamo.preferences;
 
-import com.awesomeapplets.assignamo.MainActivity;
 import com.awesomeapplets.assignamo.R;
 import com.awesomeapplets.assignamo.database.DbAdapter;
 import com.awesomeapplets.assignamo.database.Values;
@@ -35,7 +34,7 @@ public class TeacherEditActivity extends FragmentActivity {
 		
 	public void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
-		dbAdapter = new DbAdapter(getBaseContext(), MainActivity.DATABASE_NAME, MainActivity.DATABASE_VERSION, Values.TEACHER_TABLE, MainActivity.DATABASE_CREATE, MainActivity.KEY_ROWID);
+		dbAdapter = new DbAdapter(getBaseContext(), Values.DATABASE_NAME, Values.DATABASE_VERSION, Values.TEACHER_TABLE, Values.DATABASE_CREATE, Values.KEY_ROWID);
 		
 		setContentView(R.layout.teacher_edit);
 		
@@ -92,7 +91,7 @@ public class TeacherEditActivity extends FragmentActivity {
 		if (rowId == null) {
 			Bundle extras = getIntent().getExtras();
 			if (extras != null) {
-				rowId = extras.getLong(MainActivity.KEY_ROWID);
+				rowId = extras.getLong(Values.KEY_ROWID);
 				newTeacher = false;
 			}
 			else

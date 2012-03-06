@@ -1,6 +1,5 @@
 package com.awesomeapplets.assignamo.preferences;
 
-import com.awesomeapplets.assignamo.MainActivity;
 import com.awesomeapplets.assignamo.R;
 import com.awesomeapplets.assignamo.database.DbAdapter;
 import com.awesomeapplets.assignamo.database.Values;
@@ -8,18 +7,14 @@ import com.awesomeapplets.assignamo.database.Values;
 import android.content.Intent;
 import android.database.Cursor;
 import android.os.Bundle;
-import android.support.v4.app.FragmentActivity;
 import android.util.Log;
 import android.view.Menu;
 import android.view.MenuInflater;
 import android.view.MenuItem;
 import android.widget.TextView;
 
-public class BookViewFragment extends FragmentActivity {
-	
-	private long rowId;
-	private DbAdapter dbAdapter;
-	
+public class BookViewFragment extends ViewFragment {
+		
 	private TextView typeLabel;
 	private TextView titleLabel;
 	private TextView authorLabel;
@@ -30,8 +25,8 @@ public class BookViewFragment extends FragmentActivity {
 	
 	public void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
-		dbAdapter = new DbAdapter(getBaseContext(), MainActivity.DATABASE_NAME, MainActivity.DATABASE_VERSION,
-				Values.BOOK_TABLE, MainActivity.DATABASE_CREATE, MainActivity.KEY_ROWID);
+		dbAdapter = new DbAdapter(getBaseContext(), Values.DATABASE_NAME, Values.DATABASE_VERSION,
+				Values.BOOK_TABLE, Values.DATABASE_CREATE, Values.KEY_ROWID);
 		
 		setContentView(R.layout.book_view_phone);
 		typeLabel = (TextView)findViewById(R.id.book_view_type);
@@ -44,7 +39,7 @@ public class BookViewFragment extends FragmentActivity {
 		
 		
 		if (savedInstanceState != null)
-			rowId = savedInstanceState.getLong(MainActivity.KEY_ROWID);
+			rowId = savedInstanceState.getLong(Values.KEY_ROWID);
 	}
 	
 	@Override
@@ -74,7 +69,7 @@ public class BookViewFragment extends FragmentActivity {
 		case R.id.view_edit:
 			// TODO Edit the activity
 			Intent i = new Intent(getApplicationContext(), BookEditFragment.class);
-			i.putExtra(MainActivity.KEY_ROWID, rowId);
+			i.putExtra(Values.KEY_ROWID, rowId);
 			startActivity(i);
 			break;
 		case R.id.view_delete:
@@ -84,21 +79,14 @@ public class BookViewFragment extends FragmentActivity {
 		return true;
 	}
 	
-	private void setRowIdFromIntent() {
-			Bundle extras = getIntent().getExtras();
-			rowId = extras != null
-					? extras.getLong(MainActivity.KEY_ROWID)
-					: null;
-	}
-	
 	@Override
 	public void onSaveInstanceState(Bundle outState) {
 		super.onSaveInstanceState(outState);
-		outState.putLong(MainActivity.KEY_ROWID, rowId);
+		outState.putLong(Values.KEY_ROWID, rowId);
 	}
 	
 	
-	private void populateFields() {
+	protected void populateFields() {
 		Cursor cursor = dbAdapter.fetch(rowId,Values.BOOK_FETCH);
 		startManagingCursor(cursor);
 		

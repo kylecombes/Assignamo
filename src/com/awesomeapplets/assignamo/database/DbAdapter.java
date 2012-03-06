@@ -92,6 +92,24 @@ public class DbAdapter {
 	}
 	
 	/**
+	 * Get all the incomplete assignments.
+	 * @param query the query string
+	 * @return all the incomplete assignments.
+	 */
+	public Cursor fetchIncompleteAssignments(String[] query) {
+		return fetchAllWhere(query, Values.ASSIGNMENT_KEY_STATUS + "=" + 0);
+	}
+
+	/**
+	 * Get all the incomplete assignments for a certain course.
+	 * @param query the query string
+	 * @return all the incomplete assignments.
+	 */
+	public Cursor fetchIncompleteAssignments(String[] query, String course) {
+		return fetchAllWhere(query, Values.ASSIGNMENT_KEY_COURSE + "=" + course + " AND " + Values.ASSIGNMENT_KEY_STATUS + "=" + 0);
+	}
+	
+	/**
 	 * Returns all items in the table.
 	 * @return Contains all the items in the table.
 	 */

@@ -1,9 +1,8 @@
 package com.awesomeapplets.assignamo.database;
 
+import android.content.ContentValues;
 import android.content.Context;
 import android.database.Cursor;
-
-import com.awesomeapplets.assignamo.*;
 
 public class DbUtils {
 	
@@ -14,7 +13,7 @@ public class DbUtils {
 	 */
 	public static int getCourseCount(Context context) {
 		Cursor courseCursor = queryCourseTable(context,
-				new String[] { MainActivity.KEY_ROWID});
+				new String[] { Values.KEY_ROWID});
 		int count = courseCursor.getCount();
 		courseCursor.close();
 		return count;
@@ -27,7 +26,7 @@ public class DbUtils {
 	 */
 	public static String[] getCoursesAsArray(Context context) {
 		Cursor c = queryCourseTable(context,
-				new String[] {MainActivity.KEY_ROWID, Values.KEY_NAME});
+				new String[] {Values.KEY_ROWID, Values.KEY_NAME});
     	short courseNum = (short)c.getCount();
     	String [] courseArray = new String[courseNum];
     	for (short i = 0; i < courseNum; i++) {
@@ -40,16 +39,21 @@ public class DbUtils {
 	
 	public static Cursor getCoursesAsCursor(Context context) {
 		return queryCourseTable(context,
-				new String[] {MainActivity.KEY_ROWID, Values.KEY_NAME});
+				new String[] {Values.KEY_ROWID, Values.KEY_NAME});
 	}
 	
 	private static Cursor queryCourseTable(Context context, String[] query) {
 		return queryTable(context, Values.COURSE_TABLE, query);
 	}
 	
-	public static String[] getTeachers(Context context) {
+	public static Cursor getTeachers(Context context) {
+		return queryTeacherTable(context,
+				new String[] {Values.KEY_ROWID, Values.KEY_NAME});
+	}
+
+	public static String[] getTeachersAsArray(Context context) {
 		Cursor c = queryTeacherTable(context,
-				new String[] {MainActivity.KEY_ROWID, Values.KEY_NAME});
+				new String[] {Values.KEY_ROWID, Values.KEY_NAME});
 		short teacherNum = (short)c.getCount();
     	String [] teacherArray = new String[teacherNum+1];
     	for (short i = 0; i < teacherNum; i++) {
@@ -66,17 +70,44 @@ public class DbUtils {
 	
 	private static Cursor queryTable(Context context, String table, String[] query) {
 		DbAdapter adapter = new DbAdapter(context,
-				MainActivity.DATABASE_NAME,
-				MainActivity.DATABASE_VERSION,
+				Values.DATABASE_NAME,
+				Values.DATABASE_VERSION,
 				table,
-				MainActivity.DATABASE_CREATE,
-				MainActivity.KEY_ROWID);
+				Values.DATABASE_CREATE,
+				Values.KEY_ROWID);
 		adapter.open();
 		Cursor c = adapter.fetchAll(query);
 		adapter.close();
 		return c;
 	}
 	
+	public static boolean isAssignmentCompleted(Context context, long id) {
+		DbAdapter adapter = new DbAdapter(context,
+				Values.DATABASE_NAME,
+				Values.DATABASE_VERSION,
+				Values.ASSIGNMENT_TABLE,
+				Values.DATABASE_CREATE,
+				Values.KEY_ROWID);
+		adapter.open();
+		Cursor c = adapter.fetch(id, new String[] {Values.ASSIGNMENT_KEY_STATUS});
+		adapter.close();
+		boolean b = c.getShort(0) == Values.ASSIGNMENT_STATUS_COMPLETED;
+		c.close();
+		return b;
+	}
 	
+	public static void setAssignmentState(Context context, long id, boolean completed) {
+		DbAdapter adapter = new DbAdapter(context,
+				Values.DATABASE_NAME,
+				Values.DATABASE_VERSION,
+				Values.ASSIGNMENT_TABLE,
+				Values.DATABASE_CREATE,
+				Values.KEY_ROWID);
+		adapter.open();
+		ContentValues newValue = new ContentValues();
+		newValue.put(Values.ASSIGNMENT_KEY_STATUS, completed);
+		adapter.update(id, newValue);
+		adapter.close();
+	}
 	
 }

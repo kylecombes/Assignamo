@@ -14,17 +14,11 @@ import com.viewpagerindicator.*;
 
 public class MainActivity extends FragmentActivity {
 	
-    public static final String DATABASE_NAME = "data.db";
-    public static final short DATABASE_VERSION = 1;
-    static enum ACTIVITY_STATE { ADD, EDIT }
+	static enum ACTIVITY_STATE { ADD, EDIT }
     short titleCount;
     short selectedPos;
     TitlePageAdapter adapter;
-
-	public static final String KEY_ROWID = "_id";
-	public static final String[] DATABASE_CREATE = {Values.ASSIGNMENT_DATABASE_CREATE,
-		Values.COURSE_DATABASE_CREATE, Values.BOOK_DATABASE_CREATE, Values.TEACHER_DATABASE_CREATE };
-	
+    
     /** Called when the activity is first created. */
     @Override
     public void onCreate(Bundle savedInstanceState) {
@@ -42,9 +36,9 @@ public class MainActivity extends FragmentActivity {
      * @return true if the database already existed
      */
     private boolean checkForExistingDatabase() {
-    	java.io.File dbFile = new java.io.File("/data/data/" + getApplicationContext().getPackageName() + "/databases/" + MainActivity.DATABASE_NAME);
+    	java.io.File dbFile = new java.io.File("/data/data/" + getApplicationContext().getPackageName() + "/databases/" + Values.DATABASE_NAME);
     	if (!dbFile.exists()) {
-    		DbAdapter a = new DbAdapter(this, DATABASE_NAME, DATABASE_VERSION, "temp", DATABASE_CREATE, KEY_ROWID);
+    		DbAdapter a = new DbAdapter(this, Values.DATABASE_NAME, Values.DATABASE_VERSION, "temp", Values.DATABASE_CREATE, Values.KEY_ROWID);
     		a.open();
     		a.close();
     		return false;
