@@ -7,6 +7,7 @@ import com.awesomeapplets.assignamo.database.Values;
 import android.content.Intent;
 import android.database.Cursor;
 import android.os.Bundle;
+import android.text.SpannableString;
 import android.view.MenuItem;
 import android.widget.TextView;
 import android.widget.TextView.BufferType;
@@ -80,13 +81,66 @@ public class TeacherViewFragment extends ViewFragment {
 				roomLabel.setText(getString(R.string.teacher_view_room) + ": " + roomNum);
 		} catch (NumberFormatException e) {}
 		emailLabel.setText(data.getString(data.getColumnIndexOrThrow(Values.TEACHER_KEY_EMAIL)));
-		phoneLabel.setText(data.getString(data.getColumnIndexOrThrow(Values.TEACHER_KEY_PHONE)));
+		phoneLabel.setText(getFormattedPhoneNumber(data.getLong(data.getColumnIndexOrThrow(Values.TEACHER_KEY_PHONE))),
+				BufferType.SPANNABLE);
 		
 		String notes = data.getString(data.getColumnIndexOrThrow(Values.KEY_NOTES));
 		if (notes.length() > 0)
 			notesLabel.setText(notes);
 		else
 			notesLabel.setText(getItalicizedString(R.string.no_notes), BufferType.SPANNABLE);
+	}
+	
+	/**
+	 * Formats a phone number as text.<br>
+	 * NOTE: Only accepts U.S. phone numbers at the moment.
+	 * @param num the phone number.
+	 * @return a string representation of that number, or a message if there is no phone number entered.
+	 * @throws NumberFormatException if the phone number is not of a valid phone number length.
+	 */
+	// TODO Add support for foreign phone numbers
+	private SpannableString getFormattedPhoneNumber(long num) throws NumberFormatException {
+		if (num < 0)
+			return getItalicizedString(getString(R.string.teacher_view_no_phone));
+		
+		String str = Long.toString(num);
+		String rStr = "";
+		
+		short len = (short) str.length();
+		short i = 0;
+		if (len == 7) {
+			for (; i < 3; i++)
+				rStr += str.charAt(i);
+			rStr += "-";
+			for (; i < 7; i++)
+				rStr += str.charAt(i);
+			
+		} else if (len == 10) {
+			for (; i < 3; i++)
+				rStr += str.charAt(i);
+			rStr += "-";
+			for (; i < 6; i++)
+				rStr += str.charAt(i);
+			rStr += "-";
+			for (; i < 10; i++)
+				rStr += str.charAt(i);
+			
+		} else if (len == 11) {
+			rStr += str.charAt(i) + "-";
+			i++;
+			for (; i < 4; i++)
+				rStr += str.charAt(i);
+			rStr += "-";
+			for (; i < 7; i++)
+				rStr += str.charAt(i);
+			rStr += "-";
+			for (; i < 11; i++)
+				rStr += str.charAt(i);
+			
+		} else
+			throw new NumberFormatException("Invalid phone number.");
+		
+		return new SpannableString(rStr);
 	}
 	
 }
