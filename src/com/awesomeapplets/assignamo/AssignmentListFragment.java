@@ -210,6 +210,7 @@ public class AssignmentListFragment extends ListFragment {
 				DbUtils.setAssignmentState(getActivity(), info.id, false);
 			else
 				DbUtils.setAssignmentState(getActivity(), info.id, true);
+			fillData();
 			return true;
 		case 1: // Edit the assignment
 			Intent i = new Intent(getActivity(), AssignmentEditFragment.class);
