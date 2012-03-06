@@ -131,12 +131,21 @@ public class TeacherEditActivity extends FragmentActivity {
 			phoneNum = Long.parseLong(phoneNumberField.getText().toString());
 		} catch (NumberFormatException e) {}
 		
-		addTeacher(nameField.getText().toString(),
-				subjectField.getText().toString(),
-				notesField.getText().toString(),
-				roomNum,
-				emailField.getText().toString(),
-				phoneNum);
+		if (rowId == null)
+			addTeacher(nameField.getText().toString(),
+					subjectField.getText().toString(),
+					notesField.getText().toString(),
+					roomNum,
+					emailField.getText().toString(),
+					phoneNum);
+		else
+			updateTeacher(rowId,
+					nameField.getText().toString(),
+					subjectField.getText().toString(),
+					notesField.getText().toString(),
+					roomNum,
+					emailField.getText().toString(),
+					phoneNum);
 		
 	}
 	
@@ -150,6 +159,18 @@ public class TeacherEditActivity extends FragmentActivity {
     	values.put(Values.TEACHER_KEY_EMAIL, email);
     	values.put(Values.TEACHER_KEY_PHONE, phoneNumber);
     	return dbAdapter.add(values);
+    }
+
+    private boolean updateTeacher(long rowId, String name, String subject, String notes, short roomNumber, String email, long phoneNumber) {
+    	// TODO
+    	ContentValues values = new ContentValues();
+    	values.put(Values.KEY_NAME, name);
+    	values.put(Values.TEACHER_KEY_SUBJECT, subject);
+    	values.put(Values.KEY_NOTES, notes);
+    	values.put(Values.KEY_ROOM, roomNumber);
+    	values.put(Values.TEACHER_KEY_EMAIL, email);
+    	values.put(Values.TEACHER_KEY_PHONE, phoneNumber);
+    	return dbAdapter.update(rowId, values);
     }
     
 }
