@@ -139,8 +139,8 @@
     <string name="assignment_edit">Edit Assignment</string>
     <string name="assignment_delete">Delete Assignment</string>
     <string name="show_all_assignments">Show Completed</string>
-    <string name="assignment_context_menu_mark_as_completed">Mark As Completed</string>
-    <string name="assignment_context_menu_mark_as_incomplete">Mark As Incomplete</string>
+    <string name="assignment_menu_mark_as_completed">Mark As Completed</string>
+    <string name="assignment_menu_mark_as_incomplete">Mark As Incomplete</string>
     <string name="book_add">Add Book</string>
     <string name="book_edit">Edit Book</string>
     <string name="book_delete">Delete Book</string>
