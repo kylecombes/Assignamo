@@ -113,7 +113,7 @@
     <string name="teacher_phone">Phone Number</string>
     <string name="edit_teacher">Edit Teacher</string>
     <string name="add_teacher">Add Teacher</string>
-    
+    <string name="teacher_view_no_phone">No phone number entered.</string>
     
     <!-- About -->
     <string name="pref_about_screen_title">About</string>
