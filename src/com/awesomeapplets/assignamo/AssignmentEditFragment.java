@@ -33,8 +33,7 @@ public class AssignmentEditFragment extends FragmentActivity {
 	private DbAdapter dbAdapter;
 	private Calendar calendar;
 	static final String DATE_FORMAT = "MM/dd/yyyy";
-	static final String TIME_FORMAT = "dd:mm a";
-	static final String DATE_TIME_FORMAT = "yyyy-MM-dd kk:mm:ss";
+	static final String TIME_FORMAT = "hh:mm a";
 	private static final short DATE_PICKER_DIALOG = 0;
 	private static final short TIME_PICKER_DIALOG = 1;
 	private Long rowId;
