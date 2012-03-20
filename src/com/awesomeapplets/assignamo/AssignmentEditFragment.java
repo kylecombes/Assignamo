@@ -163,7 +163,10 @@ public class AssignmentEditFragment extends FragmentActivity {
 			courseSpinner.setSelection(assignmentData.getShort(assignmentData.getColumnIndexOrThrow(Values.ASSIGNMENT_KEY_COURSE)));
 			titleField.setText(assignmentData.getString(assignmentData.getColumnIndexOrThrow(Values.KEY_TITLE)));
 			descriptionField.setText(assignmentData.getString(assignmentData.getColumnIndexOrThrow(Values.KEY_DESCRIPTION)));
-			pointsField.setText("" + assignmentData.getLong(assignmentData.getColumnIndexOrThrow(Values.ASSIGNMENT_KEY_POINTS)));
+			
+			long points = assignmentData.getLong(assignmentData.getColumnIndexOrThrow(Values.ASSIGNMENT_KEY_POINTS));
+			if (points >= 0)
+				pointsField.setText("" + points);
 			
 			long time = assignmentData.getLong(assignmentData.getColumnIndexOrThrow(Values.ASSIGNMENT_KEY_DUE_DATE));
 			time = DateAdapter.convertMinutesToMills(time);
