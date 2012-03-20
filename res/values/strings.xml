@@ -73,7 +73,7 @@
     <string name="pref_appearance_assignments_title">Viewing assignments</string>
     <string name="pref_appearance_example_title">Format example:</string>
     <string name="pref_appearance_show_time_title">Show time</string>
-    <string name="pref_appearance_show_time_summary">Show time due?</string>
+    <string name="pref_appearance_show_time_summary">Display time due when viewing assignments</string>
     <string name="pref_appearance_casual_title">Casual due date</string>
     <string name="pref_appearance_casual_summary">Example: \&quot;This Wednesday\&quot;.</string>
     
