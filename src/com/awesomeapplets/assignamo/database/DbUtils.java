@@ -6,6 +6,94 @@ import android.database.Cursor;
 
 public class DbUtils {
 	
+	/*---------- Assignments ----------*/
+	
+
+	/**
+	 * Returns all assignments.
+	 * @param query the SQL query syntax.
+	 * @param order whether or not to sort by due date.
+	 * @return Contains all the items in the table.
+	 */
+	public static Cursor fetchAllAssignments(Context context, String[] query, Short course, boolean order) {
+		Cursor c;
+		DbAdapter adapter = new DbAdapter(context,
+				Values.DATABASE_NAME,
+				Values.DATABASE_VERSION,
+				Values.ASSIGNMENT_TABLE,
+				Values.DATABASE_CREATE,
+				Values.KEY_ROWID);
+		adapter.open();
+		
+		if (order)
+			if (course == null)
+				c = adapter.fetchAll(query);
+			else
+				c = adapter.fetchAllWhere(query, Values.ASSIGNMENT_KEY_COURSE + "=" + course);
+		else
+			if (course == null)
+				c = adapter.fetchAllOrdered(query, null, Values.ASSIGNMENT_KEY_DUE_DATE);
+			else
+				c = adapter.fetchAllOrdered(query, Values.ASSIGNMENT_KEY_COURSE + "=" + course, Values.ASSIGNMENT_KEY_DUE_DATE);
+		
+		if (c != null)
+			c.moveToFirst();
+		return c;
+	}
+
+	/**
+	 * Returns all assignments in the specified course.
+	 * @param query the SQL query syntax.
+	 * @param order whether or not to sort by due date.
+	 * @return Contains all the items in the table.
+	 *
+	public Cursor fetchAllAssignments(Context context, String[] query, short course, boolean order) {
+		Cursor c;
+		DbAdapter adapter = new DbAdapter(context,
+				Values.DATABASE_NAME,
+				Values.DATABASE_VERSION,
+				Values.ASSIGNMENT_TABLE,
+				Values.DATABASE_CREATE,
+				Values.KEY_ROWID);
+		adapter.fetchAll(query);
+		
+		if (order)
+			c = db.query(Values.ASSIGNMENT_TABLE, query, Values.ASSIGNMENT_KEY_COURSE + "=" + course, null, null, null, Values.ASSIGNMENT_KEY_DUE_DATE);
+		else
+			c = db.query(Values.ASSIGNMENT_TABLE, query, Values.ASSIGNMENT_KEY_COURSE + "=" + course, null, null, null, null);
+		if (c != null)
+			c.moveToFirst();
+		return c;
+	}
+	
+	/**
+	 * Get all the incomplete assignments for a certain course.
+	 * @param context a copy of the application context.
+	 * @param query the SQL query syntax.
+	 * @param course the course to fetch the assignments from. Pass null
+	 * to return assignments from all courses.
+	 * @param order whether or not to sort the result by due date.
+	 * @return all the incomplete assignments for the specified course.
+	 */
+	public static Cursor fetchIncompleteAssignments(Context context, String[] query, Short course, boolean order) {
+		DbAdapter adapter = new DbAdapter(context,
+				Values.DATABASE_NAME,
+				Values.DATABASE_VERSION,
+				Values.ASSIGNMENT_TABLE,
+				Values.DATABASE_CREATE,
+				Values.KEY_ROWID);
+		adapter.open();
+		
+		if (course != null) // Fetching from all courses
+			return adapter.fetchAllWhere(query, Values.ASSIGNMENT_KEY_COURSE + "=" + course
+				+ " AND " + Values.ASSIGNMENT_KEY_STATUS + "=" + 0);
+		else
+			return adapter.fetchAllWhere(query, Values.ASSIGNMENT_KEY_STATUS + "=" + 0);
+	}
+	
+	
+	/*---------- Courses ----------*/
+	
 	/**
 	 * Get the number of courses stored in the database.
 	 * @param context the application context (needed to query the database)

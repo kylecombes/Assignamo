@@ -67,6 +67,19 @@ public class DbAdapter {
 	public long add(ContentValues values) {
 		return db.insert(DATABASE_TABLE, null, values);
 	}
+
+	public boolean update(long rowId, ContentValues values) {
+		return db.update(DATABASE_TABLE, values, KEY_ROWID + "=" + rowId, null) > 0;
+	}
+	
+	/**
+	 * Deletes a row in the table.
+	 * @param rowId The row to be deleted.
+	 * @return Whether or not the deletion was successful.
+	 */
+	public boolean delete(long rowId) {
+		return db.delete(DATABASE_TABLE, KEY_ROWID + "=" + rowId, null) > 0;
+	}
 	
 	/**
 	 * Finds and returns a Cursor object containing the data found in the specified row.
@@ -82,33 +95,7 @@ public class DbAdapter {
 			cursor.moveToFirst();
 		return cursor;
 	}
-	
-	public Cursor fetchAllWhere(String[] query, String where) throws SQLException{
-		Cursor cursor = db.query(true, DATABASE_TABLE, query,
-				where, null, null, null, null, null);
-		if (cursor != null)
-			cursor.moveToFirst();
-		return cursor;
-	}
-	
-	/**
-	 * Get all the incomplete assignments.
-	 * @param query the query string
-	 * @return all the incomplete assignments.
-	 */
-	public Cursor fetchIncompleteAssignments(String[] query) {
-		return fetchAllWhere(query, Values.ASSIGNMENT_KEY_STATUS + "=" + 0);
-	}
 
-	/**
-	 * Get all the incomplete assignments for a certain course.
-	 * @param query the query string
-	 * @return all the incomplete assignments.
-	 */
-	public Cursor fetchIncompleteAssignments(String[] query, String course) {
-		return fetchAllWhere(query, Values.ASSIGNMENT_KEY_COURSE + "=" + course + " AND " + Values.ASSIGNMENT_KEY_STATUS + "=" + 0);
-	}
-	
 	/**
 	 * Returns all items in the table.
 	 * @return Contains all the items in the table.
@@ -120,17 +107,36 @@ public class DbAdapter {
 		return c;
 	}
 	
-	public boolean update(long rowId, ContentValues values) {
-		return db.update(DATABASE_TABLE, values, KEY_ROWID + "=" + rowId, null) > 0;
-	}
-	
 	/**
-	 * Deletes a row in the table.
-	 * @param rowId The row to be deleted.
-	 * @return Whether or not the deletion was successful.
+	 * Get all the items in a database sorted in a specific order.
+	 * @param query the SQL QUERY clause.
+	 * @param where a SQL WHERE clause. Pass null to return all the
+	 * items in the table.
+	 * @param orderBy the column which the results will be sorted by.
+	 * @return
 	 */
-	public boolean delete(long rowId) {
-		return db.delete(DATABASE_TABLE, KEY_ROWID + "=" + rowId, null) > 0;
+	public Cursor fetchAllOrdered(String[] query, String where, String orderBy) {
+		Cursor c;
+		c = db.query(DATABASE_TABLE, query, where, null, null, null, orderBy);
+		if (c != null)
+			c.moveToFirst();
+		return c;
+	}
+
+	public Cursor fetchAllWhere(String[] query, String where) throws SQLException{
+		Cursor cursor = db.query(true, DATABASE_TABLE, query,
+				where, null, null, null, null, null);
+		if (cursor != null)
+			cursor.moveToFirst();
+		return cursor;
+	}
+
+	public Cursor fetchAllWhere(String[] query, String where, String orderBy) throws SQLException{
+		Cursor cursor = db.query(true, DATABASE_TABLE, query,
+				where, null, null, null, orderBy, null);
+		if (cursor != null)
+			cursor.moveToFirst();
+		return cursor;
 	}
 	
 	public class DatabaseHelper extends SQLiteOpenHelper {

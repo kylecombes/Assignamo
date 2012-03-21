@@ -1,13 +1,11 @@
+Required
+--------------
 No "No Books" or "No Teachers" message.
 Add support for Gym and Library Room Numbers.
-Auto-convert words like "the", "in", "of", etc. to lowercase as long as they are not the first word?
-Format phone number field (Teacher) when entering text
-View label for Managing books, courses, and teachers
-Empty ListView labels
-Spinner when loading
-Background image
+* View label for Managing books, courses, and teachers
+Loading spinner
 First-time setup wizard
-Course view
+* Course view
 Reminders!!
 Finish preferences:
 	Add icons
@@ -15,15 +13,21 @@ Finish preferences:
 	Change color of tabs
 	Custom date/time format?
 Better teacher view
-Link teacher with contact
-Custom title bar color
 Date not saving right on assignments
 Time displaying in wrong format on Assignment Edit button
-ALL tab only displaying assignments in first course after rotating
+* ALL tab only displaying assignments in first course after rotating
 Tab names shortened
 Fix "close() not called" and "invalid statement in fillWindow()"
-Update assignment lists in other tabs on assignment delete
+Update assignment lists in other tabs on assignment delete and mark as completed
+Add support for teacher phone number extensions.
+Remove/archive assignments when deleting a course.
 
+Ideas
+--------------
+Auto-convert words like "the", "in", "of", etc. to lowercase as long as they are not the first word?
+Format phone number field (Teacher) when entering text
+Background image
+Link teacher with contact
 
 -------------- Bugs: ----------------
 When there are no courses, cannot add an assignment due to the fact that there are no courses to link it to. Crashes.

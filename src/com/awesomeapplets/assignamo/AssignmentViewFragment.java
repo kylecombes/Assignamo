@@ -19,7 +19,6 @@ import android.text.SpannableString;
 import android.text.style.RelativeSizeSpan;
 import android.text.style.StyleSpan;
 import android.view.Menu;
-import android.view.MenuInflater;
 import android.view.MenuItem;
 import android.widget.TextView;
 import android.widget.TextView.BufferType;
@@ -75,7 +74,7 @@ public class AssignmentViewFragment extends ViewFragment {
 	protected void populateFields() {
 		dbAdapter.open();
 		Cursor cursor = dbAdapter.fetch(rowId, Values.ASSIGNMENT_FETCH);
-		//startManagingCursor(cursor);
+		startManagingCursor(cursor);
 		
 		// Set course label
 		short courseId = (short)cursor.getInt(cursor.getColumnIndexOrThrow(Values.ASSIGNMENT_KEY_COURSE));
@@ -153,21 +152,34 @@ public class AssignmentViewFragment extends ViewFragment {
 	}
 	
 	@Override
-	public boolean onCreateOptionsMenu(Menu menu) {
-		MenuInflater inflater = getMenuInflater();
-		inflater.inflate(R.menu.view_menu, menu);
+	public boolean onPrepareOptionsMenu(Menu menu) {
+		menu.clear();
+		if (DbUtils.isAssignmentCompleted(getApplicationContext(), rowId))
+			menu.add(0, 0, 0, R.string.assignment_menu_mark_as_incomplete)
+			.setIcon(R.drawable.checkmark);
+		else
+			menu.add(0, 0, 0, R.string.assignment_menu_mark_as_completed)
+			.setIcon(R.drawable.checkmark);
+		menu.add(0, 1, 0, R.string.edit).setIcon(android.R.drawable.ic_menu_edit);
+		menu.add(0, 2, 0, R.string.delete).setIcon(android.R.drawable.ic_menu_delete);
 		return true;
 	}
 	
 	@Override
 	public boolean onOptionsItemSelected(MenuItem item) {
 		switch (item.getItemId()) {
-		case R.id.view_edit:
+		case 0:
+			if (DbUtils.isAssignmentCompleted(getApplicationContext(), rowId))
+				DbUtils.setAssignmentState(getApplicationContext(), rowId, false);
+			else
+				DbUtils.setAssignmentState(getApplicationContext(), rowId, true);
+			break;
+		case 1:
 			Intent i = new Intent(getApplicationContext(), AssignmentEditFragment.class);
 			i.putExtra(Values.KEY_ROWID, rowId);
 			startActivity(i);
 			break;
-		case R.id.view_delete:
+		case 2:
 			dbAdapter.delete(rowId);
 			finish();
 		}

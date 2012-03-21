@@ -25,8 +25,9 @@ public final class Values {
 	public static final String ASSIGNMENT_KEY_STATUS = "status";
 	public static final short ASSIGNMENT_STATUS_INCOMPLETE = 0;
 	public static final short ASSIGNMENT_STATUS_COMPLETED = 1;
-	public static final String[] ASSIGNMENT_FETCH = new String[] { KEY_ROWID, KEY_TITLE,
+	public static final String[] ASSIGNMENT_FETCH = { KEY_ROWID, KEY_TITLE,
 		ASSIGNMENT_KEY_COURSE, KEY_DESCRIPTION, ASSIGNMENT_KEY_DUE_DATE, ASSIGNMENT_KEY_POINTS, ASSIGNMENT_KEY_STATUS };
+	public static final String[] ASSIGNMENT_LIST_FETCH = { KEY_ROWID, KEY_TITLE, ASSIGNMENT_KEY_COURSE, ASSIGNMENT_KEY_DUE_DATE };
 	public static final String ASSIGNMENT_DATABASE_CREATE = "create table " + ASSIGNMENT_TABLE
 			+ " ( " + KEY_ROWID + " integer primary key autoincrement, "
 			+ KEY_TITLE + " text not null, "

@@ -103,26 +103,25 @@ public class AssignmentListFragment extends ListFragment {
 
 	public void fillData() {
 		Cursor assignmentsCursor;
-		boolean showingAll = PreferenceManager.getDefaultSharedPreferences(getActivity()).getBoolean(Values.ASSIGNMENT_KEY_SHOWING_COMPLETED, false);
-		if (course < 0)
-			if (showingAll)
-			assignmentsCursor = assignmentDb.fetchAll(Values.ASSIGNMENT_FETCH);
+		boolean showingCompleted = PreferenceManager.getDefaultSharedPreferences(getActivity()).getBoolean(Values.ASSIGNMENT_KEY_SHOWING_COMPLETED, false);
+		
+		if (course < 0) // Showing assignments from all courses
+			if (showingCompleted)
+				assignmentsCursor = DbUtils.fetchAllAssignments(getActivity(), Values.ASSIGNMENT_LIST_FETCH, null, true);
 			else
-				assignmentsCursor = assignmentDb.fetchIncompleteAssignments(Values.ASSIGNMENT_FETCH);
-		else
-			// Fetch all the assignments for the set course
-			if (showingAll)
-				assignmentsCursor = assignmentDb.fetchAllWhere(Values.ASSIGNMENT_FETCH, Values.ASSIGNMENT_KEY_COURSE + "=" + course);
+				assignmentsCursor = DbUtils.fetchIncompleteAssignments(getActivity(), Values.ASSIGNMENT_LIST_FETCH, null, true);
+		else // Showing assignments from specified course
+			if (showingCompleted)
+				assignmentsCursor = DbUtils.fetchAllAssignments(getActivity(), Values.ASSIGNMENT_LIST_FETCH, course, true);
 			else
-				assignmentsCursor = assignmentDb.fetchIncompleteAssignments(Values.ASSIGNMENT_FETCH, Values.ASSIGNMENT_KEY_COURSE);
+				assignmentsCursor = DbUtils.fetchIncompleteAssignments(getActivity(), Values.ASSIGNMENT_LIST_FETCH, course, true);
 		getActivity().startManagingCursor(assignmentsCursor);
 
 		// Create and array to specify the fields we want
 		String[] from = new String[] { Values.KEY_TITLE, Values.ASSIGNMENT_KEY_COURSE };
 
 		// and an array of the fields we want to bind in the view
-		int[] to = new int[] { R.id.assignment_list_title,
-				R.id.assignment_list_course };
+		int[] to = new int[] { R.id.assignment_list_title, R.id.assignment_list_course };
 
 		// Now create a simple cursor adapter and set it to display
 		SimpleCursorAdapter reminders = new SimpleCursorAdapter(getActivity(),
@@ -174,8 +173,7 @@ public class AssignmentListFragment extends ListFragment {
 		case 2:
 			SharedPreferences prefs = PreferenceManager.getDefaultSharedPreferences(getActivity());
 			Editor prefEditor = prefs.edit();
-			boolean curVal = prefs.getBoolean(Values.ASSIGNMENT_KEY_SHOWING_COMPLETED, false);
-			if (curVal)
+			if (prefs.getBoolean(Values.ASSIGNMENT_KEY_SHOWING_COMPLETED, false))
 				prefEditor.putBoolean(Values.ASSIGNMENT_KEY_SHOWING_COMPLETED, false);
 			else
 				prefEditor.putBoolean(Values.ASSIGNMENT_KEY_SHOWING_COMPLETED, true);
@@ -193,9 +191,9 @@ public class AssignmentListFragment extends ListFragment {
 	public void onCreateContextMenu(ContextMenu menu, View v, ContextMenuInfo menuInfo) {
 		AdapterContextMenuInfo info = (AdapterContextMenuInfo) menuInfo;
 		if (DbUtils.isAssignmentCompleted(getActivity(), info.id))
-			menu.add(0, 0, 0, R.string.assignment_context_menu_mark_as_incomplete);
+			menu.add(0, 0, 0, R.string.assignment_menu_mark_as_incomplete);
 		else
-			menu.add(0, 0, 0, R.string.assignment_context_menu_mark_as_completed);
+			menu.add(0, 0, 0, R.string.assignment_menu_mark_as_completed);
 		menu.add(0, 1, 0, R.string.assignment_edit);
 		menu.add(0, 2, 0, R.string.assignment_delete);
 	}
