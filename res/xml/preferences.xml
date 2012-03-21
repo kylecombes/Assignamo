@@ -2,10 +2,9 @@
 <PreferenceScreen xmlns:android="http://schemas.android.com/apk/res/android" >
     
     <!-- Appearance Preference Screen -->
-    <PreferenceScreen
+    <PreferenceCategory
         android:key="pref_appearance_screen"
-        android:title="@string/pref_appearance_screen_title"
-        android:summary="@string/pref_appearance_screen_summary" >
+        android:title="@string/pref_appearance_screen_title" >
         <Preference
             android:key="pref_appearance_example_key"
             android:title="@string/pref_appearance_example_title"/>
@@ -19,13 +18,12 @@
             android:title="@string/pref_appearance_show_time_title"
             android:summary="@string/pref_appearance_show_time_summary"
             android:defaultValue="true" />
-    </PreferenceScreen>
+    </PreferenceCategory>
     
     <!-- Manage Preference Screen -->
-    <PreferenceScreen
-        android:key="pref_manage_screen"
-        android:title="@string/pref_manage_title"
-        android:summary="@string/pref_manage_screen_summary" >
+    <PreferenceCategory
+        android:key="pref_appearance_category"
+        android:title="@string/pref_manage_title" >
         <Preference
             android:key="pref_manage_books_key"
             android:title="@string/pref_manage_books_title"
@@ -53,10 +51,10 @@
                 android:targetPackage="com.awesomeapplets.assignamo"
                 android:targetClass="com.awesomeapplets.assignamo.preferences.TeacherListActivity"/>
         </Preference>
-    </PreferenceScreen>
+    </PreferenceCategory>
 	
     <!-- About Screen -->
-    <PreferenceScreen
+    <PreferenceCategory
         android:key="pref_about_screen_key"
         android:title="@string/pref_about_screen_title" >
         <Preference
@@ -70,5 +68,5 @@
         <Preference
             android:key="pref_app_version_key"
             android:title="@string/version" />
-    </PreferenceScreen>
+    </PreferenceCategory>
 </PreferenceScreen>
