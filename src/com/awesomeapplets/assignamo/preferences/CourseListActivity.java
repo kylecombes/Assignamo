@@ -2,8 +2,8 @@ package com.awesomeapplets.assignamo.preferences;
 
 import com.awesomeapplets.assignamo.R;
 import com.awesomeapplets.assignamo.database.DbAdapter;
-import com.awesomeapplets.assignamo.database.DbUtils;
 import com.awesomeapplets.assignamo.database.Values;
+import com.awesomeapplets.assignamo.utils.DbUtils;
 
 import android.app.ListActivity;
 import android.content.Intent;

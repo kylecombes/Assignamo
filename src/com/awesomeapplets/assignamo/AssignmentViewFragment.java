@@ -1,32 +1,21 @@
 package com.awesomeapplets.assignamo;
 
-import java.text.SimpleDateFormat;
-import java.util.Calendar;
-
-import com.awesomeapplets.assignamo.database.DateAdapter;
 import com.awesomeapplets.assignamo.database.DbAdapter;
 import com.awesomeapplets.assignamo.database.Values;
-import com.awesomeapplets.assignamo.database.DbUtils;
 import com.awesomeapplets.assignamo.preferences.ViewFragment;
+import com.awesomeapplets.assignamo.utils.DbUtils;
 
 import android.content.Intent;
 import android.content.SharedPreferences;
 import android.database.Cursor;
-import android.graphics.Typeface;
 import android.os.Bundle;
 import android.preference.PreferenceManager;
-import android.text.SpannableString;
-import android.text.style.RelativeSizeSpan;
-import android.text.style.StyleSpan;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.widget.TextView;
 import android.widget.TextView.BufferType;
 
 public class AssignmentViewFragment extends ViewFragment {
-	
-	private static String DATE_FORMAT = "c, MMMMM dd, yyyy";
-	private static String TIME_FORMAT = "hh:mm a";
 	
 	private TextView courseLabel;
 	private TextView titleLabel;
@@ -74,6 +63,7 @@ public class AssignmentViewFragment extends ViewFragment {
 	protected void populateFields() {
 		dbAdapter.open();
 		Cursor cursor = dbAdapter.fetch(rowId, Values.ASSIGNMENT_FETCH);
+		dbAdapter.close();
 		startManagingCursor(cursor);
 		
 		// Set course label
@@ -87,68 +77,22 @@ public class AssignmentViewFragment extends ViewFragment {
 		// Set due date label
 		SharedPreferences prefs = PreferenceManager.getDefaultSharedPreferences(getBaseContext());
 		boolean withTime = prefs.getBoolean("pref_appearance_show_time", true);
-		dueDateLabel.setText(getDateString(cursor.getLong(cursor.getColumnIndexOrThrow(Values.ASSIGNMENT_KEY_DUE_DATE)),
+		dueDateLabel.setText(getDateString(	cursor.getLong(cursor.getColumnIndexOrThrow(Values.ASSIGNMENT_KEY_DUE_DATE)),
 				withTime),
 				BufferType.SPANNABLE);
+		
+		// Set points label
 		long points = Long.parseLong(cursor.getString(cursor.getColumnIndexOrThrow(Values.ASSIGNMENT_KEY_POINTS)));
 		if (points > 0)
-			pointsLabel.setText(points + " " + getString(R.string.assignment_points));
+			if (points == 1)
+				pointsLabel.setText(points + " " + getString(R.string.assignment_point));
+			else
+				pointsLabel.setText(points + " " + getString(R.string.assignment_points));
 		else
-			pointsLabel.setText(getString(R.string.assignment_no_points));
-		descriptionLabel.setText(cursor.getString(cursor.getColumnIndexOrThrow(Values.KEY_DESCRIPTION)));
-	}
-	
-	private SpannableString getDateString(long time, boolean withTime) {
+			pointsLabel.setText(getItalicizedString(R.string.assignment_no_points));
 		
-		final float RELATIVE_SIZE = 1.0f;
-		
-		Calendar calendar = Calendar.getInstance();
-		//if (rowId != null)
-		calendar.setTimeInMillis(DateAdapter.convertMinutesToMills(time));
-		
-		SimpleDateFormat dateFormat = new SimpleDateFormat(DATE_FORMAT);
-		SimpleDateFormat timeFormat = new SimpleDateFormat(TIME_FORMAT);
-		
-		SpannableString returnString;
-		
-		// Either way, we need to have the date
-		String dueString = "";// getString(R.string.due) + " ";
-		String dateString = dateFormat.format(calendar.getTime());
-		
-		if (!withTime) {
-			// We only want the date to be returned (no time)
-			returnString = new SpannableString( dueString + dateString );
-		} else {
-			// If we are going to show the time, get it here
-			String atString = " " + getString(R.string.at) + " ";
-			String timeString = timeFormat.format(calendar.getTime());
-			
-			// We want the time as well as the date to be returned
-			returnString = new SpannableString( dueString
-					+ dateString + atString + timeString);
-			
-			returnString.setSpan(new StyleSpan(Typeface.BOLD),
-					dueString.length() + dateString.length() + atString.length(),
-					dueString.length() + dateString.length() + atString.length() + timeString.length(),
-					0);
-			returnString.setSpan(new RelativeSizeSpan(RELATIVE_SIZE),
-					dueString.length() + dateString.length() + atString.length(),
-					dueString.length() + dateString.length() + atString.length() + timeString.length(),
-					0);
-		}
-		// This could really be up right after defining returnString, but
-			// then I would have to put it in twice, as it is needed in
-			// both cases. So instead I put in in here, seemingly out
-			// of order.
-		returnString.setSpan(new StyleSpan(Typeface.BOLD),
-				dueString.length(),
-				dueString.length() + dateString.length(),
-				0);
-		returnString.setSpan(new RelativeSizeSpan(RELATIVE_SIZE),
-				dueString.length(),
-				dueString.length() + dateString.length(),
-				0);
-		return returnString;
+		// Set description label
+		descriptionLabel.setText(getDescription(cursor.getString(cursor.getColumnIndexOrThrow(Values.KEY_DESCRIPTION))));
 	}
 	
 	@Override

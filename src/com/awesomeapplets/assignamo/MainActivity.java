@@ -8,8 +8,8 @@ import android.support.v4.view.ViewPager;
 import android.support.v4.view.ViewPager.OnPageChangeListener;
 
 import com.awesomeapplets.assignamo.database.DbAdapter;
-import com.awesomeapplets.assignamo.database.DbUtils;
 import com.awesomeapplets.assignamo.database.Values;
+import com.awesomeapplets.assignamo.utils.DbUtils;
 import com.viewpagerindicator.*;
 
 public class MainActivity extends FragmentActivity {

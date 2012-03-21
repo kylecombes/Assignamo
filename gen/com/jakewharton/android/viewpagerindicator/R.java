@@ -459,146 +459,147 @@ or to a theme attribute in the form "<code>?[<i>package</i>:][<i>type</i>:]<i>na
     }
     public static final class string {
         public static final int add_assignment_instructions=0x7f0b0011;
-        public static final int add_book_ISBN=0x7f0b0023;
-        public static final int add_book_author=0x7f0b0022;
-        public static final int add_book_chapters=0x7f0b0021;
-        public static final int add_book_instructions=0x7f0b0043;
-        public static final int add_book_invalid_ISBN=0x7f0b0045;
-        public static final int add_book_pages=0x7f0b0020;
-        public static final int add_book_type=0x7f0b001f;
-        public static final int add_course_instructions=0x7f0b0026;
-        public static final int add_teacher=0x7f0b0053;
-        public static final int add_teacher_instructions=0x7f0b004c;
+        public static final int add_book_ISBN=0x7f0b0024;
+        public static final int add_book_author=0x7f0b0023;
+        public static final int add_book_chapters=0x7f0b0022;
+        public static final int add_book_instructions=0x7f0b0044;
+        public static final int add_book_invalid_ISBN=0x7f0b0046;
+        public static final int add_book_pages=0x7f0b0021;
+        public static final int add_book_type=0x7f0b0020;
+        public static final int add_course_instructions=0x7f0b0027;
+        public static final int add_teacher=0x7f0b0054;
+        public static final int add_teacher_instructions=0x7f0b004d;
         public static final int all_assignments=0x7f0b0001;
         public static final int app_name=0x7f0b0000;
         /**           Menus          
  Add/Edit 
          */
-        public static final int assignment_add=0x7f0b0062;
-        public static final int assignment_add_book=0x7f0b0063;
-        public static final int assignment_add_points_out_of_range_message=0x7f0b0015;
-        public static final int assignment_add_points_out_of_range_title=0x7f0b0014;
-        public static final int assignment_delete=0x7f0b0065;
-        public static final int assignment_due_date=0x7f0b0016;
-        public static final int assignment_edit=0x7f0b0064;
-        public static final int assignment_edit_course_required_message=0x7f0b005f;
-        public static final int assignment_edit_course_required_title=0x7f0b005e;
-        public static final int assignment_menu_mark_as_completed=0x7f0b0067;
-        public static final int assignment_menu_mark_as_incomplete=0x7f0b0068;
+        public static final int assignment_add=0x7f0b0063;
+        public static final int assignment_add_book=0x7f0b0064;
+        public static final int assignment_add_points_out_of_range_message=0x7f0b0016;
+        public static final int assignment_add_points_out_of_range_title=0x7f0b0015;
+        public static final int assignment_delete=0x7f0b0066;
+        public static final int assignment_due_date=0x7f0b0017;
+        public static final int assignment_edit=0x7f0b0065;
+        public static final int assignment_edit_course_required_message=0x7f0b0060;
+        public static final int assignment_edit_course_required_title=0x7f0b005f;
+        public static final int assignment_menu_mark_as_completed=0x7f0b0068;
+        public static final int assignment_menu_mark_as_incomplete=0x7f0b0069;
         public static final int assignment_no_points=0x7f0b0012;
-        public static final int assignment_points=0x7f0b0013;
-        public static final int assignment_time_due=0x7f0b0017;
+        public static final int assignment_point=0x7f0b0013;
+        public static final int assignment_points=0x7f0b0014;
+        public static final int assignment_time_due=0x7f0b0018;
         /**           Assignments          
          */
         public static final int assignments_title=0x7f0b000f;
-        public static final int at=0x7f0b001a;
-        public static final int book_add=0x7f0b0069;
-        public static final int book_context_menu_delete=0x7f0b0044;
-        public static final int book_delete=0x7f0b006b;
-        public static final int book_edit=0x7f0b006a;
-        public static final int book_edit_add_book=0x7f0b001c;
-        public static final int book_edit_edit_book=0x7f0b001d;
-        public static final int book_menu_add=0x7f0b0042;
+        public static final int at=0x7f0b001b;
+        public static final int book_add=0x7f0b006a;
+        public static final int book_context_menu_delete=0x7f0b0045;
+        public static final int book_delete=0x7f0b006c;
+        public static final int book_edit=0x7f0b006b;
+        public static final int book_edit_add_book=0x7f0b001d;
+        public static final int book_edit_edit_book=0x7f0b001e;
+        public static final int book_menu_add=0x7f0b0043;
         /**  Books 
          */
-        public static final int books=0x7f0b0041;
+        public static final int books=0x7f0b0042;
         /**           Books         
          */
-        public static final int books_title=0x7f0b001b;
+        public static final int books_title=0x7f0b001c;
         public static final int cancel=0x7f0b0006;
-        public static final int contact_email=0x7f0b0059;
+        public static final int contact_email=0x7f0b005a;
         public static final int course=0x7f0b000e;
-        public static final int course_add=0x7f0b006c;
-        public static final int course_credit_hours=0x7f0b0047;
-        public static final int course_days_of_week=0x7f0b0049;
-        public static final int course_delete=0x7f0b006e;
-        public static final int course_edit=0x7f0b006d;
-        public static final int course_edit_teacher_required_message=0x7f0b0061;
-        public static final int course_edit_teacher_required_title=0x7f0b0060;
+        public static final int course_add=0x7f0b006d;
+        public static final int course_credit_hours=0x7f0b0048;
+        public static final int course_days_of_week=0x7f0b004a;
+        public static final int course_delete=0x7f0b006f;
+        public static final int course_edit=0x7f0b006e;
+        public static final int course_edit_teacher_required_message=0x7f0b0062;
+        public static final int course_edit_teacher_required_title=0x7f0b0061;
         /**  Courses 
          */
-        public static final int course_menu_add=0x7f0b0046;
-        public static final int course_times=0x7f0b004a;
-        public static final int course_view_no_room=0x7f0b0027;
+        public static final int course_menu_add=0x7f0b0047;
+        public static final int course_times=0x7f0b004b;
+        public static final int course_view_no_room=0x7f0b0028;
         /**           Courses         
          */
-        public static final int courses_title=0x7f0b0024;
+        public static final int courses_title=0x7f0b0025;
         public static final int delete=0x7f0b0008;
         public static final int description=0x7f0b0009;
-        public static final int due=0x7f0b0019;
+        public static final int due=0x7f0b001a;
         public static final int edit=0x7f0b0007;
-        public static final int edit_teacher=0x7f0b0052;
-        public static final int menu_manage_courses=0x7f0b0048;
+        public static final int edit_teacher=0x7f0b0053;
+        public static final int menu_manage_courses=0x7f0b0049;
         public static final int name=0x7f0b0003;
         public static final int no_assignments=0x7f0b0010;
-        public static final int no_books=0x7f0b001e;
-        public static final int no_courses=0x7f0b0025;
+        public static final int no_books=0x7f0b001f;
+        public static final int no_courses=0x7f0b0026;
         public static final int no_description=0x7f0b000a;
         public static final int no_notes=0x7f0b000c;
-        public static final int no_teachers=0x7f0b002b;
+        public static final int no_teachers=0x7f0b002c;
         public static final int notes=0x7f0b000b;
         public static final int ok=0x7f0b0005;
-        public static final int points=0x7f0b0018;
+        public static final int points=0x7f0b0019;
         /**  About 
          */
-        public static final int pref_about_screen_title=0x7f0b0055;
-        public static final int pref_app_version_title=0x7f0b0056;
-        public static final int pref_appearance_assignments_title=0x7f0b0031;
-        public static final int pref_appearance_casual_summary=0x7f0b0036;
-        public static final int pref_appearance_casual_title=0x7f0b0035;
-        public static final int pref_appearance_example_title=0x7f0b0032;
-        public static final int pref_appearance_screen_summary=0x7f0b0030;
+        public static final int pref_about_screen_title=0x7f0b0056;
+        public static final int pref_app_version_title=0x7f0b0057;
+        public static final int pref_appearance_assignments_title=0x7f0b0032;
+        public static final int pref_appearance_casual_summary=0x7f0b0037;
+        public static final int pref_appearance_casual_title=0x7f0b0036;
+        public static final int pref_appearance_example_title=0x7f0b0033;
+        public static final int pref_appearance_screen_summary=0x7f0b0031;
         /**  Appearance 
          */
-        public static final int pref_appearance_screen_title=0x7f0b002f;
-        public static final int pref_appearance_show_time_summary=0x7f0b0034;
-        public static final int pref_appearance_show_time_title=0x7f0b0033;
-        public static final int pref_contact_title=0x7f0b005a;
-        public static final int pref_email_chooser_title=0x7f0b005b;
-        public static final int pref_manage_books=0x7f0b0038;
-        public static final int pref_manage_books_summary=0x7f0b003a;
-        public static final int pref_manage_books_title=0x7f0b0039;
-        public static final int pref_manage_courses=0x7f0b003b;
-        public static final int pref_manage_courses_summary=0x7f0b003d;
-        public static final int pref_manage_courses_title=0x7f0b003c;
+        public static final int pref_appearance_screen_title=0x7f0b0030;
+        public static final int pref_appearance_show_time_summary=0x7f0b0035;
+        public static final int pref_appearance_show_time_title=0x7f0b0034;
+        public static final int pref_contact_title=0x7f0b005b;
+        public static final int pref_email_chooser_title=0x7f0b005c;
+        public static final int pref_manage_books=0x7f0b0039;
+        public static final int pref_manage_books_summary=0x7f0b003b;
+        public static final int pref_manage_books_title=0x7f0b003a;
+        public static final int pref_manage_courses=0x7f0b003c;
+        public static final int pref_manage_courses_summary=0x7f0b003e;
+        public static final int pref_manage_courses_title=0x7f0b003d;
         /**  Manage 
          */
-        public static final int pref_manage_screen_summary=0x7f0b0037;
-        public static final int pref_manage_teachers=0x7f0b003e;
-        public static final int pref_manage_teachers_summary=0x7f0b0040;
-        public static final int pref_manage_teachers_title=0x7f0b003f;
+        public static final int pref_manage_screen_summary=0x7f0b0038;
+        public static final int pref_manage_teachers=0x7f0b003f;
+        public static final int pref_manage_teachers_summary=0x7f0b0041;
+        public static final int pref_manage_teachers_title=0x7f0b0040;
         /**           Preferences          
          */
-        public static final int pref_manage_title=0x7f0b002d;
-        public static final int pref_unknown_version=0x7f0b0058;
-        public static final int pref_visit_title=0x7f0b005d;
-        public static final int preferences=0x7f0b002e;
+        public static final int pref_manage_title=0x7f0b002e;
+        public static final int pref_unknown_version=0x7f0b0059;
+        public static final int pref_visit_title=0x7f0b005e;
+        public static final int preferences=0x7f0b002f;
         public static final int room=0x7f0b000d;
         public static final int save=0x7f0b0004;
-        public static final int show_all_assignments=0x7f0b0066;
+        public static final int show_all_assignments=0x7f0b0067;
         /**  Teachers 
          */
-        public static final int teacher=0x7f0b004b;
-        public static final int teacher_add=0x7f0b006f;
-        public static final int teacher_context_menu_delete=0x7f0b004d;
-        public static final int teacher_delete=0x7f0b0071;
-        public static final int teacher_edit=0x7f0b0070;
-        public static final int teacher_edit_add_teacher=0x7f0b0029;
-        public static final int teacher_edit_edit_teacher=0x7f0b002a;
-        public static final int teacher_edit_room=0x7f0b004f;
-        public static final int teacher_email=0x7f0b0050;
-        public static final int teacher_phone=0x7f0b0051;
-        public static final int teacher_subject=0x7f0b004e;
-        public static final int teacher_view_no_phone=0x7f0b0054;
-        public static final int teacher_view_room=0x7f0b002c;
+        public static final int teacher=0x7f0b004c;
+        public static final int teacher_add=0x7f0b0070;
+        public static final int teacher_context_menu_delete=0x7f0b004e;
+        public static final int teacher_delete=0x7f0b0072;
+        public static final int teacher_edit=0x7f0b0071;
+        public static final int teacher_edit_add_teacher=0x7f0b002a;
+        public static final int teacher_edit_edit_teacher=0x7f0b002b;
+        public static final int teacher_edit_room=0x7f0b0050;
+        public static final int teacher_email=0x7f0b0051;
+        public static final int teacher_phone=0x7f0b0052;
+        public static final int teacher_subject=0x7f0b004f;
+        public static final int teacher_view_no_phone=0x7f0b0055;
+        public static final int teacher_view_room=0x7f0b002d;
         /**           Teachers          
          */
-        public static final int teachers_title=0x7f0b0028;
+        public static final int teachers_title=0x7f0b0029;
         /**           Shared         
          */
         public static final int title=0x7f0b0002;
-        public static final int version=0x7f0b0057;
-        public static final int website=0x7f0b005c;
+        public static final int version=0x7f0b0058;
+        public static final int website=0x7f0b005d;
     }
     public static final class style {
         public static final int TextAppearance_TabPageIndicator=0x7f0a0007;

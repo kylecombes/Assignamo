@@ -1,9 +1,9 @@
-package com.awesomeapplets.assignamo.database;
+package com.awesomeapplets.assignamo.utils;
 
 import java.text.SimpleDateFormat;
 import java.util.Calendar;
 
-public class DateAdapter {
+public class DateUtils {
 	
 	/**
 	 * Format a Calendar object as a string.

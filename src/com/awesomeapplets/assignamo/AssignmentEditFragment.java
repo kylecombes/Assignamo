@@ -2,11 +2,11 @@ package com.awesomeapplets.assignamo;
 
 import java.util.Calendar;
 
-import com.awesomeapplets.assignamo.database.DateAdapter;
 import com.awesomeapplets.assignamo.database.DbAdapter;
-import com.awesomeapplets.assignamo.database.DbUtils;
 import com.awesomeapplets.assignamo.database.Values;
 import com.awesomeapplets.assignamo.preferences.CourseEditFragment;
+import com.awesomeapplets.assignamo.utils.DateUtils;
+import com.awesomeapplets.assignamo.utils.DbUtils;
 
 import android.app.AlertDialog;
 import android.app.DatePickerDialog;
@@ -169,7 +169,7 @@ public class AssignmentEditFragment extends FragmentActivity {
 				pointsField.setText("" + points);
 			
 			long time = assignmentData.getLong(assignmentData.getColumnIndexOrThrow(Values.ASSIGNMENT_KEY_DUE_DATE));
-			time = DateAdapter.convertMinutesToMills(time);
+			time = DateUtils.convertMinutesToMills(time);
 			calendar.setTimeInMillis(time);
 		}
 	}
@@ -212,13 +212,13 @@ public class AssignmentEditFragment extends FragmentActivity {
 			addAssignment(titleField.getText().toString(),
 					(short)courseSpinner.getSelectedItemPosition(),
 					descriptionField.getText().toString(),
-					DateAdapter.convertMillsToMinutes(calendar.getTimeInMillis()),
+					DateUtils.convertMillsToMinutes(calendar.getTimeInMillis()),
 					points);
 		else
 			updateAssignment(titleField.getText().toString(),
 					(short)courseSpinner.getSelectedItemPosition(),
 					descriptionField.getText().toString(),
-					DateAdapter.convertMillsToMinutes(calendar.getTimeInMillis()),
+					DateUtils.convertMillsToMinutes(calendar.getTimeInMillis()),
 					points, rowId);
 		
 	}
@@ -262,11 +262,11 @@ public class AssignmentEditFragment extends FragmentActivity {
 	
 	
 	private void updateDateButtonText() {
-		dueDateButton.setText(DateAdapter.formatAsString(calendar, DATE_FORMAT));
+		dueDateButton.setText(DateUtils.formatAsString(calendar, DATE_FORMAT));
 	}
 	
 	private void updateTimeButtonText() {
-		timeDueButton.setText(DateAdapter.formatAsString(calendar, TIME_FORMAT));
+		timeDueButton.setText(DateUtils.formatAsString(calendar, TIME_FORMAT));
 	}
 	
     private long addAssignment(String title, short course, String description, long dueDate, long points) {

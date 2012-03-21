@@ -4,8 +4,8 @@ import java.util.Calendar;
 
 import com.awesomeapplets.assignamo.R;
 import com.awesomeapplets.assignamo.database.DbAdapter;
-import com.awesomeapplets.assignamo.database.DbUtils;
 import com.awesomeapplets.assignamo.database.Values;
+import com.awesomeapplets.assignamo.utils.DbUtils;
 
 import android.app.AlertDialog;
 import android.app.DatePickerDialog;
