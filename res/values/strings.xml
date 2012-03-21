@@ -14,7 +14,7 @@
     <string name="description">Description</string>
     <string name="no_description">No description</string>
     <string name="notes">Notes</string>
-    <string name="no_notes">No notes.</string>
+    <string name="no_notes">No notes</string>
     <string name="room">Room</string>
     
     <string name="course">Course</string>
@@ -24,6 +24,7 @@
     <string name="no_assignments">No assignments</string>
     <string name="add_assignment_instructions">Press Menu → Add Assignment to add a new assignment.</string>
     <string name="assignment_no_points">No points</string>
+    <string name="assignment_point">point</string>
     <string name="assignment_points">points</string>
     <string name="assignment_add_points_out_of_range_title">Points value too big</string>
     <string name="assignment_add_points_out_of_range_message">The point value for this assignment is too large. It will be saved as 9,223,372,036,854,775,807.</string>
@@ -54,7 +55,7 @@
     <string name="courses_title">Courses</string>
     <string name="no_courses">No courses</string>
     <string name="add_course_instructions">Press Menu → Add Course to add a new course.</string>
-    <string name="course_view_no_room">No room entered.</string>
+    <string name="course_view_no_room">No room entered </string>
     
     <!--          Teachers          -->
     <string name="teachers_title">Teachers</string>
