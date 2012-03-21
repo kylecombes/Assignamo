@@ -24,6 +24,8 @@ Add ability to call/email teacher direct from app.
 Remove/archive assignments when deleting a course.
 Default to course being viewed when adding an assignment.
 Confirmation of delete.
+Display due date when listing assignments!!
+Visual indicator signifying completed assignments when showing completed assignments.
 
 Ideas
 --------------

@@ -68,6 +68,7 @@
             android:title="@string/pref_visit_title"
             android:summary="@string/website" />
         <Preference
-            android:key="pref_app_version_key" />
+            android:key="pref_app_version_key"
+            android:title="@string/version" />
     </PreferenceScreen>
 </PreferenceScreen>

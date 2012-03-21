@@ -56,10 +56,10 @@ public class Preferences extends PreferenceActivity {
 		} catch (NameNotFoundException e) {}
 		String versionTitle;
 		if (version.length() > 0)
-			versionTitle = getString(R.string.version) + " " + version;
+			versionTitle = "" + version;
 		else
 			versionTitle = getString(R.string.pref_unknown_version);
-		aboutPref.setTitle(versionTitle);
+		aboutPref.setSummary(versionTitle);
 	}
 	
 }
