@@ -99,7 +99,7 @@ public class BookListActivity extends ListActivity {
     public boolean onOptionsItemSelected(MenuItem item) {
     	switch (item.getItemId()) {
 		case R.id.book_menu_add:
-			Intent i = new Intent(this, BookEditFragment.class);
+			Intent i = new Intent(this, BookEditActivity.class);
 			startActivity(i);
 			return true;
 		}
@@ -123,7 +123,7 @@ public class BookListActivity extends ListActivity {
 			fillData();
 			return true;
 		case R.id.book_context_menu_edit:
-			Intent i = new Intent(this, BookEditFragment.class);
+			Intent i = new Intent(this, BookEditActivity.class);
 			i.putExtra(Values.KEY_ROWID, info.id);
 			startActivity(i);
 			return true;

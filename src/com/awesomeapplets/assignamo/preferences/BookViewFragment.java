@@ -25,7 +25,7 @@ public class BookViewFragment extends ViewFragment {
 	
 	public void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
-		dbAdapter = new DbAdapter(getBaseContext(), Values.DATABASE_NAME, Values.DATABASE_VERSION,
+		dbAdapter = new DbAdapter(context, Values.DATABASE_NAME, Values.DATABASE_VERSION,
 				Values.BOOK_TABLE, Values.DATABASE_CREATE, Values.KEY_ROWID);
 		
 		setContentView(R.layout.book_view_phone);
@@ -43,17 +43,17 @@ public class BookViewFragment extends ViewFragment {
 	}
 	
 	@Override
-	public void onPause() {
-		super.onPause();
-		dbAdapter.close();
-	}
-	
-	@Override
 	public void onResume() {
 		super.onResume();
 		dbAdapter.open();
 		setRowIdFromIntent();
 		populateFields();
+	}
+	
+	@Override
+	public void onPause() {
+		super.onPause();
+		dbAdapter.close();
 	}
 	
 	@Override
@@ -67,8 +67,7 @@ public class BookViewFragment extends ViewFragment {
 	public boolean onOptionsItemSelected(MenuItem item) {
 		switch (item.getItemId()) {
 		case R.id.view_edit:
-			// TODO Edit the activity
-			Intent i = new Intent(getApplicationContext(), BookEditFragment.class);
+			Intent i = new Intent(context, BookEditActivity.class);
 			i.putExtra(Values.KEY_ROWID, rowId);
 			startActivity(i);
 			break;

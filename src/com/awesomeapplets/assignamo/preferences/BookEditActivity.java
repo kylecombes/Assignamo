@@ -4,10 +4,10 @@ import com.awesomeapplets.assignamo.R;
 import com.awesomeapplets.assignamo.database.DbAdapter;
 import com.awesomeapplets.assignamo.database.Values;
 
+import android.app.Activity;
 import android.content.ContentValues;
 import android.database.Cursor;
 import android.os.Bundle;
-import android.support.v4.app.FragmentActivity;
 import android.view.View;
 import android.widget.AdapterView;
 import android.widget.AdapterView.OnItemSelectedListener;
@@ -18,7 +18,7 @@ import android.widget.TableLayout;
 import android.widget.TextView;
 import android.widget.Toast;
 
-public class BookEditFragment extends FragmentActivity {
+public class BookEditActivity extends Activity {
 	
 	private Long rowId;
 	private DbAdapter bookDbAdapter;
@@ -53,7 +53,7 @@ public class BookEditFragment extends FragmentActivity {
 	
 	public void onResume() {
 		super.onResume();
-		bookDbAdapter = new DbAdapter(getBaseContext(),
+		bookDbAdapter = new DbAdapter(this,
 				Values.DATABASE_NAME,
 				Values.DATABASE_VERSION,
 				Values.BOOK_TABLE,
@@ -129,7 +129,7 @@ public class BookEditFragment extends FragmentActivity {
 	
 	private void populateFields() {
 		if (rowId != null) {
-			DbAdapter db = new DbAdapter(getApplicationContext(),
+			DbAdapter db = new DbAdapter(this,
 					Values.DATABASE_NAME,
 					Values.DATABASE_VERSION,
 					Values.BOOK_TABLE,
@@ -151,7 +151,7 @@ public class BookEditFragment extends FragmentActivity {
 		
 		// Parse ISBN
 		if (ISBNField.length() != 10 && ISBNField.length() != 13) {
-			Toast.makeText(getApplicationContext(), R.string.add_book_invalid_ISBN, Toast.LENGTH_SHORT).show();
+			Toast.makeText(this, R.string.add_book_invalid_ISBN, Toast.LENGTH_SHORT).show();
 			return false;
 		}
 		if (rowId == null)

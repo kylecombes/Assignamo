@@ -7,14 +7,15 @@ import com.awesomeapplets.assignamo.database.DbAdapter;
 import com.awesomeapplets.assignamo.database.Values;
 import com.awesomeapplets.assignamo.utils.DbUtils;
 
+import android.app.Activity;
 import android.app.AlertDialog;
 import android.app.DatePickerDialog;
 import android.content.ContentValues;
+import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
 import android.database.Cursor;
 import android.os.Bundle;
-import android.support.v4.app.FragmentActivity;
 import android.support.v4.widget.SimpleCursorAdapter;
 import android.view.View;
 import android.widget.Button;
@@ -22,12 +23,13 @@ import android.widget.DatePicker;
 import android.widget.Spinner;
 import android.widget.TextView;
 
-public class CourseEditFragment extends FragmentActivity {
+public class CourseEditActivity extends Activity {
 	
 	private Cursor courseCursor;
 	private Long rowId;
 	private DbAdapter dbAdapter;
 	private Calendar calendar;
+	private Context context;
 	static final String DATE_FORMAT_DISPLAY = "yyyy-MM-dd";
 	static final String DATE_FORMAT_SAVE = "MM/dd/yyyy";
 	static final String TIME_FORMAT_DISPLAY = "kk:mm";
@@ -46,7 +48,8 @@ public class CourseEditFragment extends FragmentActivity {
 		
 	public void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
-		dbAdapter = new DbAdapter(getBaseContext(), Values.DATABASE_NAME, Values.DATABASE_VERSION,
+		context = getBaseContext();
+		dbAdapter = new DbAdapter(context, Values.DATABASE_NAME, Values.DATABASE_VERSION,
 				Values.COURSE_TABLE, Values.DATABASE_CREATE, Values.KEY_ROWID);
 		calendar = Calendar.getInstance();
 
@@ -59,7 +62,7 @@ public class CourseEditFragment extends FragmentActivity {
 				@Override
 				public void onClick(DialogInterface dialog, int which) {
 					// TODO Auto-generated method stub
-					Intent i = new Intent(getApplicationContext(), TeacherEditActivity.class);
+					Intent i = new Intent(context, TeacherEditActivity.class);
 					startActivity(i);
 				}
 			});
@@ -75,6 +78,8 @@ public class CourseEditFragment extends FragmentActivity {
 	
 	public void onResume() {
 		super.onResume();
+		if (context == null)
+			context = getBaseContext();
 		dbAdapter.open();
 		setRowIdFromIntent();
 		populateFields();
@@ -117,7 +122,7 @@ public class CourseEditFragment extends FragmentActivity {
 	
 	private void populateFields() {
 
-		courseCursor = DbUtils.getTeachers(getApplicationContext());
+		courseCursor = DbUtils.getTeachers(context);
 		startManagingCursor(courseCursor);
 		
 		// create an array to specify which fields we want to display
@@ -181,7 +186,7 @@ public class CourseEditFragment extends FragmentActivity {
 	}
 	
 	private boolean teacherExists() {
-		return DbUtils.getTeachersAsArray(getApplicationContext()).length > 0;
+		return DbUtils.getTeachersAsArray(context).length > 0;
 	}
 	
 	private DatePickerDialog showDatePicker() {

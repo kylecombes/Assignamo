@@ -23,7 +23,7 @@ public class TeacherViewFragment extends ViewFragment {
 	
 	public void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
-		dbAdapter = new DbAdapter(getBaseContext(), Values.DATABASE_NAME, Values.DATABASE_VERSION, Values.TEACHER_TABLE, Values.DATABASE_CREATE, Values.KEY_ROWID);
+		dbAdapter = new DbAdapter(context, Values.DATABASE_NAME, Values.DATABASE_VERSION, Values.TEACHER_TABLE, Values.DATABASE_CREATE, Values.KEY_ROWID);
 		
 		setContentView(R.layout.teacher_view_phone);
 		nameLabel = (TextView)findViewById(R.id.teacher_view_name);
@@ -56,7 +56,7 @@ public class TeacherViewFragment extends ViewFragment {
 	public boolean onOptionsItemSelected(MenuItem item) {
 		switch (item.getItemId()) {
 		case R.id.view_edit:
-			Intent i = new Intent(getApplicationContext(), TeacherEditActivity.class);
+			Intent i = new Intent(context, TeacherEditActivity.class);
 			i.putExtra(Values.KEY_ROWID, rowId);
 			startActivity(i);
 			break;

@@ -9,6 +9,7 @@ import com.awesomeapplets.assignamo.database.Values;
 import com.awesomeapplets.assignamo.utils.DateUtils;
 import com.awesomeapplets.assignamo.utils.DbUtils;
 
+import android.content.Context;
 import android.graphics.Typeface;
 import android.os.Bundle;
 import android.support.v4.app.FragmentActivity;
@@ -23,8 +24,22 @@ public abstract class ViewFragment extends FragmentActivity {
 	
 	protected long rowId;
 	protected DbAdapter dbAdapter;
+	protected Context context;
 	
 	protected abstract void populateFields();
+	
+	@Override
+	public void onCreate(Bundle savedInstanceState) {
+		super.onCreate(savedInstanceState);
+		context = getBaseContext();
+	}
+	
+	@Override
+	public void onResume() {
+		super.onResume();
+		if (context == null)
+			context = getBaseContext();
+	}
 	
 	@Override
 	public void onSaveInstanceState(Bundle outState) {

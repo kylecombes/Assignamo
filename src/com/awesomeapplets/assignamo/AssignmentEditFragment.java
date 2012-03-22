@@ -4,10 +4,11 @@ import java.util.Calendar;
 
 import com.awesomeapplets.assignamo.database.DbAdapter;
 import com.awesomeapplets.assignamo.database.Values;
-import com.awesomeapplets.assignamo.preferences.CourseEditFragment;
+import com.awesomeapplets.assignamo.preferences.CourseEditActivity;
 import com.awesomeapplets.assignamo.utils.DateUtils;
 import com.awesomeapplets.assignamo.utils.DbUtils;
 
+import android.app.Activity;
 import android.app.AlertDialog;
 import android.app.DatePickerDialog;
 import android.app.Dialog;
@@ -17,7 +18,6 @@ import android.content.DialogInterface;
 import android.content.Intent;
 import android.database.Cursor;
 import android.os.Bundle;
-import android.support.v4.app.FragmentActivity;
 import android.support.v4.widget.SimpleCursorAdapter;
 import android.view.View;
 import android.view.View.OnClickListener;
@@ -28,7 +28,7 @@ import android.widget.TextView;
 import android.widget.TimePicker;
 import android.widget.Toast;
 
-public class AssignmentEditFragment extends FragmentActivity {
+public class AssignmentEditFragment extends Activity {
 	
 	private DbAdapter dbAdapter;
 	private Calendar calendar;
@@ -51,7 +51,7 @@ public class AssignmentEditFragment extends FragmentActivity {
 		
 	public void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
-		dbAdapter = new DbAdapter(getBaseContext(), Values.DATABASE_NAME, Values.DATABASE_VERSION,
+		dbAdapter = new DbAdapter(this, Values.DATABASE_NAME, Values.DATABASE_VERSION,
 				Values.ASSIGNMENT_TABLE, Values.DATABASE_CREATE, Values.KEY_ROWID);
 		calendar = Calendar.getInstance();
 		
@@ -63,7 +63,7 @@ public class AssignmentEditFragment extends FragmentActivity {
 				
 				@Override
 				public void onClick(DialogInterface dialog, int which) {
-					Intent i = new Intent(getApplicationContext(), CourseEditFragment.class);
+					Intent i = new Intent(getBaseContext(), CourseEditActivity.class);
 					startActivity(i);
 				}
 			});
@@ -144,7 +144,7 @@ public class AssignmentEditFragment extends FragmentActivity {
 	
 	private void populateFields() {
 
-		Cursor courseCursor = DbUtils.getCoursesAsCursor(getApplicationContext());
+		Cursor courseCursor = DbUtils.getCoursesAsCursor(this);
 		
 		// create an array to specify which fields we want to display
 		String[] from = new String[]{Values.KEY_NAME};
@@ -193,7 +193,7 @@ public class AssignmentEditFragment extends FragmentActivity {
 	}
 	
 	private boolean courseExists() {
-		return DbUtils.getCourseCount(getApplicationContext()) > 0;
+		return DbUtils.getCourseCount(this) > 0;
 	}
 	
 	private void saveData() {

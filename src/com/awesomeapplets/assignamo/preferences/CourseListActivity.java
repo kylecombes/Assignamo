@@ -123,7 +123,7 @@ public class CourseListActivity extends ListActivity {
     public boolean onOptionsItemSelected(MenuItem item) {
     	switch (item.getItemId()) {
 		case R.id.course_menu_add:
-			Intent i = new Intent(this, CourseEditFragment.class);
+			Intent i = new Intent(this, CourseEditActivity.class);
 			startActivity(i);
     		return true;
 		}
@@ -144,7 +144,7 @@ public class CourseListActivity extends ListActivity {
 			fillData();
 			return true;
     	case R.id.course_context_menu_edit:
-    		Intent i = new Intent(this, CourseEditFragment.class);
+    		Intent i = new Intent(this, CourseEditActivity.class);
     		i.putExtra(Values.KEY_ROWID, info.id);
     		startActivity(i);
     		return true;

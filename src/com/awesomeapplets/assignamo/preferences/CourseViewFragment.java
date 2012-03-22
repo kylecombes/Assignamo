@@ -62,7 +62,7 @@ public class CourseViewFragment extends ViewFragment {
 	public boolean onOptionsItemSelected(MenuItem item) {
 		switch (item.getItemId()) {
 		case R.id.view_edit:
-			Intent i = new Intent(getApplicationContext(), CourseEditFragment.class);
+			Intent i = new Intent(getApplicationContext(), CourseEditActivity.class);
 			i.putExtra(Values.KEY_ROWID, rowId);
 			startActivity(i);
 			break;

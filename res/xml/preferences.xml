@@ -29,7 +29,7 @@
             android:title="@string/pref_manage_books_title"
             android:summary="@string/pref_manage_books_summary">
             <intent
-                android:action="anroid.intent.action.VIEW"
+                android:action="android.intent.action.VIEW"
                 android:targetPackage="com.awesomeapplets.assignamo"
                 android:targetClass="com.awesomeapplets.assignamo.preferences.BookListActivity"/>
         </Preference>

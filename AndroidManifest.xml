@@ -26,9 +26,9 @@
         <activity
             android:name=".AssignmentEditFragment"  />
         <activity
-            android:name=".preferences.BookEditFragment" />
+            android:name=".preferences.BookEditActivity" />
         <activity
-            android:name=".preferences.BookViewFragment"
+            android:name=".preferences.BookViewActivity"
 			android:theme="@style/Theme.PageIndicatorNoTitle" />
         <activity
             android:name=".preferences.BookListActivity"
@@ -37,7 +37,7 @@
             android:name=".preferences.CourseListActivity"
             android:label="@string/pref_manage_courses" />
         <activity
-            android:name=".preferences.CourseEditFragment" />
+            android:name=".preferences.CourseEditActivity" />
         <activity
             android:name=".preferences.CourseViewFragment"
             android:theme="@style/Theme.PageIndicatorNoTitle" />

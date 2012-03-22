@@ -4,18 +4,20 @@ import com.awesomeapplets.assignamo.R;
 import com.awesomeapplets.assignamo.database.DbAdapter;
 import com.awesomeapplets.assignamo.database.Values;
 
+import android.app.Activity;
 import android.content.ContentValues;
+import android.content.Context;
 import android.database.Cursor;
 import android.os.Bundle;
-import android.support.v4.app.FragmentActivity;
 import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
 
-public class TeacherEditActivity extends FragmentActivity {
+public class TeacherEditActivity extends Activity {
 	
 	private Long rowId;
 	private DbAdapter dbAdapter;
+	private Context context;
 	static final String DATE_FORMAT_DISPLAY = "yyyy-MM-dd";
 	static final String DATE_FORMAT_SAVE = "MM/dd/yyyy";
 	static final String TIME_FORMAT_DISPLAY = "kk:mm";
@@ -34,7 +36,8 @@ public class TeacherEditActivity extends FragmentActivity {
 		
 	public void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
-		dbAdapter = new DbAdapter(getBaseContext(), Values.DATABASE_NAME, Values.DATABASE_VERSION, Values.TEACHER_TABLE, Values.DATABASE_CREATE, Values.KEY_ROWID);
+		context = getBaseContext();
+		dbAdapter = new DbAdapter(context, Values.DATABASE_NAME, Values.DATABASE_VERSION, Values.TEACHER_TABLE, Values.DATABASE_CREATE, Values.KEY_ROWID);
 		
 		setContentView(R.layout.teacher_edit);
 		
@@ -46,6 +49,8 @@ public class TeacherEditActivity extends FragmentActivity {
 	
 	public void onResume() {
 		super.onResume();
+		if (context == null)
+			context = getBaseContext();
 		dbAdapter.open();
 		loadDataFromIntent();
 		setTitle();
@@ -116,6 +121,13 @@ public class TeacherEditActivity extends FragmentActivity {
 			notesField.setText(data.getString(data.getColumnIndexOrThrow(Values.KEY_NOTES)));
 			//TODO Populate room field
 			int roomNum = data.getShort(data.getColumnIndexOrThrow(Values.KEY_ROOM));
+			switch (roomNum) {
+			case -1: // There is no room entered
+				break;
+			default:
+				roomNumberField.setText("" + roomNum);
+			}
+			
 			emailField.setText(data.getString(data.getColumnIndexOrThrow(Values.TEACHER_KEY_EMAIL)));
 			phoneNumberField.setText("" + data.getLong(data.getColumnIndexOrThrow(Values.TEACHER_KEY_PHONE)));
 		}
