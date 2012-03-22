@@ -63,6 +63,7 @@
     <string name="teacher_edit_edit_teacher">Edit Teacher</string>
     <string name="no_teachers">No teachers</string>
     <string name="teacher_view_room">Room</string>
+    <string name="teacher_view_no_room">No room</string>
     
     <!--          Preferences          -->
     <string name="pref_manage_title">Manage</string>

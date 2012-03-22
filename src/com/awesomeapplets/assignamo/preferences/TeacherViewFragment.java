@@ -79,6 +79,9 @@ public class TeacherViewFragment extends ViewFragment {
 			short roomNum = Short.parseShort(data.getString(data.getColumnIndexOrThrow(Values.KEY_ROOM)));
 			if (roomNum >= 0)
 				roomLabel.setText(getString(R.string.teacher_view_room) + ": " + roomNum);
+			else if (roomNum == -1)
+				roomLabel.setText(getItalicizedString(getString(R.string.teacher_view_no_room)));
+			//TODO Resolve room number
 		} catch (NumberFormatException e) {}
 		emailLabel.setText(data.getString(data.getColumnIndexOrThrow(Values.TEACHER_KEY_EMAIL)));
 		phoneLabel.setText(getFormattedPhoneNumber(data.getLong(data.getColumnIndexOrThrow(Values.TEACHER_KEY_PHONE))),

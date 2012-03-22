@@ -12,6 +12,7 @@ Finish preferences:
 	Come up with better labels
 	Change color of tabs
 	Custom date/time format?
+	Change background color
 Better teacher view
 * Date not saving right on assignments
 * Time displaying in wrong format on Assignment Edit button
