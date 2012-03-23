@@ -85,6 +85,7 @@ public class MainActivity extends FragmentActivity {
 			@Override
 			public void onPageScrollStateChanged(int arg0) {}
 		});
+        indicator.setCurrentItem(selectedPos);
         pager.setCurrentItem(selectedPos);
     }
     

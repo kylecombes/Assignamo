@@ -27,6 +27,7 @@ Default to course being viewed when adding an assignment.
 Confirmation of delete.
 Display due date when listing assignments!!
 Visual indicator signifying completed assignments when showing completed assignments.
+Get New Assignment due date/time from next class time.
 
 Ideas
 --------------

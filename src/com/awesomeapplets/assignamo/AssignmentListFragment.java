@@ -8,11 +8,13 @@ import android.content.BroadcastReceiver;
 import android.content.Context;
 import android.content.Intent;
 import android.content.IntentFilter;
+import android.content.SharedPreferences;
 import android.database.Cursor;
 import android.os.Bundle;
 import android.preference.PreferenceManager;
 import android.support.v4.app.ListFragment;
 import android.support.v4.content.LocalBroadcastManager;
+import android.util.Log;
 import android.view.ContextMenu;
 import android.view.ContextMenu.ContextMenuInfo;
 import android.view.LayoutInflater;
@@ -28,16 +30,19 @@ import android.widget.TextView;
 public class AssignmentListFragment extends ListFragment {
 
 	public static DbAdapter assignmentDb;
+	private Context context;
 	
 	// The course we are displaying assignments for. If all, -1.
 	short course = -1;
 	
+	// Needed for recreating the fragment
+	public AssignmentListFragment() {}
 	
 	/**
 	 * Create an assignment list that shows all assignments.
 	 */
-	public AssignmentListFragment() {
-		
+	public AssignmentListFragment(Context context) {
+		this.context = context;
 	}
 
 	/**
@@ -46,7 +51,8 @@ public class AssignmentListFragment extends ListFragment {
 	 * @param course
 	 *            the course to display assignments of
 	 */
-	public AssignmentListFragment(short course) {
+	public AssignmentListFragment(Context context, short course) {
+		this.context = context;
 		this.course = course;
 	}
 	
@@ -62,6 +68,7 @@ public class AssignmentListFragment extends ListFragment {
 		if (savedInstanceState != null) {
 			course = savedInstanceState.getShort(Values.ASSIGNMENT_KEY_COURSE);
 		}
+		setRetainInstance(true);
 	}
 
 	/** Called when the activity becomes visible. */
@@ -79,7 +86,7 @@ public class AssignmentListFragment extends ListFragment {
 		IntentFilter filter = new IntentFilter();
 		filter.addAction(Values.INTENT_REFRESH_ACTION);
 		
-		LocalBroadcastManager.getInstance(getActivity())
+		LocalBroadcastManager.getInstance(context)
 		.registerReceiver(new BroadcastReceiver() {
 			
 			@Override
@@ -109,7 +116,7 @@ public class AssignmentListFragment extends ListFragment {
 
 	public void openDatabase() {
 		if (assignmentDb == null)
-			assignmentDb = new DbAdapter(getActivity(),
+			assignmentDb = new DbAdapter(context,
 					Values.DATABASE_NAME, Values.DATABASE_VERSION,
 					Values.ASSIGNMENT_TABLE, new String[0], Values.KEY_ROWID);
 		assignmentDb.open();
@@ -125,25 +132,25 @@ public class AssignmentListFragment extends ListFragment {
 		i.setAction(Values.INTENT_REFRESH_ACTION);
 		i.putExtra(Values.INTENT_REFRESH_COURSE_KEY, course);
 		
-		LocalBroadcastManager.getInstance(getActivity()).sendBroadcast(i);
+		LocalBroadcastManager.getInstance(context).sendBroadcast(i);
 	}
 	
 	public void fillData() {
+		long startTime = System.currentTimeMillis();
 		Cursor assignmentsCursor;
-		boolean showingCompleted = PreferenceManager.getDefaultSharedPreferences(getActivity()).getBoolean(Values.ASSIGNMENT_KEY_SHOWING_COMPLETED, false);
-		
+		SharedPreferences sharedPrefs = PreferenceManager.getDefaultSharedPreferences(context);
+		boolean showingCompleted = sharedPrefs.getBoolean(Values.ASSIGNMENT_KEY_SHOWING_COMPLETED, false);
 		if (course < 0) // Showing assignments from all courses
 			if (showingCompleted)
-				assignmentsCursor = DbUtils.fetchAllAssignments(getActivity(), Values.ASSIGNMENT_LIST_FETCH, null, true);
+				assignmentsCursor = DbUtils.fetchAllAssignments(context, Values.ASSIGNMENT_LIST_FETCH, null, true);
 			else
-				assignmentsCursor = DbUtils.fetchIncompleteAssignments(getActivity(), Values.ASSIGNMENT_LIST_FETCH, null, true);
+				assignmentsCursor = DbUtils.fetchIncompleteAssignments(context, Values.ASSIGNMENT_LIST_FETCH, null, true);
 		else // Showing assignments from specified course
 			if (showingCompleted)
-				assignmentsCursor = DbUtils.fetchAllAssignments(getActivity(), Values.ASSIGNMENT_LIST_FETCH, course, true);
+				assignmentsCursor = DbUtils.fetchAllAssignments(context, Values.ASSIGNMENT_LIST_FETCH, course, true);
 			else
-				assignmentsCursor = DbUtils.fetchIncompleteAssignments(getActivity(), Values.ASSIGNMENT_LIST_FETCH, course, true);
+				assignmentsCursor = DbUtils.fetchIncompleteAssignments(context, Values.ASSIGNMENT_LIST_FETCH, course, true);
 		getActivity().startManagingCursor(assignmentsCursor);
-
 		// Create and array to specify the fields we want
 		String[] from = new String[] { Values.KEY_TITLE, Values.ASSIGNMENT_KEY_COURSE };
 
@@ -151,7 +158,7 @@ public class AssignmentListFragment extends ListFragment {
 		int[] to = new int[] { R.id.assignment_list_title, R.id.assignment_list_course };
 
 		// Now create a simple cursor adapter and set it to display
-		SimpleCursorAdapter reminders = new SimpleCursorAdapter(getActivity(),
+		SimpleCursorAdapter reminders = new SimpleCursorAdapter(context,
 				R.layout.assignment_list_item, assignmentsCursor, from, to);
 		reminders.setViewBinder(new ViewBinder() {
 
@@ -159,7 +166,7 @@ public class AssignmentListFragment extends ListFragment {
 			public boolean setViewValue(View view, Cursor cursor,
 					int columnIndex) {
 				if (columnIndex == 2) {
-					String[] courses = DbUtils.getCoursesAsArray(getActivity());
+					String[] courses = DbUtils.getCoursesAsArray(context);
 					short value = cursor.getShort(columnIndex);
 					TextView textView = (TextView) view;
 					textView.setText(courses[value]);
@@ -169,19 +176,20 @@ public class AssignmentListFragment extends ListFragment {
 			}
 		});
 		setListAdapter(reminders);
+		Log.d("time", "It took " + (System.currentTimeMillis() - startTime) + " milliseconds.");
 	}
 
 	@Override
 	public void onListItemClick(ListView l, View v, int position, long id) {
 		super.onListItemClick(l, v, position, id);
-		Intent i = new Intent(getActivity(), AssignmentViewFragment.class);
+		Intent i = new Intent(context, AssignmentViewFragment.class);
 		i.putExtra(Values.KEY_ROWID, id);
 		startActivity(i);
 	}
 
 	public void onCreateContextMenu(ContextMenu menu, View v, ContextMenuInfo menuInfo) {
 		AdapterContextMenuInfo info = (AdapterContextMenuInfo) menuInfo;
-		if (DbUtils.isAssignmentCompleted(getActivity(), info.id))
+		if (DbUtils.isAssignmentCompleted(context, info.id))
 			menu.add(0, 0, 0, R.string.assignment_menu_mark_as_incomplete);
 		else
 			menu.add(0, 0, 0, R.string.assignment_menu_mark_as_completed);
@@ -195,14 +203,14 @@ public class AssignmentListFragment extends ListFragment {
 		
 		switch (item.getItemId()) {
 		case 0:
-			if (DbUtils.isAssignmentCompleted(getActivity(), info.id))
-				DbUtils.setAssignmentState(getActivity(), info.id, false);
+			if (DbUtils.isAssignmentCompleted(context, info.id))
+				DbUtils.setAssignmentState(context, info.id, false);
 			else
-				DbUtils.setAssignmentState(getActivity(), info.id, true);
+				DbUtils.setAssignmentState(context, info.id, true);
 			broadcastRepaint();
 			return true;
 		case 1: // Edit the assignment
-			Intent i = new Intent(getActivity(), AssignmentEditFragment.class);
+			Intent i = new Intent(context, AssignmentEditFragment.class);
 			i.putExtra(Values.KEY_ROWID, info.id);
 			startActivity(i);
 			return true;

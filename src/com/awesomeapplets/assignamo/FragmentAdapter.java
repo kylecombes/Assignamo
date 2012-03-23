@@ -23,9 +23,9 @@ class FragmentAdapter extends FragmentPagerAdapter {
 		currentPosition = (short)position;
 		switch (position) {
 		case 0:
-			return new AssignmentListFragment();
+			return new AssignmentListFragment(context);
 		default:
-			return new AssignmentListFragment((short)(position - 1));
+			return new AssignmentListFragment(context, (short)(position - 1));
 		}
 	}
 
