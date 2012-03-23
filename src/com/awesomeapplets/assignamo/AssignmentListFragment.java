@@ -2,20 +2,20 @@ package com.awesomeapplets.assignamo;
 
 import com.awesomeapplets.assignamo.database.DbAdapter;
 import com.awesomeapplets.assignamo.database.Values;
-import com.awesomeapplets.assignamo.preferences.Preferences;
 import com.awesomeapplets.assignamo.utils.DbUtils;
 
+import android.content.BroadcastReceiver;
+import android.content.Context;
 import android.content.Intent;
-import android.content.SharedPreferences;
-import android.content.SharedPreferences.Editor;
+import android.content.IntentFilter;
 import android.database.Cursor;
 import android.os.Bundle;
 import android.preference.PreferenceManager;
 import android.support.v4.app.ListFragment;
+import android.support.v4.content.LocalBroadcastManager;
 import android.view.ContextMenu;
 import android.view.ContextMenu.ContextMenuInfo;
 import android.view.LayoutInflater;
-import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
@@ -74,6 +74,25 @@ public class AssignmentListFragment extends ListFragment {
 		super.onResume();
 		openDatabase();
 		fillData();
+		
+		// Register refresh Intent listener
+		IntentFilter filter = new IntentFilter();
+		filter.addAction(Values.INTENT_REFRESH_ACTION);
+		
+		LocalBroadcastManager.getInstance(getActivity())
+		.registerReceiver(new BroadcastReceiver() {
+			
+			@Override
+			public void onReceive(Context context, Intent intent) {
+				Bundle extras = intent.getExtras();
+				if (extras != null && extras.containsKey(Values.INTENT_REFRESH_COURSE_KEY)) {
+					// Message sent to refresh only lists displaying a certain course
+					if (course == -1 || intent.getExtras().getShort(Values.INTENT_REFRESH_COURSE_KEY) == course)
+						fillData();
+				} else // Message sent to refresh all lists
+					fillData();	
+			}
+		}, filter);
 	}
 
 	public void onPause() {
@@ -100,7 +119,15 @@ public class AssignmentListFragment extends ListFragment {
 		if (assignmentDb != null)
 			assignmentDb.close();
 	}
-
+	
+	private void broadcastRepaint() {
+		Intent i = new Intent();
+		i.setAction(Values.INTENT_REFRESH_ACTION);
+		i.putExtra(Values.INTENT_REFRESH_COURSE_KEY, course);
+		
+		LocalBroadcastManager.getInstance(getActivity()).sendBroadcast(i);
+	}
+	
 	public void fillData() {
 		Cursor assignmentsCursor;
 		boolean showingCompleted = PreferenceManager.getDefaultSharedPreferences(getActivity()).getBoolean(Values.ASSIGNMENT_KEY_SHOWING_COMPLETED, false);
@@ -152,42 +179,6 @@ public class AssignmentListFragment extends ListFragment {
 		startActivity(i);
 	}
 
-	public void onPrepareOptionsMenu(Menu menu) {
-		menu.clear();
-		menu.add(0, 0, 0, R.string.assignment_add).setIcon(android.R.drawable.ic_menu_add);
-		//menu.add(0, 1, 0, R.string.assignment_add_book).setIcon(android.R.drawable.ic_menu_add);
-		if (PreferenceManager.getDefaultSharedPreferences(getActivity()).getBoolean(Values.ASSIGNMENT_KEY_SHOWING_COMPLETED, false))
-			menu.add(0, 2, 0, R.string.show_all_assignments).setIcon(android.R.drawable.button_onoff_indicator_on);
-		else
-			menu.add(0, 2, 0, R.string.show_all_assignments).setIcon(android.R.drawable.button_onoff_indicator_off);
-		menu.add(0, 3, 0, R.string.preferences).setIcon(android.R.drawable.ic_menu_preferences);
-	}
-
-	@Override
-	public boolean onOptionsItemSelected(MenuItem item) {
-		switch (item.getItemId()) {
-		case 0:
-			Intent iA = new Intent(getActivity(), AssignmentEditFragment.class);
-			startActivity(iA);
-			return true;
-		case 2:
-			SharedPreferences prefs = PreferenceManager.getDefaultSharedPreferences(getActivity());
-			Editor prefEditor = prefs.edit();
-			if (prefs.getBoolean(Values.ASSIGNMENT_KEY_SHOWING_COMPLETED, false))
-				prefEditor.putBoolean(Values.ASSIGNMENT_KEY_SHOWING_COMPLETED, false);
-			else
-				prefEditor.putBoolean(Values.ASSIGNMENT_KEY_SHOWING_COMPLETED, true);
-			prefEditor.commit();
-			fillData();
-			return true;
-		case 3:
-			Intent iP = new Intent(getActivity(), Preferences.class);
-			startActivity(iP);
-			return true;
-		}
-		return true;
-	}
-
 	public void onCreateContextMenu(ContextMenu menu, View v, ContextMenuInfo menuInfo) {
 		AdapterContextMenuInfo info = (AdapterContextMenuInfo) menuInfo;
 		if (DbUtils.isAssignmentCompleted(getActivity(), info.id))
@@ -208,7 +199,7 @@ public class AssignmentListFragment extends ListFragment {
 				DbUtils.setAssignmentState(getActivity(), info.id, false);
 			else
 				DbUtils.setAssignmentState(getActivity(), info.id, true);
-			fillData();
+			broadcastRepaint();
 			return true;
 		case 1: // Edit the assignment
 			Intent i = new Intent(getActivity(), AssignmentEditFragment.class);
@@ -218,7 +209,7 @@ public class AssignmentListFragment extends ListFragment {
 		case 2:
 			// Delete the assignment
 			assignmentDb.delete(info.id);
-			fillData();
+			broadcastRepaint();
 			return true;
 		}
 		return super.onContextItemSelected(item);

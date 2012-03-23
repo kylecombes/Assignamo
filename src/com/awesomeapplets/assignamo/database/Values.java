@@ -8,6 +8,9 @@ public final class Values {
 	public static final short DATABASE_VERSION = 1;
 	public static final String[] DATABASE_CREATE = {Values.ASSIGNMENT_DATABASE_CREATE,
 		Values.COURSE_DATABASE_CREATE, Values.BOOK_DATABASE_CREATE, Values.TEACHER_DATABASE_CREATE };
+	public static final String INTENT_REFRESH_KEY = "refresh_id";
+	public static final String INTENT_REFRESH_COURSE_KEY = "refresh_course_id";
+	public static final String INTENT_REFRESH_ACTION = "assignamo.REFRESH";
 	
 	/*--------- Shared Variable Values ---------*/
 	public static final String KEY_ROWID = "_id";
