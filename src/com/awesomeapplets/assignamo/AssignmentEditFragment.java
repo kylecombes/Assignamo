@@ -2,12 +2,6 @@ package com.awesomeapplets.assignamo;
 
 import java.util.Calendar;
 
-import com.awesomeapplets.assignamo.database.DbAdapter;
-import com.awesomeapplets.assignamo.database.Values;
-import com.awesomeapplets.assignamo.preferences.CourseEditActivity;
-import com.awesomeapplets.assignamo.utils.DateUtils;
-import com.awesomeapplets.assignamo.utils.DbUtils;
-
 import android.app.Activity;
 import android.app.AlertDialog;
 import android.app.DatePickerDialog;
@@ -28,6 +22,12 @@ import android.widget.TextView;
 import android.widget.TimePicker;
 import android.widget.Toast;
 
+import com.awesomeapplets.assignamo.database.DbAdapter;
+import com.awesomeapplets.assignamo.database.Values;
+import com.awesomeapplets.assignamo.preferences.CourseEditActivity;
+import com.awesomeapplets.assignamo.utils.DateUtils;
+import com.awesomeapplets.assignamo.utils.DbUtils;
+
 public class AssignmentEditFragment extends Activity {
 	
 	private DbAdapter dbAdapter;
@@ -37,9 +37,9 @@ public class AssignmentEditFragment extends Activity {
 	private static final short DATE_PICKER_DIALOG = 0;
 	private static final short TIME_PICKER_DIALOG = 1;
 	private Long rowId;
+	private short selectedCourse;
 	
 	private Spinner courseSpinner;
-	protected Object selectedCourse;
 	private TextView titleField;
 	private Button dueDateButton;
 	private Button timeDueButton;
@@ -48,7 +48,8 @@ public class AssignmentEditFragment extends Activity {
 	private Button saveButton;
 	private Button cancelButton;
 	boolean newBook;
-		
+	
+	@Override
 	public void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
 		dbAdapter = new DbAdapter(this, Values.DATABASE_NAME, Values.DATABASE_VERSION,
@@ -74,7 +75,6 @@ public class AssignmentEditFragment extends Activity {
 		
 		loadDataFromIntent();
 		initializeFields();
-		populateFields();
 		initializeButtons();
 		
 		updateDateButtonText();
@@ -82,6 +82,7 @@ public class AssignmentEditFragment extends Activity {
 		titleField.requestFocus();
 	}
 	
+	@Override
 	public void onResume() {
 		super.onResume();
 		dbAdapter.open();
@@ -90,9 +91,39 @@ public class AssignmentEditFragment extends Activity {
 		populateFields();
 	}
 	
+	@Override
 	public void onPause() {
 		super.onPause();
 		dbAdapter.close();
+	}
+	
+	private static final String SELECTED_COURSE_KEY = "selected_course";
+	private static final String TITLE_KEY = "title";
+	private static final String DESCRIPTION_KEY = "desc";
+	private static final String POINTS_KEY = "pts";
+	private static final String CALENDAR_TIME_KEY = "calendar_time";
+	
+	public void onSaveInstanceState(Bundle state) {
+		state.putShort(SELECTED_COURSE_KEY, (short)courseSpinner.getSelectedItemPosition());
+		state.putString(TITLE_KEY, titleField.getText().toString());
+		state.putString(DESCRIPTION_KEY, descriptionField.getText().toString());
+		state.putShort(POINTS_KEY, Short.parseShort(pointsField.getText().toString()));
+		state.putLong(CALENDAR_TIME_KEY, calendar.getTimeInMillis());
+	}
+	
+	public void onRestoreInstanceState(Bundle oldState) {
+		if (oldState != null) {
+			try {
+				selectedCourse = oldState.getShort(SELECTED_COURSE_KEY);
+				titleField.setText(oldState.getString(TITLE_KEY));
+				descriptionField.setText(oldState.getString(DESCRIPTION_KEY));
+				calendar.setTimeInMillis(oldState.getLong(CALENDAR_TIME_KEY));
+				updateButtons();
+				pointsField.setText(oldState.getShort(POINTS_KEY) + "");
+			} catch (NullPointerException e) {
+				Toast.makeText(this, "onRestoreInstanceState error", Toast.LENGTH_LONG).show();
+			}
+		}
 	}
 	
 	private void initializeFields() {
@@ -155,7 +186,7 @@ public class AssignmentEditFragment extends Activity {
 				new SimpleCursorAdapter(this, android.R.layout.simple_spinner_item, courseCursor, from, to, 0);
 		adapter.setDropDownViewResource( android.R.layout.simple_spinner_dropdown_item );
 		courseSpinner.setAdapter(adapter);
-		
+		courseSpinner.setSelection((short)selectedCourse);
 	    
 		if (rowId != null) {
 			dbAdapter.open();
@@ -192,6 +223,10 @@ public class AssignmentEditFragment extends Activity {
 			setTitle(R.string.assignment_edit);
 	}
 	
+	/**
+	 * Check to see if there are courses in the database.
+	 * @return true if there is at least one course stored in the database.
+	 */
 	private boolean courseExists() {
 		return DbUtils.getCourseCount(this) > 0;
 	}
@@ -260,6 +295,10 @@ public class AssignmentEditFragment extends Activity {
 		}, calendar.get(Calendar.HOUR_OF_DAY), calendar.get(Calendar.MINUTE), false);
 	}
 	
+	private void updateButtons() {
+		updateDateButtonText();
+		updateTimeButtonText();
+	}
 	
 	private void updateDateButtonText() {
 		dueDateButton.setText(DateUtils.formatAsString(calendar, DATE_FORMAT));
