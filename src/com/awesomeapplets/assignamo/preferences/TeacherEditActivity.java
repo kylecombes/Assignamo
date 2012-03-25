@@ -129,7 +129,9 @@ public class TeacherEditActivity extends Activity {
 			}
 			
 			emailField.setText(data.getString(data.getColumnIndexOrThrow(Values.TEACHER_KEY_EMAIL)));
-			phoneNumberField.setText("" + data.getLong(data.getColumnIndexOrThrow(Values.TEACHER_KEY_PHONE)));
+			long phone = data.getLong(data.getColumnIndexOrThrow(Values.TEACHER_KEY_PHONE));
+			if (phone >= 0)
+				phoneNumberField.setText("" + phone);
 		}
 	}
 	
