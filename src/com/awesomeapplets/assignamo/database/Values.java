@@ -40,6 +40,7 @@ public final class Values {
 			+ ASSIGNMENT_KEY_POINTS + " int, "
 			+ ASSIGNMENT_KEY_STATUS + " int not null default " + ASSIGNMENT_STATUS_INCOMPLETE + ");";
 	public static final String ASSIGNMENT_KEY_SHOWING_COMPLETED = "showing_completed";
+	public static final String NEW_ASSIGNMENT_COURSE_KEY = "course";
 	
 	/*--------- Courses ---------*/
 	public static final String COURSE_TABLE = "courses";

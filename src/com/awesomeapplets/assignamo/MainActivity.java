@@ -120,6 +120,7 @@ public class MainActivity extends FragmentActivity {
 		switch (item.getItemId()) {
 		case 0:
 			Intent iA = new Intent(this, AssignmentEditFragment.class);
+			iA.putExtra(Values.NEW_ASSIGNMENT_COURSE_KEY, (short)(selectedPos - 1));
 			startActivity(iA);
 			return true;
 		case 2:

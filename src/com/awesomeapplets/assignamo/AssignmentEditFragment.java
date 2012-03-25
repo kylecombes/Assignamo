@@ -13,6 +13,7 @@ import android.content.Intent;
 import android.database.Cursor;
 import android.os.Bundle;
 import android.support.v4.widget.SimpleCursorAdapter;
+import android.util.Log;
 import android.view.View;
 import android.view.View.OnClickListener;
 import android.widget.Button;
@@ -47,7 +48,7 @@ public class AssignmentEditFragment extends Activity {
 	private TextView descriptionField;
 	private Button saveButton;
 	private Button cancelButton;
-	boolean newBook;
+	boolean newAssignment;
 	
 	@Override
 	public void onCreate(Bundle savedInstanceState) {
@@ -73,7 +74,6 @@ public class AssignmentEditFragment extends Activity {
 		
 		setContentView(R.layout.assignment_edit);
 		
-		loadDataFromIntent();
 		initializeFields();
 		initializeButtons();
 		
@@ -107,7 +107,15 @@ public class AssignmentEditFragment extends Activity {
 		state.putShort(SELECTED_COURSE_KEY, (short)courseSpinner.getSelectedItemPosition());
 		state.putString(TITLE_KEY, titleField.getText().toString());
 		state.putString(DESCRIPTION_KEY, descriptionField.getText().toString());
-		state.putShort(POINTS_KEY, Short.parseShort(pointsField.getText().toString()));
+		long curTime = System.currentTimeMillis();
+		short pointsEntered = -1;
+		try {
+			pointsEntered = Short.parseShort(pointsField.getText().toString());
+			Log.d("pointsEntered", "Took " + (System.currentTimeMillis() - curTime) + "ms to resolve.");
+		} catch (NumberFormatException e) {
+			Log.d("pointEntered", "Crashed. Took " + (System.currentTimeMillis() - curTime) + "ms to resolve.");
+		}
+		state.putShort(POINTS_KEY, pointsEntered);
 		state.putLong(CALENDAR_TIME_KEY, calendar.getTimeInMillis());
 	}
 	
@@ -126,6 +134,9 @@ public class AssignmentEditFragment extends Activity {
 		}
 	}
 	
+	/**
+	 * Links courseSpinner and TextViews to their UI elements.
+	 */
 	private void initializeFields() {
 		courseSpinner = (Spinner)findViewById(R.id.assignment_add_course_select);
 		titleField = (TextView)findViewById(R.id.assignment_add_title_field);
@@ -135,6 +146,9 @@ public class AssignmentEditFragment extends Activity {
 		
 	}
 	
+	/**
+	 * Links the buttons to their UI elements and sets up button listeners.
+	 */
 	private void initializeButtons() {
 		
 		dueDateButton = (Button)findViewById(R.id.assignment_add_date_due);
@@ -205,19 +219,27 @@ public class AssignmentEditFragment extends Activity {
 		}
 	}
 	
+	/**
+	 * Checks to see if this is a new assignment by checking the rowId.
+	 * It also checks to see if there is a passed course value to use.
+	 */
 	private void loadDataFromIntent() {
-		if (rowId == null) {
-			Bundle extras = getIntent().getExtras();
-			if (extras != null) {
+		Bundle extras = getIntent().getExtras();
+		if (extras != null) {
+			if (rowId == null && extras.containsKey(Values.KEY_ROWID)) {
 				rowId = extras.getLong(Values.KEY_ROWID);
-				newBook = false;
-			}
-			newBook = true;
+				newAssignment = false;
+			} else
+				newAssignment = true;
+			
+			short passedCourse = extras.getShort(Values.NEW_ASSIGNMENT_COURSE_KEY);
+			if (passedCourse >= 0)
+				selectedCourse = passedCourse;
 		}
 	}
 	
 	private void setTitle() {
-		if (newBook)
+		if (newAssignment)
 			setTitle(R.string.assignment_add);
 		else
 			setTitle(R.string.assignment_edit);

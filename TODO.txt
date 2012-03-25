@@ -13,21 +13,23 @@ Finish preferences:
 	Change color of tabs
 	Custom date/time format?
 	Change background color
+	Reorder course tabs?
 Better teacher view
 * Date not saving right on assignments
 * Time displaying in wrong format on Assignment Edit button
 * ALL tab only displaying assignments in first course after rotating
 Tab names shortened
 Fix "close() not called" and "invalid statement in fillWindow()"
-Update assignment lists in other tabs on assignment delete and mark as completed
+* Update assignment lists in other tabs on assignment delete and mark as completed
 Add support for teacher phone number extensions.
-Add ability to call/email teacher direct from app.
+Add ability to call/email teacher directly from app.
 Remove/archive assignments when deleting a course.
 Default to course being viewed when adding an assignment.
 Confirmation of delete.
 Display due date when listing assignments!!
 Visual indicator signifying completed assignments when showing completed assignments.
 Get New Assignment due date/time from next class time.
+Save entered assignment data on orientation change.
 
 Ideas
 --------------
