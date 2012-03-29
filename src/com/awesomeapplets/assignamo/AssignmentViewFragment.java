@@ -124,9 +124,16 @@ public class AssignmentViewFragment extends ViewFragment {
 			startActivity(i);
 			break;
 		case 2:
-			dbAdapter.delete(rowId);
+			deleteAssignment(rowId);
 			finish();
 		}
 		return true;
+	}
+	
+	private boolean deleteAssignment(long rowId) {
+		dbAdapter.open();
+		boolean b = dbAdapter.delete(rowId);
+		dbAdapter.close();
+		return b;
 	}
 }
