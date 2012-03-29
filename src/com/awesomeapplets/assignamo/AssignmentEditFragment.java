@@ -57,7 +57,7 @@ public class AssignmentEditFragment extends Activity {
 				Values.ASSIGNMENT_TABLE, Values.DATABASE_CREATE, Values.KEY_ROWID);
 		calendar = Calendar.getInstance();
 		
-		if (!courseExists()) {
+		if (DbUtils.getCourseCount(getApplicationContext()) == 0) {
 			AlertDialog.Builder d = new AlertDialog.Builder(this);
 			d.setTitle(R.string.assignment_edit_course_required_title);
 			d.setMessage(R.string.assignment_edit_course_required_message);
@@ -243,14 +243,6 @@ public class AssignmentEditFragment extends Activity {
 			setTitle(R.string.assignment_add);
 		else
 			setTitle(R.string.assignment_edit);
-	}
-	
-	/**
-	 * Check to see if there are courses in the database.
-	 * @return true if there is at least one course stored in the database.
-	 */
-	private boolean courseExists() {
-		return DbUtils.getCourseCount(this) > 0;
 	}
 	
 	private void saveData() {
