@@ -39,6 +39,7 @@ public class DbUtils {
 			else
 				c = adapter.fetchAllOrdered(query, Values.ASSIGNMENT_KEY_COURSE + "=" + course, Values.ASSIGNMENT_KEY_DUE_DATE);
 		
+		adapter.close();
 		if (c != null)
 			c.moveToFirst();
 		return c;
@@ -87,13 +88,23 @@ public class DbUtils {
 				Values.KEY_ROWID);
 		adapter.open();
 		
+		Cursor r;
 		if (course != null) // Fetching from all courses
-			return adapter.fetchAllWhere(query, Values.ASSIGNMENT_KEY_COURSE + "=" + course
+			r = adapter.fetchAllWhere(query, Values.ASSIGNMENT_KEY_COURSE + "=" + course
 				+ " AND " + Values.ASSIGNMENT_KEY_STATUS + "=" + 0);
 		else
-			return adapter.fetchAllWhere(query, Values.ASSIGNMENT_KEY_STATUS + "=" + 0);
+			r = adapter.fetchAllWhere(query, Values.ASSIGNMENT_KEY_STATUS + "=" + 0);
+		adapter.close();
+		return r;
 	}
-	
+
+	public static boolean deleteAssignment(Context context, long rowId) {
+		DbAdapter db = new DbAdapter(context, Values.DATABASE_NAME, Values.DATABASE_VERSION, Values.ASSIGNMENT_TABLE, Values.DATABASE_CREATE, Values.KEY_ROWID);
+		db.open();
+		boolean b = db.delete(rowId);
+		db.close();
+		return b;
+	}
 	
 	/*---------- Courses ----------*/
 	

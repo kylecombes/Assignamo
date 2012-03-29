@@ -56,6 +56,7 @@ public class DbAdapter {
 		if (db != null) {
 			try {
 				db.close();
+				db.close();
 				dbHelper.close();
 			} catch (NullPointerException e) {
 				Log.e("Close", "Error: " + e + " " + e.getMessage());
