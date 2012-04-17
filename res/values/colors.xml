@@ -1,0 +1,9 @@
+
+    <resources>
+        <color name="list_text">#000000</color>
+        <color name="background">#cdcdcd</color>
+        <color name="tab_background">#c0c0c0</color>
+        <color name="brown">#a8850d</color>
+        <color name="list_divider">#a5a5a5</color>
+        <color name="background">#f4e5b6</color>
+    </resources>

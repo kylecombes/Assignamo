@@ -1,0 +1,5 @@
+
+    <resources>
+        <dimen name="list_item_font_size">20dip</dimen>
+        <dimen name="list_item_subfont_size">15dip</dimen>
+    </resources>

@@ -261,12 +261,17 @@ or to a theme attribute in the form "<code>?[<i>package</i>:][<i>type</i>:]<i>na
         public static final int default_title_indicator_selected_bold=0x7f070002;
     }
     public static final class color {
+        public static final int background=0x7f06000f;
+        public static final int brown=0x7f060011;
         public static final int default_circle_indicator_fill_color=0x7f060008;
         public static final int default_circle_indicator_page_color=0x7f060009;
         public static final int default_circle_indicator_stroke_color=0x7f06000a;
         public static final int default_title_indicator_footer_color=0x7f06000b;
         public static final int default_title_indicator_selected_color=0x7f06000c;
         public static final int default_title_indicator_text_color=0x7f06000d;
+        public static final int list_divider=0x7f060012;
+        public static final int list_text=0x7f06000e;
+        public static final int tab_background=0x7f060010;
         public static final int vpi__background_holo_dark=0x7f060000;
         public static final int vpi__background_holo_light=0x7f060001;
         public static final int vpi__bright_foreground_disabled_holo_dark=0x7f060004;
@@ -275,8 +280,8 @@ or to a theme attribute in the form "<code>?[<i>package</i>:][<i>type</i>:]<i>na
         public static final int vpi__bright_foreground_holo_light=0x7f060003;
         public static final int vpi__bright_foreground_inverse_holo_dark=0x7f060006;
         public static final int vpi__bright_foreground_inverse_holo_light=0x7f060007;
-        public static final int vpi__dark_theme=0x7f06000e;
-        public static final int vpi__light_theme=0x7f06000f;
+        public static final int vpi__dark_theme=0x7f060013;
+        public static final int vpi__light_theme=0x7f060014;
     }
     public static final class dimen {
         public static final int default_circle_indicator_radius=0x7f090000;
@@ -289,18 +294,30 @@ or to a theme attribute in the form "<code>?[<i>package</i>:][<i>type</i>:]<i>na
         public static final int default_title_indicator_text_size=0x7f090007;
         public static final int default_title_indicator_title_padding=0x7f090008;
         public static final int default_title_indicator_top_padding=0x7f090009;
+        public static final int list_item_font_size=0x7f09000a;
+        public static final int list_item_subfont_size=0x7f09000b;
     }
     public static final class drawable {
         public static final int checkmark=0x7f020000;
-        public static final int ic_launcher=0x7f020001;
-        public static final int icon=0x7f020002;
-        public static final int vpi__tab_indicator=0x7f020003;
-        public static final int vpi__tab_selected_focused_holo=0x7f020004;
-        public static final int vpi__tab_selected_holo=0x7f020005;
-        public static final int vpi__tab_selected_pressed_holo=0x7f020006;
-        public static final int vpi__tab_unselected_focused_holo=0x7f020007;
-        public static final int vpi__tab_unselected_holo=0x7f020008;
-        public static final int vpi__tab_unselected_pressed_holo=0x7f020009;
+        public static final int icon=0x7f020001;
+        public static final int list_gradient_background=0x7f020002;
+        public static final int list_pressed=0x7f020003;
+        public static final int list_selector=0x7f020004;
+        public static final int tab_indicator=0x7f020005;
+        public static final int vpi__tab_indicator=0x7f020006;
+        public static final int vpi__tab_selected_focused_holo=0x7f020007;
+        public static final int vpi__tab_selected_holo=0x7f020008;
+        public static final int vpi__tab_selected_pressed_holo=0x7f020009;
+        public static final int vpi__tab_unselected_focused_holo=0x7f02000a;
+        public static final int vpi__tab_unselected_holo=0x7f02000b;
+        public static final int vpi__tab_unselected_pressed_holo=0x7f02000c;
+        public static final int yellow_tab_focused=0x7f02000d;
+        public static final int yellow_tab_selected=0x7f02000e;
+        public static final int yellow_tab_selected_focused=0x7f02000f;
+        public static final int yellow_tab_selected_pressed=0x7f020010;
+        public static final int yellow_tab_unselected=0x7f020011;
+        public static final int yellow_tab_unselected_focused=0x7f020012;
+        public static final int yellow_tab_unselected_pressed=0x7f020013;
     }
     public static final class id {
         public static final int add_book_ISBN_field=0x7f05002b;
@@ -440,12 +457,11 @@ or to a theme attribute in the form "<code>?[<i>package</i>:][<i>type</i>:]<i>na
         public static final int course_list_item=0x7f03000a;
         public static final int course_view_phone=0x7f03000b;
         public static final int main=0x7f03000c;
-        public static final int simple_tabs=0x7f03000d;
-        public static final int teacher_edit=0x7f03000e;
-        public static final int teacher_list=0x7f03000f;
-        public static final int teacher_list_item=0x7f030010;
-        public static final int teacher_view_phone=0x7f030011;
-        public static final int vpi__tab=0x7f030012;
+        public static final int teacher_edit=0x7f03000d;
+        public static final int teacher_list=0x7f03000e;
+        public static final int teacher_list_item=0x7f03000f;
+        public static final int teacher_view_phone=0x7f030010;
+        public static final int vpi__tab=0x7f030011;
     }
     public static final class menu {
         public static final int assignment_menu=0x7f0d0000;
@@ -603,12 +619,14 @@ or to a theme attribute in the form "<code>?[<i>package</i>:][<i>type</i>:]<i>na
         public static final int website=0x7f0b005e;
     }
     public static final class style {
+        public static final int CustomTabPageIndicator=0x7f0a0009;
+        public static final int CustomTabPageIndicator_Text=0x7f0a000a;
+        public static final int StyledIndicators=0x7f0a0008;
         public static final int TextAppearance_TabPageIndicator=0x7f0a0007;
         public static final int Theme_PageIndicatorDefaults=0x7f0a0000;
         public static final int Theme_PageIndicatorNoTitle=0x7f0a0001;
         public static final int Widget=0x7f0a0002;
         public static final int Widget_CirclePageIndicator=0x7f0a0003;
-        public static final int Widget_MyTitlepageIndicator=0x7f0a0008;
         public static final int Widget_TabPageIndicator=0x7f0a0005;
         public static final int Widget_TabPageIndicator_Text=0x7f0a0006;
         public static final int Widget_TitlePageIndicator=0x7f0a0004;

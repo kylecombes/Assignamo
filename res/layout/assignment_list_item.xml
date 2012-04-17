@@ -11,7 +11,9 @@
 	    android:paddingLeft="20dip"
 	    android:paddingRight="20dip"
 	    android:paddingTop="10dip"
-	    android:paddingBottom="5dip">
+	    android:paddingBottom="5dip"
+	    android:textColor="@color/list_text"
+	    android:textAppearance="?android:attr/textAppearanceLarge">
 	    
 	</TextView>
 	<TextView xmlns:android="http://schemas.android.com/apk/res/android"
@@ -21,7 +23,8 @@
 	    android:paddingLeft="20dip"
 	    android:paddingRight="20dip"
 	    android:paddingBottom="10dip"
-	    android:textSize="12dip">
+	    android:textAppearance="?android:attr/textAppearanceSmall"
+   	   	android:textColor="@color/list_text">
 	    
 	</TextView>
 </LinearLayout>

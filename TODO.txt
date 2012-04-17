@@ -30,6 +30,7 @@ Display due date when listing assignments!!
 Visual indicator signifying completed assignments when showing completed assignments.
 Get New Assignment due date/time from next class time.
 Save entered assignment data on orientation change.
+Make sure focused tab pictures are good.
 
 Ideas
 --------------
@@ -37,6 +38,8 @@ Auto-convert words like "the", "in", "of", etc. to lowercase as long as they are
 Format phone number field (Teacher) when entering text
 Background image
 Link teacher with contact
+Display No Assignments message on a Post-It
+Skins for schools (UCLA, Standford, etc.)
 
 -------------- Bugs: ----------------
 When there are no courses, cannot add an assignment due to the fact that there are no courses to link it to. Crashes.

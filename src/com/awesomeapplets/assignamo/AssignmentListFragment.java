@@ -49,8 +49,7 @@ public class AssignmentListFragment extends ListFragment {
 	/**
 	 * Create an assignment list that lists the assignments in a given course.
 	 * 
-	 * @param course
-	 *            the course to display assignments of
+	 * @param course the course to display assignments for
 	 */
 	public AssignmentListFragment(Context context, short course) {
 		this.context = context;

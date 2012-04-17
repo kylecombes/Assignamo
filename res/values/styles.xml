@@ -1,15 +1,14 @@
-<?xml version="1.0" encoding="utf-8"?>
 <resources>
-    <style parent="Widget.TitlePageIndicator"
-        name="Widget.MyTitlepageIndicator">
-        <item name="footerColor">#14A804</item>
-        <item name="footerIndicatorStyle">underline</item>
-        <item name="footerIndicatorHeight">13dp</item>
-        <item name="footerLineHeight">5dp</item>
-        <item name="footerPadding">65dp</item>
-        <item name="selectedColor">#14A804</item>
-        <item name="textColor">#2ca9d8</item>
-        <item name="footerColor">#2ca9d8</item>
-        
+    <style name="StyledIndicators" parent="Theme.PageIndicatorNoTitle">
+        <item name="vpiTabPageIndicatorStyle">@style/CustomTabPageIndicator</item>
+        <item name="vpiTabTextStyle">@style/CustomTabPageIndicator.Text</item>
     </style>
+
+    <style name="CustomTabPageIndicator" parent="Widget.TabPageIndicator">
+        <item name="android:background">@drawable/tab_indicator</item>
+    </style>
+    <style name="CustomTabPageIndicator.Text" parent="Widget.TabPageIndicator.Text">
+        <item name="android:textColor">@color/list_text</item>
+    </style>
+    
 </resources>
