@@ -1,4 +1,7 @@
 <resources>
+    
+    <!--     Tabs      -->
+    
     <style name="StyledIndicators" parent="Theme.PageIndicatorNoTitle">
         <item name="vpiTabPageIndicatorStyle">@style/CustomTabPageIndicator</item>
         <item name="vpiTabTextStyle">@style/CustomTabPageIndicator.Text</item>
@@ -10,5 +13,6 @@
     <style name="CustomTabPageIndicator.Text" parent="Widget.TabPageIndicator.Text">
         <item name="android:textColor">@color/list_text</item>
     </style>
+    
     
 </resources>

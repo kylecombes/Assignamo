@@ -122,7 +122,7 @@ public class CourseEditActivity extends Activity {
 	
 	private void populateFields() {
 
-		courseCursor = DbUtils.getTeachers(context);
+		courseCursor = DbUtils.getTeachersAsCursor(context);
 		startManagingCursor(courseCursor);
 		
 		// create an array to specify which fields we want to display

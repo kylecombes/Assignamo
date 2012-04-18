@@ -2,4 +2,5 @@
     <resources>
         <dimen name="list_item_font_size">20dip</dimen>
         <dimen name="list_item_subfont_size">15dip</dimen>
+        <dimen name="list_item_edge_padding">20dip</dimen>
     </resources>

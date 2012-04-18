@@ -1,5 +1,7 @@
 package com.awesomeapplets.assignamo;
 
+import java.util.Calendar;
+
 import android.content.BroadcastReceiver;
 import android.content.Context;
 import android.content.Intent;
@@ -24,14 +26,16 @@ import android.widget.TextView;
 
 import com.awesomeapplets.assignamo.database.DbAdapter;
 import com.awesomeapplets.assignamo.database.Values;
+import com.awesomeapplets.assignamo.utils.DateUtils;
 import com.awesomeapplets.assignamo.utils.DbUtils;
 
 public class AssignmentListFragment extends ListFragment {
 	
-	public static DbAdapter assignmentDb;
 	SimpleCursorAdapter adapter;
 	Cursor assignmentsCursor;
 	private Context context;
+	
+	private final String DATE_FORMAT = "c, MMMMM dd";
 	
 	// The course we are displaying assignments for. If all, -1.
 	short course = -1;
@@ -71,30 +75,16 @@ public class AssignmentListFragment extends ListFragment {
 		setRetainInstance(true);
 		
 		// Create and array to specify the fields we want
-		String[] from = new String[] { Values.KEY_TITLE, Values.ASSIGNMENT_KEY_COURSE };
+		String[] from = new String[] { Values.KEY_TITLE, Values.ASSIGNMENT_KEY_COURSE, Values.KEY_DESCRIPTION, Values.ASSIGNMENT_KEY_DUE_DATE };
 
 		// and an array of the fields we want to bind in the view
-		int[] to = new int[] { R.id.assignment_list_title, R.id.assignment_list_course };
+		int[] to = new int[] { R.id.assignment_list_title, R.id.assignment_list_course, R.id.assignment_list_description, R.id.assignment_list_due };
 
 		// Need to give assignmentsCursor a value -- null will make it not work
 		updateAdapter();
 		
 		adapter = new SimpleCursorAdapter(context, R.layout.assignment_list_item, assignmentsCursor, from, to);
-		adapter.setViewBinder(new ViewBinder() {
-
-			@Override
-			public boolean setViewValue(View view, Cursor cursor,
-					int columnIndex) {
-				if (columnIndex == 2) {
-					String[] courses = DbUtils.getCoursesAsArray(context);
-					short value = cursor.getShort(columnIndex);
-					TextView textView = (TextView) view;
-					textView.setText(courses[value]);
-					return true;
-				}
-				return false;
-			}
-		});
+		adapter.setViewBinder(new CustomViewBinder());
 		setListAdapter(adapter);
 	}
 
@@ -153,14 +143,14 @@ public class AssignmentListFragment extends ListFragment {
 
 		if (course < 0) // Showing assignments from all courses
 			if (showingCompleted)
-				assignmentsCursor = DbUtils.fetchAllAssignments(context, Values.ASSIGNMENT_LIST_FETCH, null, true);
+				assignmentsCursor = fetchAllAssignments(null, true);
 			else
-				assignmentsCursor = DbUtils.fetchIncompleteAssignments(context, Values.ASSIGNMENT_LIST_FETCH, null, true);
+				assignmentsCursor = fetchIncompleteAssignments(null, true);
 		else // Showing assignments from specified course
 			if (showingCompleted)
-				assignmentsCursor = DbUtils.fetchAllAssignments(context, Values.ASSIGNMENT_LIST_FETCH, course, true);
+				assignmentsCursor = fetchAllAssignments(course, true);
 			else
-				assignmentsCursor = DbUtils.fetchIncompleteAssignments(context, Values.ASSIGNMENT_LIST_FETCH, course, true);
+				assignmentsCursor = fetchIncompleteAssignments(course, true);
 		
 		// adapter is null when updateAdapter() is called in onCreate()
 		if (adapter != null)
@@ -223,5 +213,134 @@ public class AssignmentListFragment extends ListFragment {
 		}
 		return super.onContextItemSelected(item);
 	}
+	
+	/**
+	 * Get all assignments.
+	 * @param query the SQL query syntax.
+	 * @param order whether or not to sort by due date.
+	 * @return Contains all the items in the table.
+	 */
+	public Cursor fetchAllAssignments(Short course, boolean order) {
+		Cursor c;
+		DbAdapter adapter = new DbAdapter(context, Values.DATABASE_NAME, Values.DATABASE_VERSION,
+				Values.ASSIGNMENT_TABLE, Values.DATABASE_CREATE, Values.KEY_ROWID);
+		adapter.open();
+		
+		if (order)
+			if (course == null)
+				c = adapter.fetchAll(Values.ASSIGNMENT_LIST_FETCH);
+			else
+				c = adapter.fetchAllWhere(Values.ASSIGNMENT_LIST_FETCH, Values.ASSIGNMENT_KEY_COURSE + "=" + course);
+		else
+			if (course == null)
+				c = adapter.fetchAllOrdered(Values.ASSIGNMENT_LIST_FETCH, null, Values.ASSIGNMENT_KEY_DUE_DATE);
+			else
+				c = adapter.fetchAllOrdered(Values.ASSIGNMENT_LIST_FETCH, Values.ASSIGNMENT_KEY_COURSE + "=" + course, Values.ASSIGNMENT_KEY_DUE_DATE);
+		
+		adapter.close();
+		if (c != null)
+			c.moveToFirst();
+		return c;
+	}
+	
+	/**
+	 * Get all the incomplete assignments for a certain course.
+	 * @param context a copy of the application context.
+	 * @param query the SQL query syntax.
+	 * @param course the course to fetch the assignments from. Pass null
+	 * to return assignments from all courses.
+	 * @param order whether or not to sort the result by due date.
+	 * @return all the incomplete assignments for the specified course.
+	 */
+	public Cursor fetchIncompleteAssignments(Short course, boolean order) {
+		DbAdapter adapter = new DbAdapter(context,
+				Values.DATABASE_NAME,
+				Values.DATABASE_VERSION,
+				Values.ASSIGNMENT_TABLE,
+				Values.DATABASE_CREATE,
+				Values.KEY_ROWID);
+		adapter.open();
+		
+		Cursor r;
+		if (course != null) // Fetching from all courses
+			r = adapter.fetchAllWhere(Values.ASSIGNMENT_LIST_FETCH, Values.ASSIGNMENT_KEY_COURSE + "=" + course
+				+ " AND " + Values.ASSIGNMENT_KEY_STATUS + "=" + 0);
+		else
+			r = adapter.fetchAllWhere(Values.ASSIGNMENT_LIST_FETCH, Values.ASSIGNMENT_KEY_STATUS + "=" + 0);
+		adapter.close();
+		return r;
+	}
+	
+	private class CustomViewBinder implements ViewBinder {
 
+		@Override
+		public boolean setViewValue(View view, Cursor cursor, int columnIndex) {
+			switch (columnIndex) {
+			case 2: // Course label
+				String[] courses = DbUtils.getCoursesAsArray(context);
+				short value = cursor.getShort(columnIndex);
+				TextView textView = (TextView) view;
+				textView.setText(courses[value]);
+				return true;
+			/*case 3: // Description label
+				String desc = assignmentsCursor.getString(columnIndex);
+				String */
+			case 4: // Due date label
+				Calendar cal = Calendar.getInstance();
+				cal.setTimeInMillis(DateUtils.convertMinutesToMills(cursor.getLong(columnIndex)));
+				
+				String str = DateUtils.formatAsString(cal, DATE_FORMAT);
+				TextView txt = (TextView)view;
+				txt.setText(str);
+				return true;
+			default:
+				return false;
+			}
+		}
+	}
+
+	/*
+	private class CustomAdapter extends SimpleCursorAdapter {
+		
+		LayoutInflater mInflater;
+		
+		public CustomAdapter(Context context, int layout, Cursor c, String[] from, int[] to) {
+			super(context, layout, c, from, to);
+			mInflater = (LayoutInflater) context.getSystemService(Context.LAYOUT_INFLATER_SERVICE);
+		}
+
+		@Override
+		public View getView(int position, View convertView, ViewGroup parent) {
+			ViewHolder holder;
+			
+			if (convertView == null) {
+				convertView = mInflater.inflate(R.layout.assignment_list_item, parent, false);
+				holder = new ViewHolder();
+				holder.titleLabel = (TextView) convertView.findViewById(R.id.assignment_list_title);
+				holder.descriptionLabel = (TextView) convertView.findViewById(R.id.assignment_list_description);
+				holder.courseLabel = (TextView) convertView.findViewById(R.id.assignment_list_course);
+				holder.dueLabel = (TextView) convertView.findViewById(R.id.assignment_list_course);
+				
+				convertView.setTag(holder);
+			} else
+				holder = (ViewHolder) convertView.getTag();
+			
+			
+			holder.titleLabel.setText(assignmentsCursor.getString(position));
+			holder.descriptionLabel.setText(text);
+			holder.courseLabel.setText(text);
+			holder.dueLabel.setText(text);
+			
+			return convertView;
+		}
+		
+	}
+
+	private static class ViewHolder {
+		private static TextView titleLabel;
+		private static TextView courseLabel;
+		private static TextView descriptionLabel;
+		private static TextView dueLabel;
+	}
+*/	
 }
