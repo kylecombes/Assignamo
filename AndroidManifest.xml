@@ -1,8 +1,8 @@
 <?xml version="1.0" encoding="utf-8"?>
 <manifest xmlns:android="http://schemas.android.com/apk/res/android"
     package="com.awesomeapplets.assignamo"
-    android:versionCode="2"
-    android:versionName="0.2" >
+    android:versionCode="3"
+    android:versionName="0.3" >
 
     <uses-sdk android:minSdkVersion="10"
         android:targetSdkVersion="15" />
@@ -29,7 +29,7 @@
             android:name=".preferences.BookEditActivity" />
         <activity
             android:name=".preferences.BookViewActivity"
-			android:theme="@style/Theme.PageIndicatorNoTitle" />
+			android:theme="@android:style/Theme.NoTitleBar" />
         <activity
             android:name=".preferences.BookListActivity"
             android:label="@string/pref_manage_books" />
@@ -40,7 +40,7 @@
             android:name=".preferences.CourseEditActivity" />
         <activity
             android:name=".preferences.CourseViewFragment"
-            android:theme="@style/Theme.PageIndicatorNoTitle" />
+            android:theme="@android:style/Theme.NoTitleBar" />
         <activity
             android:name=".preferences.TeacherListActivity"
             android:label="@string/pref_manage_teachers" />
@@ -48,7 +48,7 @@
             android:name=".preferences.TeacherEditActivity" />
         <activity
             android:name=".preferences.TeacherViewFragment"
-			android:theme="@style/Theme.PageIndicatorNoTitle" />
+			android:theme="@android:style/Theme.NoTitleBar" />
         <activity
             android:name=".preferences.Preferences"
             android:label="@string/preferences" />

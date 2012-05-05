@@ -95,7 +95,7 @@ public class DbUtils {
 	}
 
 	public static String[] getTeachersAsArray(Context context) {
-		Cursor c = queryTable(context, Values.COURSE_TABLE,
+		Cursor c = queryTable(context, Values.TEACHER_TABLE,
 				new String[] {Values.KEY_ROWID, Values.KEY_NAME});
 		short teacherNum = (short)c.getCount();
     	String [] teacherArray = new String[teacherNum+1];

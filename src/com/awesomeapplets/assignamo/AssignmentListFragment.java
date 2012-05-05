@@ -1,5 +1,6 @@
 package com.awesomeapplets.assignamo;
 
+import java.text.SimpleDateFormat;
 import java.util.Calendar;
 
 import android.content.BroadcastReceiver;
@@ -7,11 +8,14 @@ import android.content.Context;
 import android.content.Intent;
 import android.content.IntentFilter;
 import android.content.SharedPreferences;
+import android.content.res.Resources;
+import android.content.res.TypedArray;
 import android.database.Cursor;
 import android.os.Bundle;
 import android.preference.PreferenceManager;
 import android.support.v4.app.ListFragment;
 import android.support.v4.content.LocalBroadcastManager;
+import android.support.v4.widget.CursorAdapter;
 import android.view.ContextMenu;
 import android.view.ContextMenu.ContextMenuInfo;
 import android.view.LayoutInflater;
@@ -20,18 +24,17 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.AdapterView.AdapterContextMenuInfo;
 import android.widget.ListView;
-import android.widget.SimpleCursorAdapter;
-import android.widget.SimpleCursorAdapter.ViewBinder;
 import android.widget.TextView;
 
 import com.awesomeapplets.assignamo.database.DbAdapter;
 import com.awesomeapplets.assignamo.database.Values;
+import com.awesomeapplets.assignamo.ui.ColorStrip;
 import com.awesomeapplets.assignamo.utils.DateUtils;
 import com.awesomeapplets.assignamo.utils.DbUtils;
 
 public class AssignmentListFragment extends ListFragment {
 	
-	SimpleCursorAdapter adapter;
+	CustomAdapter adapter;
 	Cursor assignmentsCursor;
 	private Context context;
 	
@@ -74,17 +77,10 @@ public class AssignmentListFragment extends ListFragment {
 		}
 		setRetainInstance(true);
 		
-		// Create and array to specify the fields we want
-		String[] from = new String[] { Values.KEY_TITLE, Values.ASSIGNMENT_KEY_COURSE, Values.KEY_DESCRIPTION, Values.ASSIGNMENT_KEY_DUE_DATE };
-
-		// and an array of the fields we want to bind in the view
-		int[] to = new int[] { R.id.assignment_list_title, R.id.assignment_list_course, R.id.assignment_list_description, R.id.assignment_list_due };
-
 		// Need to give assignmentsCursor a value -- null will make it not work
 		updateAdapter();
 		
-		adapter = new SimpleCursorAdapter(context, R.layout.assignment_list_item, assignmentsCursor, from, to);
-		adapter.setViewBinder(new CustomViewBinder());
+		adapter = new CustomAdapter(context, assignmentsCursor, 0);
 		setListAdapter(adapter);
 	}
 
@@ -270,7 +266,7 @@ public class AssignmentListFragment extends ListFragment {
 		adapter.close();
 		return r;
 	}
-	
+	/*
 	private class CustomViewBinder implements ViewBinder {
 
 		@Override
@@ -282,9 +278,9 @@ public class AssignmentListFragment extends ListFragment {
 				TextView textView = (TextView) view;
 				textView.setText(courses[value]);
 				return true;
-			/*case 3: // Description label
+			case 3: // Description label
 				String desc = assignmentsCursor.getString(columnIndex);
-				String */
+				String 
 			case 4: // Due date label
 				Calendar cal = Calendar.getInstance();
 				cal.setTimeInMillis(DateUtils.convertMinutesToMills(cursor.getLong(columnIndex)));
@@ -298,49 +294,90 @@ public class AssignmentListFragment extends ListFragment {
 			}
 		}
 	}
-
-	/*
-	private class CustomAdapter extends SimpleCursorAdapter {
+*/
+	private class CustomAdapter extends CursorAdapter {
 		
 		LayoutInflater mInflater;
+		ViewHolder holder;
+		int[] stripColors;
+		int[] stripColorsLight;
 		
-		public CustomAdapter(Context context, int layout, Cursor c, String[] from, int[] to) {
-			super(context, layout, c, from, to);
+		public CustomAdapter(Context context, Cursor c, int flags) {
+			super(context, c, flags);
+			this.mContext = context;
+			
+			// Load the strip colors
+			//TODO Thread this?
+			Resources res = getResources();
+			TypedArray colors = res.obtainTypedArray(R.array.strip_colors);
+			stripColors = new int[colors.length()];
+			for (short i = 0; i < colors.length(); i++)
+				stripColors[i] = colors.getColor(i, res.getColor(R.color.default_strip));
+			colors = res.obtainTypedArray(R.array.strip_colors_light);
+			stripColorsLight = new int[colors.length()];
+			for (short i = 0; i < colors.length(); i++)
+				stripColorsLight[i] = colors.getColor(i, res.getColor(R.color.default_strip));
+			
 			mInflater = (LayoutInflater) context.getSystemService(Context.LAYOUT_INFLATER_SERVICE);
 		}
 
+		@SuppressWarnings("static-access")
 		@Override
 		public View getView(int position, View convertView, ViewGroup parent) {
-			ViewHolder holder;
 			
 			if (convertView == null) {
 				convertView = mInflater.inflate(R.layout.assignment_list_item, parent, false);
 				holder = new ViewHolder();
+				holder.colorStrip = (ColorStrip) convertView.findViewById(R.id.assignment_list_color_strip);
 				holder.titleLabel = (TextView) convertView.findViewById(R.id.assignment_list_title);
 				holder.descriptionLabel = (TextView) convertView.findViewById(R.id.assignment_list_description);
-				holder.courseLabel = (TextView) convertView.findViewById(R.id.assignment_list_course);
-				holder.dueLabel = (TextView) convertView.findViewById(R.id.assignment_list_course);
+				holder.dueLabel = (TextView) convertView.findViewById(R.id.assignment_list_due);
 				
 				convertView.setTag(holder);
 			} else
 				holder = (ViewHolder) convertView.getTag();
 			
+			assignmentsCursor.moveToPosition(position);
+			String title = assignmentsCursor.getString(1);
+			short course = assignmentsCursor.getShort(2);
+			String desc = assignmentsCursor.getString(3);
+			long due = assignmentsCursor.getLong(4);
 			
-			holder.titleLabel.setText(assignmentsCursor.getString(position));
-			holder.descriptionLabel.setText(text);
-			holder.courseLabel.setText(text);
-			holder.dueLabel.setText(text);
+			holder.titleLabel.setText(title);
+			holder.colorStrip.setColor(stripColors[course]);
+			convertView.setBackgroundColor(stripColorsLight[course]);
+			holder.descriptionLabel.setText(desc);
+			String dueString = getDateString(due);
+			holder.dueLabel.setText(dueString);
 			
 			return convertView;
 		}
+
+		@Override
+		public void bindView(View arg0, Context arg1, Cursor arg2) {
+			// Auto-generated method stub
+		}
+
+		@Override
+		public View newView(Context arg0, Cursor arg1, ViewGroup arg2) {
+			// Auto-generated method stub
+			return null;
+		}
 		
+	}
+	
+	private String getDateString(long minutes) {
+		Calendar calendar = Calendar.getInstance();
+		calendar.setTimeInMillis(DateUtils.convertMinutesToMills(minutes));
+		
+		return (new SimpleDateFormat(DATE_FORMAT)).format(calendar.getTime());
 	}
 
 	private static class ViewHolder {
+		private static ColorStrip colorStrip;
 		private static TextView titleLabel;
-		private static TextView courseLabel;
 		private static TextView descriptionLabel;
 		private static TextView dueLabel;
 	}
-*/	
+	
 }

@@ -2,11 +2,21 @@
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="fill_parent"
     android:layout_height="fill_parent"
-    android:orientation="vertical">
+    android:orientation="horizontal">
+    
+    <!-- Colored strip -->
+    
+    <com.awesomeapplets.assignamo.ui.ColorStrip
+        android:id="@+id/assignment_list_color_strip"
+        android:layout_width="@dimen/color_strip_width"
+        android:layout_height="match_parent" />
+    
+    <!-- Text -->
+    
     <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
         android:layout_width="fill_parent"
         android:layout_height="wrap_content"
-        android:orientation="horizontal">
+        android:orientation="vertical">
         
 	    <TextView xmlns:android="http://schemas.android.com/apk/res/android"
 		    android:id="@+id/assignment_list_title"
@@ -14,43 +24,37 @@
 		    android:layout_height="fill_parent"
 		    android:paddingLeft="@dimen/list_item_edge_padding"
 		    android:paddingRight="@dimen/list_item_edge_padding"
-		    android:paddingTop="10dip"
+		    android:paddingTop="@dimen/list_item_edge_padding"
 		    android:paddingBottom="5dip"
 		    android:textColor="@color/list_text"
-		    android:textAppearance="?android:attr/textAppearanceLarge" />
+		    android:textAppearance="@style/ListTitleText"
+		    android:ellipsize="end"
+		    android:singleLine="true" />
 	    
-	    <TextView xmlns:android="http://schemas.android.com/apk/res/android"
-	        android:id="@+id/assignment_list_course"
-	        android:layout_height="fill_parent"
-	        android:layout_width="wrap_content"
-	        android:paddingTop="@dimen/list_item_edge_padding"
-	        android:paddingRight="@dimen/list_item_edge_padding"
-	        android:textColor="@color/list_text_secondary"
-	        android:textAppearance="?android:attr/textAppearanceSmall"
-	        android:gravity="bottom" />
+	    <FrameLayout android:layout_width="fill_parent"
+	        android:layout_height="fill_parent">
+	        
+        	<TextView xmlns:android="http://schemas.android.com/apk/res/android"
+			    android:id="@+id/assignment_list_description"
+			    android:layout_width="wrap_content"
+			    android:layout_height="fill_parent"
+			    android:paddingLeft="@dimen/list_item_edge_padding"
+			    android:paddingRight="@dimen/list_item_min_spacing_between_description_and_date"
+			    android:paddingBottom="@dimen/list_item_description_bottom_padding"
+			    android:textAppearance="@style/ListDescriptionText"
+			    android:layout_gravity="left|bottom"
+		   	   	android:singleLine="true" />
+			
+			<TextView xmlns:android="http://schemas.android.com/apk/res/android"
+			    android:id="@+id/assignment_list_due"
+			    android:layout_width="wrap_content"
+			    android:layout_height="fill_parent"
+			    android:paddingRight="@dimen/list_item_edge_padding"
+			    android:paddingBottom="@dimen/list_item_edge_padding"
+			    android:textAppearance="@style/ListDueText"
+			    android:layout_gravity="bottom|right"
+			    android:singleLine="true" />
+			
+		</FrameLayout>
 	</LinearLayout>
-	
-    <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
-        android:layout_width="wrap_content"
-        android:layout_height="fill_parent"
-        android:orientation="horizontal">
-		<TextView xmlns:android="http://schemas.android.com/apk/res/android"
-		    android:id="@+id/assignment_list_description"
-		    android:layout_width="fill_parent"
-		    android:layout_height="wrap_content"
-		    android:paddingLeft="@dimen/list_item_edge_padding"
-		    android:paddingRight="@dimen/list_item_edge_padding"
-		    android:paddingBottom="10dip"
-		    android:textAppearance="?android:attr/textAppearanceMedium"
-	   	   	android:textColor="@color/list_text" />
-		
-		<TextView xmlns:android="http://schemas.android.com/apk/res/android"
-		    android:id="@+id/assignment_list_due"
-		    android:layout_width="wrap_content"
-		    android:layout_height="fill_parent"
-		    android:paddingRight="@dimen/list_item_edge_padding"
-		    android:paddingBottom="@dimen/list_item_edge_padding"
-		    android:textColor="@color/list_text_secondary"
-		    android:gravity="bottom" />
-		</LinearLayout>
 </LinearLayout>

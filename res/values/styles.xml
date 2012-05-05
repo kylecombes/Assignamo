@@ -2,9 +2,10 @@
     
     <!--     Tabs      -->
     
-    <style name="StyledIndicators" parent="Theme.PageIndicatorNoTitle">
+    <style name="StyledIndicators" parent="Widget.TitlePageIndicator">
         <item name="vpiTabPageIndicatorStyle">@style/CustomTabPageIndicator</item>
         <item name="vpiTabTextStyle">@style/CustomTabPageIndicator.Text</item>
+        <item name="android:windowNoTitle">true</item>
     </style>
 
     <style name="CustomTabPageIndicator" parent="Widget.TabPageIndicator">
@@ -14,5 +15,30 @@
         <item name="android:textColor">@color/list_text</item>
     </style>
     
+    <!--    List Items    -->
+    
+    <style name="ListTitleText" parent="ListText">
+        <item name="android:textSize">20sp</item>
+    </style>
+    
+    <style name="ListCourseText" parent="ListText.Secondary">
+        <item name="android:textSize">10sp</item>
+    </style>
+    
+    <style name="ListDescriptionText" parent="ListText">
+        <item name="android:textSize">12sp</item>
+    </style>
+    
+    <style name="ListDueText" parent="ListText.Secondary">
+        <item name="android:textSize">15sp</item>
+    </style>
+    
+    <style name="ListText.Secondary">
+        <item name="android:textColor">@color/list_text_secondary</item>
+    </style>
+    
+    <style name="ListText">
+        <item name="android:textColor">@color/list_text</item>
+    </style>
     
 </resources>

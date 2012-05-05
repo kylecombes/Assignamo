@@ -1,10 +1,36 @@
-
-    <resources>
-        <color name="list_text">#000000</color>
-        <color name="list_text_secondary">#393731</color>
-        <color name="background">#cdcdcd</color>
-        <color name="tab_background">#c0c0c0</color>
-        <color name="brown">#a8850d</color>
-        <color name="list_divider">#a5a5a5</color>
-        <color name="background">#f4e5b6</color>
-    </resources>
+<resources>
+    <color name="list_text">#000000</color>
+    <color name="list_text_secondary">#393731</color>
+    <color name="background">#cdcdcd</color>
+    <color name="tab_background">#c0c0c0</color>
+    <color name="brown">#a8850d</color>
+    <color name="list_divider">#a5a5a5</color>
+    <!-- <color name="background">#f4e5b6</color> -->
+    
+    <!-- ListView Strip Colors -->
+    <color name="default_strip">#0a9010</color>
+    <color name="strip_color_1">#4b1ddf</color>
+    <color name="strip_color_2">#18b75f</color>
+    <color name="strip_color_3">#b7bd18</color>
+    <color name="strip_color_4">#b97c1b</color>
+    <color name="strip_color_5">#f42b2b</color>
+    <color name="strip_color_1_light">#647dea</color>
+    <color name="strip_color_2_light">#4fdc8e</color>
+    <color name="strip_color_3_light">#e3e85c</color>
+    <color name="strip_color_4_light">#e0a952</color>
+    <color name="strip_color_5_light">#ff7171</color>
+    <array name="strip_colors">
+        <item>@color/strip_color_1</item>
+        <item>@color/strip_color_2</item>
+        <item>@color/strip_color_3</item>
+        <item>@color/strip_color_4</item>
+        <item>@color/strip_color_5</item>
+    </array>
+    <array name="strip_colors_light">
+        <item>@color/strip_color_1_light</item>
+        <item>@color/strip_color_2_light</item>
+        <item>@color/strip_color_3_light</item>
+        <item>@color/strip_color_4_light</item>
+        <item>@color/strip_color_5_light</item>
+    </array>
+</resources>
