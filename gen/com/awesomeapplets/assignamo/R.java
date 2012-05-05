@@ -263,32 +263,31 @@ or to a theme attribute in the form "<code>?[<i>package</i>:][<i>type</i>:]<i>na
         public static final int default_title_indicator_selected_bold=0x7f070002;
     }
     public static final class color {
-        public static final int background=0x7f060010;
-        public static final int brown=0x7f060012;
+        public static final int background=0x7f06000f;
+        public static final int brown=0x7f060011;
         public static final int default_circle_indicator_fill_color=0x7f060008;
         public static final int default_circle_indicator_page_color=0x7f060009;
         public static final int default_circle_indicator_stroke_color=0x7f06000a;
         /**  <color name="background">#f4e5b6</color> 
  ListView Strip Colors 
          */
-        public static final int default_strip=0x7f060014;
+        public static final int default_strip=0x7f060013;
         public static final int default_title_indicator_footer_color=0x7f06000b;
         public static final int default_title_indicator_selected_color=0x7f06000c;
         public static final int default_title_indicator_text_color=0x7f06000d;
-        public static final int list_divider=0x7f060013;
+        public static final int list_divider=0x7f060012;
         public static final int list_text=0x7f06000e;
-        public static final int list_text_secondary=0x7f06000f;
-        public static final int strip_color_1=0x7f060015;
-        public static final int strip_color_1_light=0x7f06001a;
-        public static final int strip_color_2=0x7f060016;
-        public static final int strip_color_2_light=0x7f06001b;
-        public static final int strip_color_3=0x7f060017;
-        public static final int strip_color_3_light=0x7f06001c;
-        public static final int strip_color_4=0x7f060018;
-        public static final int strip_color_4_light=0x7f06001d;
-        public static final int strip_color_5=0x7f060019;
-        public static final int strip_color_5_light=0x7f06001e;
-        public static final int tab_background=0x7f060011;
+        public static final int strip_color_1=0x7f060014;
+        public static final int strip_color_1_light=0x7f060019;
+        public static final int strip_color_2=0x7f060015;
+        public static final int strip_color_2_light=0x7f06001a;
+        public static final int strip_color_3=0x7f060016;
+        public static final int strip_color_3_light=0x7f06001b;
+        public static final int strip_color_4=0x7f060017;
+        public static final int strip_color_4_light=0x7f06001c;
+        public static final int strip_color_5=0x7f060018;
+        public static final int strip_color_5_light=0x7f06001d;
+        public static final int tab_background=0x7f060010;
         public static final int vpi__background_holo_dark=0x7f060000;
         public static final int vpi__background_holo_light=0x7f060001;
         public static final int vpi__bright_foreground_disabled_holo_dark=0x7f060004;
@@ -297,8 +296,8 @@ or to a theme attribute in the form "<code>?[<i>package</i>:][<i>type</i>:]<i>na
         public static final int vpi__bright_foreground_holo_light=0x7f060003;
         public static final int vpi__bright_foreground_inverse_holo_dark=0x7f060006;
         public static final int vpi__bright_foreground_inverse_holo_light=0x7f060007;
-        public static final int vpi__dark_theme=0x7f06001f;
-        public static final int vpi__light_theme=0x7f060020;
+        public static final int vpi__dark_theme=0x7f06001e;
+        public static final int vpi__light_theme=0x7f06001f;
     }
     public static final class dimen {
         public static final int color_strip_height=0x7f090010;
@@ -651,11 +650,9 @@ or to a theme attribute in the form "<code>?[<i>package</i>:][<i>type</i>:]<i>na
     public static final class style {
         public static final int CustomTabPageIndicator=0x7f0a0008;
         public static final int CustomTabPageIndicator_Text=0x7f0a0009;
-        public static final int ListCourseText=0x7f0a000b;
-        public static final int ListDescriptionText=0x7f0a000c;
-        public static final int ListDueText=0x7f0a000d;
-        public static final int ListText=0x7f0a000f;
-        public static final int ListText_Secondary=0x7f0a000e;
+        public static final int ListDescriptionText=0x7f0a000b;
+        public static final int ListDueText=0x7f0a000c;
+        public static final int ListText=0x7f0a000d;
         /**     List Items    
          */
         public static final int ListTitleText=0x7f0a000a;

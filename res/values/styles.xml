@@ -21,20 +21,12 @@
         <item name="android:textSize">20sp</item>
     </style>
     
-    <style name="ListCourseText" parent="ListText.Secondary">
-        <item name="android:textSize">10sp</item>
-    </style>
-    
     <style name="ListDescriptionText" parent="ListText">
         <item name="android:textSize">12sp</item>
     </style>
     
     <style name="ListDueText" parent="ListText">
         <item name="android:textSize">15sp</item>
-    </style>
-    
-    <style name="ListText.Secondary">
-        <item name="android:textColor">@color/list_text_secondary</item>
     </style>
     
     <style name="ListText">
