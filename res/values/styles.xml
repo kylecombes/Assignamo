@@ -29,7 +29,7 @@
         <item name="android:textSize">12sp</item>
     </style>
     
-    <style name="ListDueText" parent="ListText.Secondary">
+    <style name="ListDueText" parent="ListText">
         <item name="android:textSize">15sp</item>
     </style>
     

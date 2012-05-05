@@ -378,8 +378,8 @@ or to a theme attribute in the form "<code>?[<i>package</i>:][<i>type</i>:]<i>na
         public static final int assignment_add_title_label=0x7f050007;
         public static final int assignment_edit_course_spinner_label=0x7f050005;
         public static final int assignment_list_color_strip=0x7f050010;
-        public static final int assignment_list_description=0x7f050012;
-        public static final int assignment_list_due=0x7f050013;
+        public static final int assignment_list_description=0x7f050013;
+        public static final int assignment_list_due=0x7f050012;
         public static final int assignment_list_title=0x7f050011;
         public static final int assignment_menu_add=0x7f05006b;
         public static final int assignment_view_course=0x7f050014;

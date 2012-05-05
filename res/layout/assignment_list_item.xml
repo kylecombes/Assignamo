@@ -31,9 +31,23 @@
 		    android:ellipsize="end"
 		    android:singleLine="true" />
 	    
-	    <FrameLayout android:layout_width="fill_parent"
+	    <RelativeLayout android:layout_width="fill_parent"
 	        android:layout_height="fill_parent">
 	        
+	        <!-- Have to put the due date first (in code) in order
+	        	to align the description to the right of it. -->
+	        	
+	        <!-- Due date -->
+			<TextView xmlns:android="http://schemas.android.com/apk/res/android"
+			    android:id="@+id/assignment_list_due"
+			    android:layout_width="wrap_content"
+			    android:layout_height="fill_parent"
+			    android:paddingRight="@dimen/list_item_edge_padding"
+			    android:paddingBottom="@dimen/list_item_edge_padding"
+			    android:textAppearance="@style/ListDueText"
+			    android:layout_alignParentRight="true"
+			    android:singleLine="true" />
+			<!-- Description -->
         	<TextView xmlns:android="http://schemas.android.com/apk/res/android"
 			    android:id="@+id/assignment_list_description"
 			    android:layout_width="wrap_content"
@@ -42,19 +56,11 @@
 			    android:paddingRight="@dimen/list_item_min_spacing_between_description_and_date"
 			    android:paddingBottom="@dimen/list_item_description_bottom_padding"
 			    android:textAppearance="@style/ListDescriptionText"
-			    android:layout_gravity="left|bottom"
+			    android:layout_alignParentLeft="true"
+			    android:layout_toLeftOf="@id/assignment_list_due"
+			    android:layout_alignBaseline="@id/assignment_list_due"
 		   	   	android:singleLine="true" />
 			
-			<TextView xmlns:android="http://schemas.android.com/apk/res/android"
-			    android:id="@+id/assignment_list_due"
-			    android:layout_width="wrap_content"
-			    android:layout_height="fill_parent"
-			    android:paddingRight="@dimen/list_item_edge_padding"
-			    android:paddingBottom="@dimen/list_item_edge_padding"
-			    android:textAppearance="@style/ListDueText"
-			    android:layout_gravity="bottom|right"
-			    android:singleLine="true" />
-			
-		</FrameLayout>
+		</RelativeLayout>
 	</LinearLayout>
 </LinearLayout>
