@@ -92,7 +92,6 @@ public class AssignmentListFragment extends ListFragment {
 
 	public void onResume() {
 		super.onResume();
-		updateAdapter();
 		refresh();
 		
 		// Register refresh Intent listener
