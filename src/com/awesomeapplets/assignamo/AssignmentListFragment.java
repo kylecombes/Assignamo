@@ -34,7 +34,7 @@ import com.awesomeapplets.assignamo.utils.DbUtils;
 
 public class AssignmentListFragment extends ListFragment {
 	
-	CustomAdapter adapter;
+	CustomCursorAdapter adapter;
 	Cursor assignmentsCursor;
 	private Context context;
 	
@@ -80,7 +80,7 @@ public class AssignmentListFragment extends ListFragment {
 		// Need to give assignmentsCursor a value -- null will make it not work
 		updateAdapter();
 		
-		adapter = new CustomAdapter(context, assignmentsCursor, 0);
+		adapter = new CustomCursorAdapter(context, assignmentsCursor, 0);
 		setListAdapter(adapter);
 	}
 
@@ -139,14 +139,14 @@ public class AssignmentListFragment extends ListFragment {
 
 		if (course < 0) // Showing assignments from all courses
 			if (showingCompleted)
-				assignmentsCursor = fetchAllAssignments(null, true);
+				assignmentsCursor = fetchAllAssignments(null);
 			else
-				assignmentsCursor = fetchIncompleteAssignments(null, true);
+				assignmentsCursor = fetchIncompleteAssignments(null);
 		else // Showing assignments from specified course
 			if (showingCompleted)
-				assignmentsCursor = fetchAllAssignments(course, true);
+				assignmentsCursor = fetchAllAssignments(course);
 			else
-				assignmentsCursor = fetchIncompleteAssignments(course, true);
+				assignmentsCursor = fetchIncompleteAssignments(course);
 		
 		// adapter is null when updateAdapter() is called in onCreate()
 		if (adapter != null)
@@ -210,28 +210,19 @@ public class AssignmentListFragment extends ListFragment {
 		return super.onContextItemSelected(item);
 	}
 	
-	/**
-	 * Get all assignments.
-	 * @param query the SQL query syntax.
-	 * @param order whether or not to sort by due date.
-	 * @return Contains all the items in the table.
-	 */
-	public Cursor fetchAllAssignments(Short course, boolean order) {
+	
+	/*--------- Fetching Assignments from the Database ----------*/
+	
+	public Cursor fetchAllAssignments(Short course) {
 		Cursor c;
 		DbAdapter adapter = new DbAdapter(context, Values.DATABASE_NAME, Values.DATABASE_VERSION,
 				Values.ASSIGNMENT_TABLE, Values.DATABASE_CREATE, Values.KEY_ROWID);
 		adapter.open();
 		
-		if (order)
-			if (course == null)
-				c = adapter.fetchAll(Values.ASSIGNMENT_LIST_FETCH);
-			else
-				c = adapter.fetchAllWhere(Values.ASSIGNMENT_LIST_FETCH, Values.ASSIGNMENT_KEY_COURSE + "=" + course);
+		if (course == null)
+			c = adapter.fetchAllOrdered(Values.ASSIGNMENT_LIST_FETCH, null, Values.ASSIGNMENT_KEY_DUE_DATE);
 		else
-			if (course == null)
-				c = adapter.fetchAllOrdered(Values.ASSIGNMENT_LIST_FETCH, null, Values.ASSIGNMENT_KEY_DUE_DATE);
-			else
-				c = adapter.fetchAllOrdered(Values.ASSIGNMENT_LIST_FETCH, Values.ASSIGNMENT_KEY_COURSE + "=" + course, Values.ASSIGNMENT_KEY_DUE_DATE);
+			c = adapter.fetchAllOrdered(Values.ASSIGNMENT_LIST_FETCH, Values.ASSIGNMENT_KEY_COURSE + "=" + course, Values.ASSIGNMENT_KEY_DUE_DATE);
 		
 		adapter.close();
 		if (c != null)
@@ -239,16 +230,7 @@ public class AssignmentListFragment extends ListFragment {
 		return c;
 	}
 	
-	/**
-	 * Get all the incomplete assignments for a certain course.
-	 * @param context a copy of the application context.
-	 * @param query the SQL query syntax.
-	 * @param course the course to fetch the assignments from. Pass null
-	 * to return assignments from all courses.
-	 * @param order whether or not to sort the result by due date.
-	 * @return all the incomplete assignments for the specified course.
-	 */
-	public Cursor fetchIncompleteAssignments(Short course, boolean order) {
+	public Cursor fetchIncompleteAssignments(Short course) {
 		DbAdapter adapter = new DbAdapter(context,
 				Values.DATABASE_NAME,
 				Values.DATABASE_VERSION,
@@ -258,51 +240,25 @@ public class AssignmentListFragment extends ListFragment {
 		adapter.open();
 		
 		Cursor r;
-		if (course != null) // Fetching from all courses
-			r = adapter.fetchAllWhere(Values.ASSIGNMENT_LIST_FETCH, Values.ASSIGNMENT_KEY_COURSE + "=" + course
-				+ " AND " + Values.ASSIGNMENT_KEY_STATUS + "=" + 0);
+		if (course == null) // Fetching from all courses
+			r = adapter.fetchAllWhere(Values.ASSIGNMENT_LIST_FETCH, Values.ASSIGNMENT_KEY_STATUS + "=" + 0, Values.ASSIGNMENT_KEY_DUE_DATE);
 		else
-			r = adapter.fetchAllWhere(Values.ASSIGNMENT_LIST_FETCH, Values.ASSIGNMENT_KEY_STATUS + "=" + 0);
+			r = adapter.fetchAllWhere(Values.ASSIGNMENT_LIST_FETCH, Values.ASSIGNMENT_KEY_COURSE + "=" + course
+				+ " AND " + Values.ASSIGNMENT_KEY_STATUS + "=" + 0, Values.ASSIGNMENT_KEY_DUE_DATE);
 		adapter.close();
 		return r;
 	}
-	/*
-	private class CustomViewBinder implements ViewBinder {
-
-		@Override
-		public boolean setViewValue(View view, Cursor cursor, int columnIndex) {
-			switch (columnIndex) {
-			case 2: // Course label
-				String[] courses = DbUtils.getCoursesAsArray(context);
-				short value = cursor.getShort(columnIndex);
-				TextView textView = (TextView) view;
-				textView.setText(courses[value]);
-				return true;
-			case 3: // Description label
-				String desc = assignmentsCursor.getString(columnIndex);
-				String 
-			case 4: // Due date label
-				Calendar cal = Calendar.getInstance();
-				cal.setTimeInMillis(DateUtils.convertMinutesToMills(cursor.getLong(columnIndex)));
-				
-				String str = DateUtils.formatAsString(cal, DATE_FORMAT);
-				TextView txt = (TextView)view;
-				txt.setText(str);
-				return true;
-			default:
-				return false;
-			}
-		}
-	}
-*/
-	private class CustomAdapter extends CursorAdapter {
+	
+	/*---------- ListView Adapter and Related Subroutines ----------*/
+	
+	private class CustomCursorAdapter extends CursorAdapter {
 		
 		LayoutInflater mInflater;
 		ViewHolder holder;
 		int[] stripColors;
 		int[] stripColorsLight;
 		
-		public CustomAdapter(Context context, Cursor c, int flags) {
+		public CustomCursorAdapter(Context context, Cursor c, int flags) {
 			super(context, c, flags);
 			this.mContext = context;
 			

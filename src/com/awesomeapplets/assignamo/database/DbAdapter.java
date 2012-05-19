@@ -123,16 +123,8 @@ public class DbAdapter {
 			c.moveToFirst();
 		return c;
 	}
-
-	public Cursor fetchAllWhere(String[] query, String where) throws SQLException{
-		Cursor cursor = db.query(true, DATABASE_TABLE, query,
-				where, null, null, null, null, null);
-		if (cursor != null)
-			cursor.moveToFirst();
-		return cursor;
-	}
-
-	public Cursor fetchAllWhere(String[] query, String where, String orderBy) throws SQLException{
+	
+	public Cursor fetchAllWhere(String[] query, String where, String orderBy) throws SQLException {
 		Cursor cursor = db.query(true, DATABASE_TABLE, query,
 				where, null, null, null, orderBy, null);
 		if (cursor != null)
