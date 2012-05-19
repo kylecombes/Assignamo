@@ -1,16 +1,16 @@
 package com.awesomeapplets.assignamo.preferences;
 
-import com.awesomeapplets.assignamo.R;
-import com.awesomeapplets.assignamo.database.DbAdapter;
-import com.awesomeapplets.assignamo.database.Values;
-
 import android.content.Intent;
-import android.database.Cursor;
 import android.os.Bundle;
 import android.text.SpannableString;
 import android.view.MenuItem;
 import android.widget.TextView;
 import android.widget.TextView.BufferType;
+
+import com.awesomeapplets.assignamo.R;
+import com.awesomeapplets.assignamo.database.DbAdapter;
+import com.awesomeapplets.assignamo.database.Values;
+import com.awesomeapplets.assignamo.utils.DbUtils;
 
 public class TeacherViewFragment extends ViewFragment {
 	
@@ -23,7 +23,6 @@ public class TeacherViewFragment extends ViewFragment {
 	
 	public void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
-		dbAdapter = new DbAdapter(context, Values.DATABASE_NAME, Values.DATABASE_VERSION, Values.TEACHER_TABLE, Values.DATABASE_CREATE, Values.KEY_ROWID);
 		
 		setContentView(R.layout.teacher_view_phone);
 		nameLabel = (TextView)findViewById(R.id.teacher_view_name);
@@ -39,16 +38,8 @@ public class TeacherViewFragment extends ViewFragment {
 	}
 	
 	@Override
-	public void onPause() {
-		super.onPause();
-		dbAdapter.close();
-	}
-	
-	@Override
 	public void onResume() {
 		super.onResume();
-		dbAdapter.open();
-		setRowIdFromIntent();
 		populateFields();
 	}
 	
@@ -61,33 +52,38 @@ public class TeacherViewFragment extends ViewFragment {
 			startActivity(i);
 			break;
 		case R.id.view_delete:
-			dbAdapter.delete(rowId);
+			DbUtils.deleteAssignment(context,rowId);
 			finish();
 		}
 		return true;
 	}
 	
+	protected void reloadData() {
+		DbAdapter dbAdapter = new DbAdapter(context, Values.DATABASE_NAME, Values.DATABASE_VERSION,
+				Values.TEACHER_TABLE, Values.DATABASE_CREATE, Values.KEY_ROWID);
+		dbAdapter.open();
+		cursor = dbAdapter.fetch(rowId,Values.TEACHER_FETCH);
+		dbAdapter.close();
+	}
 	
 	protected void populateFields() {
-		Cursor data = dbAdapter.fetch(rowId,Values.TEACHER_FETCH);
-		startManagingCursor(data);
 		
-		nameLabel.setText(data.getString(data.getColumnIndexOrThrow(Values.KEY_NAME)));
-		subjectLabel.setText(data.getString(data.getColumnIndexOrThrow(Values.TEACHER_KEY_SUBJECT)));
+		nameLabel.setText(cursor.getString(cursor.getColumnIndexOrThrow(Values.KEY_NAME)));
+		subjectLabel.setText(cursor.getString(cursor.getColumnIndexOrThrow(Values.TEACHER_KEY_SUBJECT)));
 		
 		try {
-			short roomNum = Short.parseShort(data.getString(data.getColumnIndexOrThrow(Values.KEY_ROOM)));
+			short roomNum = Short.parseShort(cursor.getString(cursor.getColumnIndexOrThrow(Values.KEY_ROOM)));
 			if (roomNum >= 0)
 				roomLabel.setText(getString(R.string.teacher_view_room) + ": " + roomNum);
 			else if (roomNum == -1)
 				roomLabel.setText(getItalicizedString(getString(R.string.teacher_view_no_room)));
 			//TODO Resolve room number
 		} catch (NumberFormatException e) {}
-		emailLabel.setText(data.getString(data.getColumnIndexOrThrow(Values.TEACHER_KEY_EMAIL)));
-		phoneLabel.setText(getFormattedPhoneNumber(data.getLong(data.getColumnIndexOrThrow(Values.TEACHER_KEY_PHONE))),
+		emailLabel.setText(cursor.getString(cursor.getColumnIndexOrThrow(Values.TEACHER_KEY_EMAIL)));
+		phoneLabel.setText(getFormattedPhoneNumber(cursor.getLong(cursor.getColumnIndexOrThrow(Values.TEACHER_KEY_PHONE))),
 				BufferType.SPANNABLE);
 		
-		String notes = data.getString(data.getColumnIndexOrThrow(Values.KEY_NOTES));
+		String notes = cursor.getString(cursor.getColumnIndexOrThrow(Values.KEY_NOTES));
 		if (notes.length() > 0)
 			notesLabel.setText(notes);
 		else

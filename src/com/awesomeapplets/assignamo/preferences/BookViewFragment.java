@@ -1,17 +1,17 @@
 package com.awesomeapplets.assignamo.preferences;
 
-import com.awesomeapplets.assignamo.R;
-import com.awesomeapplets.assignamo.database.DbAdapter;
-import com.awesomeapplets.assignamo.database.Values;
-
 import android.content.Intent;
-import android.database.Cursor;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.Menu;
 import android.view.MenuInflater;
 import android.view.MenuItem;
 import android.widget.TextView;
+
+import com.awesomeapplets.assignamo.R;
+import com.awesomeapplets.assignamo.database.DbAdapter;
+import com.awesomeapplets.assignamo.database.Values;
+import com.awesomeapplets.assignamo.utils.DbUtils;
 
 public class BookViewFragment extends ViewFragment {
 		
@@ -25,8 +25,6 @@ public class BookViewFragment extends ViewFragment {
 	
 	public void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
-		dbAdapter = new DbAdapter(context, Values.DATABASE_NAME, Values.DATABASE_VERSION,
-				Values.BOOK_TABLE, Values.DATABASE_CREATE, Values.KEY_ROWID);
 		
 		setContentView(R.layout.book_view_phone);
 		typeLabel = (TextView)findViewById(R.id.book_view_type);
@@ -42,18 +40,19 @@ public class BookViewFragment extends ViewFragment {
 			rowId = savedInstanceState.getLong(Values.KEY_ROWID);
 	}
 	
-	@Override
-	public void onResume() {
-		super.onResume();
+	protected void reloadData() {
+		DbAdapter dbAdapter = new DbAdapter(context, Values.DATABASE_NAME, Values.DATABASE_VERSION,
+				Values.BOOK_TABLE, Values.DATABASE_CREATE, Values.KEY_ROWID);
 		dbAdapter.open();
-		setRowIdFromIntent();
-		populateFields();
+		cursor = dbAdapter.fetch(rowId,Values.BOOK_FETCH);
+		dbAdapter.close();
 	}
 	
 	@Override
-	public void onPause() {
-		super.onPause();
-		dbAdapter.close();
+	public void onResume() {
+		super.onResume();
+		setRowIdFromIntent();
+		populateFields();
 	}
 	
 	@Override
@@ -72,7 +71,7 @@ public class BookViewFragment extends ViewFragment {
 			startActivity(i);
 			break;
 		case R.id.view_delete:
-			dbAdapter.delete(rowId);
+			DbUtils.deleteAssignment(context,rowId);
 			finish();
 		}
 		return true;
@@ -86,8 +85,6 @@ public class BookViewFragment extends ViewFragment {
 	
 	
 	protected void populateFields() {
-		Cursor cursor = dbAdapter.fetch(rowId,Values.BOOK_FETCH);
-		startManagingCursor(cursor);
 		
 		String[] types = getResources().getStringArray(R.array.book_types);
 		titleLabel.setText(cursor.getString(cursor.getColumnIndexOrThrow(Values.KEY_TITLE)));

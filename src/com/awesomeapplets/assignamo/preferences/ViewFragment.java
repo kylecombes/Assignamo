@@ -3,13 +3,8 @@ package com.awesomeapplets.assignamo.preferences;
 import java.text.SimpleDateFormat;
 import java.util.Calendar;
 
-import com.awesomeapplets.assignamo.R;
-import com.awesomeapplets.assignamo.database.DbAdapter;
-import com.awesomeapplets.assignamo.database.Values;
-import com.awesomeapplets.assignamo.utils.DateUtils;
-import com.awesomeapplets.assignamo.utils.DbUtils;
-
 import android.content.Context;
+import android.database.Cursor;
 import android.graphics.Typeface;
 import android.os.Bundle;
 import android.support.v4.app.FragmentActivity;
@@ -20,10 +15,15 @@ import android.view.Menu;
 import android.view.MenuInflater;
 import android.view.MenuItem;
 
+import com.awesomeapplets.assignamo.R;
+import com.awesomeapplets.assignamo.database.Values;
+import com.awesomeapplets.assignamo.utils.DateUtils;
+import com.awesomeapplets.assignamo.utils.DbUtils;
+
 public abstract class ViewFragment extends FragmentActivity {
 	
 	protected long rowId;
-	protected DbAdapter dbAdapter;
+	protected Cursor cursor;
 	protected Context context;
 	
 	protected abstract void populateFields();
@@ -32,6 +32,13 @@ public abstract class ViewFragment extends FragmentActivity {
 	public void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
 		context = getBaseContext();
+		setRowIdFromIntent();
+	}
+	
+	@Override
+	public void onPause() {
+		super.onPause();
+		cursor.close();
 	}
 	
 	@Override
@@ -39,7 +46,10 @@ public abstract class ViewFragment extends FragmentActivity {
 		super.onResume();
 		if (context == null)
 			context = getBaseContext();
+		reloadData();
 	}
+	
+	protected abstract void reloadData();
 	
 	@Override
 	public void onSaveInstanceState(Bundle outState) {
@@ -65,7 +75,6 @@ public abstract class ViewFragment extends FragmentActivity {
 	}
 
 	protected SpannableString getDescription(String desc) {
-		android.util.Log.d("getDescription", "Length: " + desc.length());
 		if (desc.length() == 0) {
 			String message = getString(R.string.no_description);
 			return getItalicizedString(message);

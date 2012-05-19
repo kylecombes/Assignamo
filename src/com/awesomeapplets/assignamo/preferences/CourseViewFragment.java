@@ -1,11 +1,6 @@
 package com.awesomeapplets.assignamo.preferences;
 
-import com.awesomeapplets.assignamo.R;
-import com.awesomeapplets.assignamo.database.DbAdapter;
-import com.awesomeapplets.assignamo.database.Values;
-
 import android.content.Intent;
-import android.database.Cursor;
 import android.os.Bundle;
 import android.text.SpannableString;
 import android.text.style.RelativeSizeSpan;
@@ -14,6 +9,11 @@ import android.view.MenuInflater;
 import android.view.MenuItem;
 import android.widget.TextView;
 import android.widget.TextView.BufferType;
+
+import com.awesomeapplets.assignamo.R;
+import com.awesomeapplets.assignamo.database.DbAdapter;
+import com.awesomeapplets.assignamo.database.Values;
+import com.awesomeapplets.assignamo.utils.DbUtils;
 
 public class CourseViewFragment extends ViewFragment {
 	
@@ -24,8 +24,6 @@ public class CourseViewFragment extends ViewFragment {
 	
 	public void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
-		dbAdapter = new DbAdapter(getBaseContext(), Values.DATABASE_NAME, Values.DATABASE_VERSION,
-				Values.COURSE_TABLE, Values.DATABASE_CREATE, Values.KEY_ROWID);
 		
 		setContentView(R.layout.course_view_phone);
 		nameLabel = (TextView)findViewById(R.id.course_view_name);
@@ -38,16 +36,8 @@ public class CourseViewFragment extends ViewFragment {
 	}
 	
 	@Override
-	public void onPause() {
-		super.onPause();
-		dbAdapter.close();
-	}
-	
-	@Override
 	public void onResume() {
 		super.onResume();
-		dbAdapter.open();
-		setRowIdFromIntent();
 		populateFields();
 	}
 	
@@ -67,7 +57,7 @@ public class CourseViewFragment extends ViewFragment {
 			startActivity(i);
 			break;
 		case R.id.view_delete:
-			dbAdapter.delete(rowId);
+			DbUtils.deleteAssignment(context,rowId);
 			finish();
 		}
 		return true;
@@ -79,10 +69,15 @@ public class CourseViewFragment extends ViewFragment {
 		outState.putLong(Values.KEY_ROWID, rowId);
 	}
 	
+	protected void reloadData() {
+		DbAdapter dbAdapter = new DbAdapter(getBaseContext(), Values.DATABASE_NAME, Values.DATABASE_VERSION,
+				Values.COURSE_TABLE, Values.DATABASE_CREATE, Values.KEY_ROWID);
+		dbAdapter.open();
+		cursor = dbAdapter.fetch(rowId,Values.COURSE_FETCH);
+		dbAdapter.close();
+	}
 	
 	protected void populateFields() {
-		Cursor cursor = dbAdapter.fetch(rowId,Values.COURSE_FETCH);
-		startManagingCursor(cursor);
 		
 		nameLabel.setText(cursor.getString(cursor.getColumnIndexOrThrow(Values.KEY_NAME)));
 		teacherLabel.setText(getTeacher(cursor.getShort(cursor.getColumnIndexOrThrow(Values.COURSE_KEY_TEACHER))));

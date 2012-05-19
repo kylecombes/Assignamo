@@ -1,19 +1,18 @@
 package com.awesomeapplets.assignamo;
 
-import com.awesomeapplets.assignamo.database.DbAdapter;
-import com.awesomeapplets.assignamo.database.Values;
-import com.awesomeapplets.assignamo.preferences.ViewFragment;
-import com.awesomeapplets.assignamo.utils.DbUtils;
-
 import android.content.Intent;
 import android.content.SharedPreferences;
-import android.database.Cursor;
 import android.os.Bundle;
 import android.preference.PreferenceManager;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.widget.TextView;
 import android.widget.TextView.BufferType;
+
+import com.awesomeapplets.assignamo.database.DbAdapter;
+import com.awesomeapplets.assignamo.database.Values;
+import com.awesomeapplets.assignamo.preferences.ViewFragment;
+import com.awesomeapplets.assignamo.utils.DbUtils;
 
 public class AssignmentViewFragment extends ViewFragment {
 	
@@ -25,8 +24,6 @@ public class AssignmentViewFragment extends ViewFragment {
 	
 	public void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
-		dbAdapter = new DbAdapter(getBaseContext(), Values.DATABASE_NAME, Values.DATABASE_VERSION,
-				Values.ASSIGNMENT_TABLE, Values.DATABASE_CREATE, Values.KEY_ROWID);
 		
 		setContentView(R.layout.assignment_view_phone);
 		courseLabel = (TextView)findViewById(R.id.assignment_view_course);
@@ -40,16 +37,8 @@ public class AssignmentViewFragment extends ViewFragment {
 	}
 	
 	@Override
-	public void onPause() {
-		super.onPause();
-		dbAdapter.close();
-	}
-	
-	@Override
 	public void onResume() {
 		super.onResume();
-		dbAdapter.open();
-		setRowIdFromIntent();
 		populateFields();
 	}
 	
@@ -61,10 +50,6 @@ public class AssignmentViewFragment extends ViewFragment {
 	
 	
 	protected void populateFields() {
-		dbAdapter.open();
-		Cursor cursor = dbAdapter.fetch(rowId, Values.ASSIGNMENT_FETCH);
-		dbAdapter.close();
-		startManagingCursor(cursor);
 		
 		// Set course label
 		short courseId = (short)cursor.getInt(cursor.getColumnIndexOrThrow(Values.ASSIGNMENT_KEY_COURSE));
@@ -124,16 +109,19 @@ public class AssignmentViewFragment extends ViewFragment {
 			startActivity(i);
 			break;
 		case 2:
-			deleteAssignment(rowId);
+			DbUtils.deleteAssignment(context,rowId);
 			finish();
 		}
 		return true;
 	}
 	
-	private boolean deleteAssignment(long rowId) {
+	@Override
+	protected void reloadData() {
+		DbAdapter dbAdapter = new DbAdapter(getBaseContext(), Values.DATABASE_NAME, Values.DATABASE_VERSION,
+				Values.ASSIGNMENT_TABLE, Values.DATABASE_CREATE, Values.KEY_ROWID);
 		dbAdapter.open();
-		boolean b = dbAdapter.delete(rowId);
+		cursor = dbAdapter.fetch(rowId, Values.ASSIGNMENT_FETCH);
 		dbAdapter.close();
-		return b;
+		
 	}
 }
