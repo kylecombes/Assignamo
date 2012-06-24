@@ -5,7 +5,7 @@ package com.awesomeapplets.assignamo.database;
 public final class Values {
 	
 	public static final String DATABASE_NAME = "data.db";
-	public static final short DATABASE_VERSION = 2;
+	public static final short DATABASE_VERSION = 1;
 	public static final String[] DATABASE_CREATE = {Values.ASSIGNMENT_DATABASE_CREATE,
 		Values.COURSE_DATABASE_CREATE, Values.BOOK_DATABASE_CREATE, Values.TEACHER_DATABASE_CREATE };
 	public static final String INTENT_REFRESH_KEY = "refresh_id";
@@ -47,31 +47,10 @@ public final class Values {
 	public static final String COURSE_KEY_TEACHER = "teacher";
 	public static final String COURSE_KEY_TIMES_OF_DAY = "times_of_day";
 	public static final String COURSE_KEY_CREDIT_HOURS = "credit_hours";
-	public static final String COURSE_KEY_DAYS_SUNSTART = "sun_start";
-	public static final String COURSE_KEY_DAYS_SUNDUR = "sun_dur";
-	public static final String COURSE_KEY_DAYS_MONSTART = "mon_start";
-	public static final String COURSE_KEY_DAYS_MONDUR = "mon_dur";
-	public static final String COURSE_KEY_DAYS_TUESSTART = "tues_start";
-	public static final String COURSE_KEY_DAYS_TUESDUR = "tues_dur";
-	public static final String COURSE_KEY_DAYS_WEDSTART = "wed_start";
-	public static final String COURSE_KEY_DAYS_WEDDUR = "wed_dur";
-	public static final String COURSE_KEY_DAYS_THURSSTART = "thur_start";
-	public static final String COURSE_KEY_DAYS_THURSDUR = "thurs_dur";
-	public static final String COURSE_KEY_DAYS_FRISTART = "fri_start";
-	public static final String COURSE_KEY_DAYS_FRIDUR = "fri_dur";
-	public static final String COURSE_KEY_DAYS_SATSTART = "sat_start";
-	public static final String COURSE_KEY_DAYS_SATDUR = "sat_dur";
-	public static final String COURSE_KEY_DAYS_OF_WEEK = "days_of_week";
-	public static final String COURSE_EDIT_DAYS_SELECT_START_TIMES_KEY= "start_time";
-	public static final String COURSE_EDIT_DAYS_SELECT_STOP_TIMES_KEY= "stop_time";
-	public static final String[] COURSE_DAYS = { COURSE_KEY_DAYS_SUNSTART, COURSE_KEY_DAYS_SUNDUR,
-		COURSE_KEY_DAYS_MONSTART, COURSE_KEY_DAYS_MONDUR, COURSE_KEY_DAYS_TUESSTART, COURSE_KEY_DAYS_TUESDUR,
-		COURSE_KEY_DAYS_WEDSTART, COURSE_KEY_DAYS_WEDDUR, COURSE_KEY_DAYS_THURSSTART, COURSE_KEY_DAYS_THURSDUR,
-		COURSE_KEY_DAYS_FRISTART, COURSE_KEY_DAYS_FRIDUR, COURSE_KEY_DAYS_SATSTART, COURSE_KEY_DAYS_SATDUR
-	};
-	public static final String[] COURSE_FETCH = {KEY_ROWID, KEY_NAME,
-		COURSE_KEY_TEACHER, KEY_DESCRIPTION, KEY_ROOM,
-		COURSE_KEY_TIMES_OF_DAY, COURSE_KEY_CREDIT_HOURS};
+	public static final String COURSE_EDIT_DAYS_SELECT_START_TIMES_KEY= "start_times";
+	public static final String COURSE_EDIT_DAYS_SELECT_STOP_TIMES_KEY= "stop_times";
+	public static final String[] COURSE_FETCH = { KEY_ROWID, KEY_NAME,
+		COURSE_KEY_TEACHER, KEY_DESCRIPTION, KEY_ROOM, COURSE_KEY_TIMES_OF_DAY, COURSE_KEY_CREDIT_HOURS };
 	public static final String COURSE_DATABASE_CREATE = "create table " + COURSE_TABLE + " ( "
 			+ KEY_ROWID + " integer primary key autoincrement, "
 			+ KEY_NAME + " text not null, "
@@ -79,21 +58,7 @@ public final class Values {
 			+ KEY_DESCRIPTION + " text, "
 			+ KEY_ROOM + " int, "
 			+ COURSE_KEY_TIMES_OF_DAY + " text, "
-			+ COURSE_KEY_CREDIT_HOURS + " int, "
-			+ COURSE_KEY_DAYS_SUNSTART + " int, "
-			+ COURSE_KEY_DAYS_SUNDUR + " int, "
-			+ COURSE_KEY_DAYS_MONSTART + " int, "
-			+ COURSE_KEY_DAYS_MONDUR + " int, "
-			+ COURSE_KEY_DAYS_TUESSTART + " int, "
-			+ COURSE_KEY_DAYS_TUESDUR + " int, "
-			+ COURSE_KEY_DAYS_WEDSTART + " int, "
-			+ COURSE_KEY_DAYS_WEDDUR + " int, "
-			+ COURSE_KEY_DAYS_THURSSTART + " int, "
-			+ COURSE_KEY_DAYS_THURSDUR + " int, "
-			+ COURSE_KEY_DAYS_FRISTART + " int, "
-			+ COURSE_KEY_DAYS_FRIDUR + " int, "
-			+ COURSE_KEY_DAYS_SATSTART + " int, "
-			+ COURSE_KEY_DAYS_SATDUR + "int);";
+			+ COURSE_KEY_CREDIT_HOURS + " int);";
 	
 	/*--------- Books ---------- */
 	public static final String BOOK_TABLE = "books";

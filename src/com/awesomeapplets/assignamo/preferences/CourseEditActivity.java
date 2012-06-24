@@ -1,15 +1,16 @@
 package com.awesomeapplets.assignamo.preferences;
 
+import org.json.JSONArray;
+import org.json.JSONException;
+
 import android.app.Activity;
 import android.app.AlertDialog;
-import android.app.Dialog;
 import android.content.ContentValues;
 import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
 import android.database.Cursor;
 import android.os.Bundle;
-import android.support.v4.app.FragmentActivity;
 import android.support.v4.widget.SimpleCursorAdapter;
 import android.view.View;
 import android.view.View.OnClickListener;
@@ -42,7 +43,7 @@ public class CourseEditActivity extends Activity {
 	private TextView creditHoursField;
 	private Button saveButton;
 	private Button cancelButton;
-	private short[][] times = new short[7][2];
+	private short[][] times;
 		
 	public void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
@@ -55,10 +56,8 @@ public class CourseEditActivity extends Activity {
 			d.setTitle(R.string.course_edit_teacher_required_title);
 			d.setMessage(R.string.course_edit_teacher_required_message);
 			d.setPositiveButton(R.string.ok, new AlertDialog.OnClickListener() {
-				
 				@Override
 				public void onClick(DialogInterface dialog, int which) {
-					// TODO Auto-generated method stub
 					Intent i = new Intent(context, TeacherEditActivity.class);
 					startActivity(i);
 				}
@@ -69,6 +68,8 @@ public class CourseEditActivity extends Activity {
 		setContentView(R.layout.course_edit);
 		
 		initializeFields();
+		setRowIdFromIntent();
+		populateFields();
 
 		titleField.requestFocus();
 	}
@@ -77,9 +78,6 @@ public class CourseEditActivity extends Activity {
 		super.onResume();
 		if (context == null)
 			context = getBaseContext();
-		dbAdapter.open();
-		setRowIdFromIntent();
-		populateFields();
 	}
 	
 	public void onPause() {
@@ -114,9 +112,8 @@ public class CourseEditActivity extends Activity {
 	}
 	
 	private void populateFields() {
-
+		
 		courseCursor = DbUtils.getTeachersAsCursor(context);
-		startManagingCursor(courseCursor);
 		
 		// create an array to specify which fields we want to display
 		String[] from = new String[]{Values.KEY_NAME};
@@ -135,6 +132,21 @@ public class CourseEditActivity extends Activity {
 			teacherSpinner.setSelection(data.getShort(data.getColumnIndexOrThrow(Values.COURSE_KEY_TEACHER)));
 			descriptionField.setText(data.getString(data.getColumnIndexOrThrow(Values.KEY_DESCRIPTION)));
 			roomNumberField.setText(data.getString(data.getColumnIndexOrThrow(Values.KEY_ROOM)));
+			
+			times = new short[7][2];
+			try {
+				JSONArray array = new JSONArray(data.getString(data.getColumnIndexOrThrow(Values.COURSE_KEY_TIMES_OF_DAY)));
+				for (short x = 0; x < 14; x++)
+					if (x % 2 == 0) // Even means start time
+						times[x/2][0] = (short)array.getInt(x);
+					else
+						times[x/2][1] = (short)array.getInt(x);
+			} catch (IllegalArgumentException e) {
+				e.printStackTrace();
+			} catch (JSONException e) {
+				e.printStackTrace();
+			}
+			
 			creditHoursField.setText(data.getString(data.getColumnIndexOrThrow(Values.COURSE_KEY_CREDIT_HOURS)));
 		}
 		
@@ -156,6 +168,7 @@ public class CourseEditActivity extends Activity {
 				startActivityForResult(intent, DAY_SELECT_RESULT_ID);
 			}
 		});
+		
 	}
 	
 	private void saveData() {
@@ -176,13 +189,12 @@ public class CourseEditActivity extends Activity {
 			creditHours = -1;
 		}
 		
-		/*addCourse(titleField.getText().toString(),
+		addCourse(titleField.getText().toString(),
 				(short)teacherSpinner.getSelectedItemPosition(),
 				descriptionField.getText().toString(),
 				roomNum,
-				daysField.getText().toString(),
-				timesField.getText().toString(),
-				creditHours);*/
+				times,
+				creditHours);
 		
 	}
 	
@@ -201,6 +213,7 @@ public class CourseEditActivity extends Activity {
 		case RESULT_OK:
 			short[] startTimes = data.getShortArrayExtra(Values.COURSE_EDIT_DAYS_SELECT_START_TIMES_KEY);
 			short[] stopTimes = data.getShortArrayExtra(Values.COURSE_EDIT_DAYS_SELECT_STOP_TIMES_KEY);
+			times = new short[7][2];
 			for (short i = 0; i < 7; i++) {
 				times[i][0] = startTimes[i];
 				times[i][1] = stopTimes[i];
@@ -212,15 +225,20 @@ public class CourseEditActivity extends Activity {
 		return DbUtils.getTeachersAsArray(context).length > 0;
 	}
 	
-	private long addCourse(String name, short teacherId, String description, long roomNum, String daysOfWeek, String timesOfDay, short creditHours) {
+	private long addCourse(String name, short teacherId, String description, long roomNum, short[][] timesOfDay, short creditHours) {
     	// TODO
     	ContentValues values = new ContentValues();
     	values.put(Values.KEY_NAME, name);
     	values.put(Values.COURSE_KEY_TEACHER, teacherId);
     	values.put(Values.KEY_DESCRIPTION, description);
     	values.put(Values.KEY_ROOM, roomNum);
-    	values.put(Values.COURSE_KEY_DAYS_OF_WEEK, daysOfWeek);
-    	values.put(Values.COURSE_KEY_TIMES_OF_DAY, timesOfDay);
+    	
+    	JSONArray timesAsArray = new JSONArray();
+    	for (short x = 0; x < 7; x++)
+    		for (short y = 0; y < 2; y++)
+    			timesAsArray.put(timesOfDay[x][y]);
+    	values.put(Values.COURSE_KEY_TIMES_OF_DAY, timesAsArray.toString());
+    	
     	values.put(Values.COURSE_KEY_CREDIT_HOURS, creditHours);
     	return dbAdapter.add(values);
     }

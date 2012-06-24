@@ -100,10 +100,9 @@
     <string name="menu_manage_courses">Manage Courses</string>
     <string name="course_days_of_week">Days of Week</string>
     <string name="course_times">Times</string>
+    <string name="configure">Configure</string>
     <!-- Selecting the course days -->
     <string name="course_edit_days_select_title">Course Edit - Select Days of Week</string>
-    <string name="course_edit_days_select_default_button_start">Start</string>
-    <string name="course_edit_days_select_default_button_stop">Stop</string>
     <string name="course_edit_days_select_not_set">Not Set</string>
     <string name="course_edit_days_select_sunday">Sunday</string>
     <string name="course_edit_days_select_monday">Monday</string>

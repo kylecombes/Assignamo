@@ -76,7 +76,6 @@ public class DaySelectFragment extends FragmentActivity {
 					
 					@Override
 					public void onClick(View v) {
-						// TODO Auto-generated method stub
 						buttonPressed(v.getId());
 					}
 				});
@@ -90,6 +89,7 @@ public class DaySelectFragment extends FragmentActivity {
 			
 		}
 		
+		// Configure Cancel button
 		findViewById(R.id.course_edit_days_select_cancel).setOnClickListener(new OnClickListener() {
 			@Override
 			public void onClick(View v) {
@@ -98,6 +98,7 @@ public class DaySelectFragment extends FragmentActivity {
 			}
 		});
 		
+		// Configure OK button
 		findViewById(R.id.course_edit_days_select_ok).setOnClickListener(new OnClickListener() {
 			
 			@Override
