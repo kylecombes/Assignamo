@@ -34,6 +34,10 @@ Save entered assignment data on orientation change.
 Make sure focused tab pictures are good.
 Custom list selectors.
 
+Version 2
+-------------
+Casual dates (I.e. "This Wednesday")
+
 Ideas
 --------------
 Auto-convert words like "the", "in", "of", etc. to lowercase as long as they are not the first word?
@@ -45,4 +49,4 @@ Skins for schools (UCLA, Standford, etc.)
 
 -------------- Bugs: ----------------
 When there are no courses, cannot add an assignment due to the fact that there are no courses to link it to. Crashes.
-When hitting Back from the assignment view, it returns to the first screen but the tab number is saved.
+* When hitting Back from the assignment view, it returns to the first screen but the tab number is saved.

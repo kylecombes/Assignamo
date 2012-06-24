@@ -13,4 +13,9 @@
     
     <dimen name="color_strip_height">70dip</dimen>
     <dimen name="color_strip_width">15dip</dimen>
+    
+    <!-- Course Days Select -->
+    <dimen name="course_edit_days_select_text_padding">10dip</dimen>
+    <dimen name="course_edit_days_select_text_size">20sp</dimen>
+    <dimen name="course_edit_days_select_checkbox_dimen">40dip</dimen>
 </resources>

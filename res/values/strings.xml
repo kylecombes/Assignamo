@@ -72,12 +72,8 @@
     <!-- Appearance -->
     <string name="pref_appearance_screen_title">Appearance</string>
     <string name="pref_appearance_screen_summary">Customize the look of Assignamo.</string>
-    <string name="pref_appearance_assignments_title">Viewing assignments</string>
-    <string name="pref_appearance_example_title">Format example:</string>
     <string name="pref_appearance_show_time_title">Show time</string>
     <string name="pref_appearance_show_time_summary">Display time due when viewing assignments</string>
-    <string name="pref_appearance_casual_title">Casual due date</string>
-    <string name="pref_appearance_casual_summary">Example: \&quot;This Wednesday\&quot;.</string>
     
     <!-- Manage -->
     <string name="pref_manage_screen_summary">Manage your courses, books, and teachers.</string>
@@ -104,6 +100,19 @@
     <string name="menu_manage_courses">Manage Courses</string>
     <string name="course_days_of_week">Days of Week</string>
     <string name="course_times">Times</string>
+    <!-- Selecting the course days -->
+    <string name="course_edit_days_select_title">Course Edit - Select Days of Week</string>
+    <string name="course_edit_days_select_default_button_start">Start</string>
+    <string name="course_edit_days_select_default_button_stop">Stop</string>
+    <string name="course_edit_days_select_not_set">Not Set</string>
+    <string name="course_edit_days_select_sunday">Sunday</string>
+    <string name="course_edit_days_select_monday">Monday</string>
+    <string name="course_edit_days_select_tuesday">Tuesday</string>
+    <string name="course_edit_days_select_wednesday">Wednesday</string>
+    <string name="course_edit_days_select_thursday">Thursday</string>
+    <string name="course_edit_days_select_friday">Friday</string>
+    <string name="course_edit_days_select_saturday">Saturday</string>
+    
     
     <!-- Teachers -->
     <string name="teacher">Teacher</string>
@@ -122,10 +131,10 @@
     <string name="pref_app_version_title">Application version</string>
     <string name="version">Version</string>
     <string name="pref_unknown_version">Hmm&#8230; I can\'t seem to find the version info. Please report this to the developer.</string>
-    <string name="contact_email">kylecombes@gmail.com</string>
+    <string name="contact_email">development@aceditapps.com</string>
     <string name="pref_contact_title">Contact us</string>
     <string name="pref_email_chooser_title">Send using:</string>
-    <string name="website">http://google.com/</string>
+    <string name="website">http://www.aceitapps.com/</string>
     <string name="pref_visit_title">Visit us</string>
     <string name="assignment_edit_course_required_title">Course Required</string>
     <string name="assignment_edit_course_required_message">You need to add a course before you can add an assignment.</string>

@@ -1,0 +1,177 @@
+<?xml version="1.0" encoding="utf-8"?>
+<FrameLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="fill_parent"
+    android:layout_height="fill_parent"
+    android:layout_weight="1">
+	<ScrollView
+	    android:layout_width="fill_parent"
+	    android:layout_height="fill_parent"
+	    android:scrollbarStyle="insideOverlay">
+	    <TableLayout xmlns:android="http://schemas.android.com/apk/res/android"
+	        android:layout_width="match_parent"
+	        android:layout_height="wrap_content" >
+	        <!-- Day 1 -->
+			<TableRow android:layout_width="wrap_content"
+			    android:layout_height="wrap_content">
+			    <CheckBox android:id="@+id/course_edit_days_select_day1_checkbox"
+			        android:layout_width="wrap_content"
+			        android:layout_height="wrap_content" />
+			    <TextView  android:layout_width="wrap_content"
+			        android:layout_height="wrap_content"
+			        style="@style/CourseDaysSelect.Text"
+			        android:text="@string/course_edit_days_select_sunday"/>
+			    <Button android:id="@+id/course_edit_days_select_day1_button1"
+			        android:layout_width="wrap_content"
+			        android:layout_height="wrap_content"/>
+			    <TextView android:layout_width="wrap_content"
+			        android:layout_height="wrap_content"
+			        style="@style/CourseDaysSelect.Text"
+			        android:text="-"/>
+			    <Button android:id="@+id/course_edit_days_select_day1_button2"
+			        android:layout_width="wrap_content"
+			        android:layout_height="wrap_content"/>
+		    </TableRow>
+		    <!-- Day 2 -->
+		    <TableRow android:layout_width="wrap_content"
+			    android:layout_height="wrap_content">
+			    <CheckBox android:id="@+id/course_edit_days_select_day2_checkbox"
+			        android:layout_width="wrap_content"
+			        android:layout_height="wrap_content" />
+			    <TextView android:layout_width="wrap_content"
+			        android:layout_height="wrap_content"
+			        style="@style/CourseDaysSelect.Text"
+			        android:text="@string/course_edit_days_select_monday"/>
+			    <Button android:id="@+id/course_edit_days_select_day2_button1"
+			        android:layout_width="wrap_content"
+			        android:layout_height="wrap_content"/>
+			    <TextView android:layout_width="wrap_content"
+			        android:layout_height="wrap_content"
+			        style="@style/CourseDaysSelect.Text"
+			        android:text="-"/>
+			    <Button android:id="@+id/course_edit_days_select_day2_button2"
+			        android:layout_width="wrap_content"
+			        android:layout_height="wrap_content"/>
+		    </TableRow>
+		    <!-- Day 3 -->
+		    <TableRow android:layout_width="wrap_content"
+			    android:layout_height="wrap_content">
+			    <CheckBox android:id="@+id/course_edit_days_select_day3_checkbox"
+			        android:layout_width="wrap_content"
+			        android:layout_height="wrap_content" />
+			    <TextView android:layout_width="wrap_content"
+			        android:layout_height="wrap_content"
+			        style="@style/CourseDaysSelect.Text"
+			        android:text="@string/course_edit_days_select_tuesday"/>
+			    <Button android:id="@+id/course_edit_days_select_day3_button1"
+			        android:layout_width="wrap_content"
+			        android:layout_height="wrap_content"/>
+			    <TextView android:layout_width="wrap_content"
+			        android:layout_height="wrap_content"
+			        style="@style/CourseDaysSelect.Text"
+			        android:text="-"/>
+			    <Button android:id="@+id/course_edit_days_select_day3_button2"
+			        android:layout_width="wrap_content"
+			        android:layout_height="wrap_content"/>
+		    </TableRow>
+		    <!-- Day 4 -->
+		    <TableRow android:layout_width="wrap_content"
+			    android:layout_height="wrap_content">
+			    <CheckBox android:id="@+id/course_edit_days_select_day4_checkbox"
+			        android:layout_width="wrap_content"
+			        android:layout_height="wrap_content" />
+			    <TextView android:layout_width="wrap_content"
+			        android:layout_height="wrap_content"
+			        style="@style/CourseDaysSelect.Text"
+			        android:text="@string/course_edit_days_select_wednesday"/>
+			    <Button android:id="@+id/course_edit_days_select_day4_button1"
+			        android:layout_width="wrap_content"
+			        android:layout_height="wrap_content"/>
+			    <TextView android:layout_width="wrap_content"
+			        android:layout_height="wrap_content"
+			        style="@style/CourseDaysSelect.Text"
+			        android:text="-"/>
+			    <Button android:id="@+id/course_edit_days_select_day4_button2"
+			        android:layout_width="wrap_content"
+			        android:layout_height="wrap_content"/>
+		    </TableRow>
+		    <!-- Day 5 -->
+		    <TableRow android:layout_width="wrap_content"
+			    android:layout_height="wrap_content">
+			    <CheckBox android:id="@+id/course_edit_days_select_day5_checkbox"
+			        android:layout_width="wrap_content"
+			        android:layout_height="wrap_content" />
+			    <TextView android:layout_width="wrap_content"
+			        android:layout_height="wrap_content"
+			        style="@style/CourseDaysSelect.Text"
+			        android:text="@string/course_edit_days_select_thursday"/>
+			    <Button android:id="@+id/course_edit_days_select_day5_button1"
+			        android:layout_width="wrap_content"
+			        android:layout_height="wrap_content"/>
+			    <TextView android:layout_width="wrap_content"
+			        android:layout_height="wrap_content"
+			        style="@style/CourseDaysSelect.Text"
+			        android:text="-"/>
+			    <Button android:id="@+id/course_edit_days_select_day5_button2"
+			        android:layout_width="wrap_content"
+			        android:layout_height="wrap_content"/>
+		    </TableRow>
+		    <!-- Day 6 -->
+		    <TableRow android:layout_width="wrap_content"
+			    android:layout_height="wrap_content">
+			    <CheckBox android:id="@+id/course_edit_days_select_day6_checkbox"
+			        android:layout_width="wrap_content"
+			        android:layout_height="wrap_content" />
+			    <TextView android:layout_width="wrap_content"
+			        android:layout_height="wrap_content"
+			        style="@style/CourseDaysSelect.Text"
+			        android:text="@string/course_edit_days_select_friday"/>
+			    <Button android:id="@+id/course_edit_days_select_day6_button1"
+			        android:layout_width="wrap_content"
+			        android:layout_height="wrap_content"/>
+			    <TextView android:layout_width="wrap_content"
+			        android:layout_height="wrap_content"
+			        style="@style/CourseDaysSelect.Text"
+			        android:text="-"/>
+			    <Button android:id="@+id/course_edit_days_select_day6_button2"
+			        android:layout_width="wrap_content"
+			        android:layout_height="wrap_content"/>
+		    </TableRow>
+		    <!-- Day 7 -->
+		    <TableRow android:layout_width="wrap_content"
+			    android:layout_height="wrap_content">
+			    <CheckBox android:id="@+id/course_edit_days_select_day7_checkbox"
+			        android:layout_width="wrap_content"
+			        android:layout_height="wrap_content" />
+			    <TextView android:layout_width="wrap_content"
+			        android:layout_height="wrap_content"
+			        style="@style/CourseDaysSelect.Text"
+			        android:text="@string/course_edit_days_select_saturday"/>
+			    <Button android:id="@+id/course_edit_days_select_day7_button1"
+			        android:layout_width="wrap_content"
+			        android:layout_height="wrap_content"/>
+			    <TextView android:layout_width="wrap_content"
+			        android:layout_height="wrap_content"
+			        style="@style/CourseDaysSelect.Text"
+			        android:text="-"/>
+			    <Button android:id="@+id/course_edit_days_select_day7_button2"
+			        android:layout_width="wrap_content"
+			        android:layout_height="wrap_content"/>
+			</TableRow>
+		</TableLayout>
+	</ScrollView>
+	<LinearLayout android:orientation="horizontal"
+	    android:layout_width="fill_parent"
+	    android:layout_height="wrap_content"
+	    android:layout_gravity="bottom">
+	    <Button android:id="@+id/course_edit_days_select_cancel"
+	        android:text="@android:string/cancel"
+	        android:layout_height="wrap_content"
+	        android:layout_width="fill_parent"
+	        android:layout_weight="1" />
+	    <Button android:id="@+id/course_edit_days_select_ok"
+	        android:text="@android:string/ok"
+	        android:layout_height="wrap_content"
+	        android:layout_width="fill_parent"
+	        android:layout_weight="1" />
+   	</LinearLayout>
+</FrameLayout>

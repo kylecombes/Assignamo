@@ -39,6 +39,10 @@
         <activity
             android:name=".preferences.CourseEditActivity" />
         <activity
+            android:name=".preferences.DaySelectFragment"
+            android:label="@string/course_edit_days_select_title"
+            android:theme="@style/CourseDaysSelect" />
+        <activity
             android:name=".preferences.CourseViewFragment"
             android:theme="@android:style/Theme.NoTitleBar" />
         <activity

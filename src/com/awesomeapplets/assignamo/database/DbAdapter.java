@@ -155,8 +155,8 @@ public class DbAdapter {
 		
 		@Override
 		public void onUpgrade(SQLiteDatabase db, int oldVersion, int newVersion) {
-			// Not used, but you could upgrade the database with ALTER
-				// Scripts
+			for (String table : Values.COURSE_DAYS)
+				db.execSQL("ALTER TABLE " + Values.COURSE_TABLE + " ADD COLUMN " + table + " int");
 		}
 	}
 }
