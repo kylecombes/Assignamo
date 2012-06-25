@@ -157,7 +157,7 @@ public class AssignmentListFragment extends ListFragment {
 		adapter.notifyDataSetChanged();
 	}
 	
-	private void broadcastRepaint() {
+	private void broadcastRefresh() {
 		Intent i = new Intent();
 		i.setAction(Values.INTENT_REFRESH_ACTION);
 		i.putExtra(Values.INTENT_REFRESH_COURSE_KEY, course);
@@ -193,7 +193,7 @@ public class AssignmentListFragment extends ListFragment {
 				DbUtils.setAssignmentState(context, info.id, false);
 			else
 				DbUtils.setAssignmentState(context, info.id, true);
-			broadcastRepaint();
+			broadcastRefresh();
 			return true;
 		case 1: // Edit the assignment
 			Intent i = new Intent(context, AssignmentEditFragment.class);
@@ -203,7 +203,7 @@ public class AssignmentListFragment extends ListFragment {
 		case 2:
 			// Delete the assignment
 			DbUtils.deleteAssignment(context, info.id);
-			broadcastRepaint();
+			broadcastRefresh();
 			return true;
 		}
 		return super.onContextItemSelected(item);
@@ -309,15 +309,10 @@ public class AssignmentListFragment extends ListFragment {
 		}
 
 		@Override
-		public void bindView(View arg0, Context arg1, Cursor arg2) {
-			// Auto-generated method stub
-		}
+		public void bindView(View arg0, Context arg1, Cursor arg2) {}
 
 		@Override
-		public View newView(Context arg0, Cursor arg1, ViewGroup arg2) {
-			// Auto-generated method stub
-			return null;
-		}
+		public View newView(Context arg0, Cursor arg1, ViewGroup arg2) { return null; }
 		
 	}
 	

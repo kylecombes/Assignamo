@@ -131,7 +131,9 @@ public class CourseEditActivity extends Activity {
 			titleField.setText(data.getString(data.getColumnIndexOrThrow(Values.KEY_NAME)));
 			teacherSpinner.setSelection(data.getShort(data.getColumnIndexOrThrow(Values.COURSE_KEY_TEACHER)));
 			descriptionField.setText(data.getString(data.getColumnIndexOrThrow(Values.KEY_DESCRIPTION)));
-			roomNumberField.setText(data.getString(data.getColumnIndexOrThrow(Values.KEY_ROOM)));
+			String room = data.getString(data.getColumnIndexOrThrow(Values.KEY_ROOM));
+			//TODO Leave field empty if nothing is selected (-1)
+				roomNumberField.setText(room);
 			
 			times = new short[7][2];
 			try {
@@ -147,7 +149,9 @@ public class CourseEditActivity extends Activity {
 				e.printStackTrace();
 			}
 			
-			creditHoursField.setText(data.getString(data.getColumnIndexOrThrow(Values.COURSE_KEY_CREDIT_HOURS)));
+			int creditHours = data.getInt(data.getColumnIndexOrThrow(Values.COURSE_KEY_CREDIT_HOURS));
+			if (creditHours >= 0)
+				creditHoursField.setText(creditHours + "");
 		}
 		
 		((Button)findViewById(R.id.course_edit_days_button)).setOnClickListener(new OnClickListener() {
@@ -194,7 +198,8 @@ public class CourseEditActivity extends Activity {
 				descriptionField.getText().toString(),
 				roomNum,
 				times,
-				creditHours);
+				creditHours,
+				rowId);
 		
 	}
 	
@@ -225,8 +230,7 @@ public class CourseEditActivity extends Activity {
 		return DbUtils.getTeachersAsArray(context).length > 0;
 	}
 	
-	private long addCourse(String name, short teacherId, String description, long roomNum, short[][] timesOfDay, short creditHours) {
-    	// TODO
+	private void addCourse(String name, short teacherId, String description, long roomNum, short[][] timesOfDay, short creditHours, Long rowId) {
     	ContentValues values = new ContentValues();
     	values.put(Values.KEY_NAME, name);
     	values.put(Values.COURSE_KEY_TEACHER, teacherId);
@@ -240,7 +244,14 @@ public class CourseEditActivity extends Activity {
     	values.put(Values.COURSE_KEY_TIMES_OF_DAY, timesAsArray.toString());
     	
     	values.put(Values.COURSE_KEY_CREDIT_HOURS, creditHours);
-    	return dbAdapter.add(values);
+    	
+    	dbAdapter.open();
+    	
+    	if (rowId == null)
+    		dbAdapter.add(values);
+    	else
+    		dbAdapter.update(rowId, values);
+    	dbAdapter.close();
     }
 	
 }
