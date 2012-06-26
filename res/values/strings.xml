@@ -66,7 +66,6 @@
     <string name="teacher_view_no_room">No room</string>
     
     <!--          Preferences          -->
-    <string name="pref_manage_title">Manage</string>
     <string name="preferences">Preferences</string>
     
     <!-- Appearance -->
@@ -160,5 +159,7 @@
     <string name="teacher_add">Add Teacher</string>
     <string name="teacher_edit">Edit Teacher</string>
     <string name="teacher_delete">Delete Teacher</string>
+    
+    <string name="assignment_menu_manage">Manage</string>
     
 </resources>

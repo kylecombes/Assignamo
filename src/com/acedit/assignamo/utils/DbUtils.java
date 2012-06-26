@@ -1,7 +1,7 @@
-package com.awesomeapplets.assignamo.utils;
+package com.acedit.assignamo.utils;
 
-import com.awesomeapplets.assignamo.database.DbAdapter;
-import com.awesomeapplets.assignamo.database.Values;
+import com.acedit.assignamo.database.DbAdapter;
+import com.acedit.assignamo.database.Values;
 
 import android.content.ContentValues;
 import android.content.Context;

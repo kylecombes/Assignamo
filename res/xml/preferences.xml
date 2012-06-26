@@ -12,39 +12,6 @@
             android:defaultValue="true" />
     </PreferenceCategory>
     
-    <!-- Manage Preference Screen -->
-    <PreferenceCategory
-        android:key="pref_appearance_category"
-        android:title="@string/pref_manage_title" >
-        <Preference
-            android:key="pref_manage_books_key"
-            android:title="@string/pref_manage_books_title"
-            android:summary="@string/pref_manage_books_summary">
-            <intent
-                android:action="android.intent.action.VIEW"
-                android:targetPackage="com.awesomeapplets.assignamo"
-                android:targetClass="com.awesomeapplets.assignamo.preferences.BookListActivity"/>
-        </Preference>
-        <Preference
-            android:key="pref_manage_courses_key"
-            android:title="@string/pref_manage_courses_title"
-            android:summary="@string/pref_manage_courses_summary">
-            <intent
-                android:action="android.intent.action.VIEW"
-                android:targetPackage="com.awesomeapplets.assignamo"
-                android:targetClass="com.awesomeapplets.assignamo.preferences.CourseListActivity" />
-        </Preference>
-        <Preference
-            android:key="pref_manage_teachers_key"
-            android:title="@string/pref_manage_teachers_title"
-            android:summary="@string/pref_manage_teachers_summary">
-            <intent
-                android:action="android.intent.actions.VIEW"
-                android:targetPackage="com.awesomeapplets.assignamo"
-                android:targetClass="com.awesomeapplets.assignamo.preferences.TeacherListActivity"/>
-        </Preference>
-    </PreferenceCategory>
-	
     <!-- About Screen -->
     <PreferenceCategory
         android:key="pref_about_screen_key"

@@ -1,4 +1,4 @@
-package com.awesomeapplets.assignamo;
+package com.acedit.assignamo;
 
 import java.util.Calendar;
 
@@ -23,11 +23,12 @@ import android.widget.TextView;
 import android.widget.TimePicker;
 import android.widget.Toast;
 
-import com.awesomeapplets.assignamo.database.DbAdapter;
-import com.awesomeapplets.assignamo.database.Values;
-import com.awesomeapplets.assignamo.preferences.CourseEditActivity;
-import com.awesomeapplets.assignamo.utils.DateUtils;
-import com.awesomeapplets.assignamo.utils.DbUtils;
+import com.acedit.assignamo.database.DbAdapter;
+import com.acedit.assignamo.database.Values;
+import com.acedit.assignamo.manage.CourseEditActivity;
+import com.acedit.assignamo.utils.DateUtils;
+import com.acedit.assignamo.utils.DbUtils;
+import com.awesomeapplets.assignamo.R;
 
 public class AssignmentEditFragment extends Activity {
 	
@@ -257,19 +258,11 @@ public class AssignmentEditFragment extends Activity {
 			}
 		}
 		
-		if (rowId == null)
-			addAssignment(titleField.getText().toString(),
-					(short)courseSpinner.getSelectedItemPosition(),
-					descriptionField.getText().toString(),
-					DateUtils.convertMillsToMinutes(calendar.getTimeInMillis()),
-					points);
-		else
-			updateAssignment(titleField.getText().toString(),
-					(short)courseSpinner.getSelectedItemPosition(),
-					descriptionField.getText().toString(),
-					DateUtils.convertMillsToMinutes(calendar.getTimeInMillis()),
-					points, rowId);
-		
+		addAssignment(titleField.getText().toString(),
+				(short)courseSpinner.getSelectedItemPosition(),
+				descriptionField.getText().toString(),
+				DateUtils.convertMillsToMinutes(calendar.getTimeInMillis()),
+				points, rowId);
 	}
 
 	@Override
@@ -322,7 +315,7 @@ public class AssignmentEditFragment extends Activity {
 		timeDueButton.setText(DateUtils.formatAsString(calendar, TIME_FORMAT));
 	}
 	
-    private long addAssignment(String title, short course, String description, long dueDate, long points) {
+    private void addAssignment(String title, short course, String description, long dueDate, long points, Long rowId) {
     	ContentValues values = new ContentValues();
     	values.put(Values.KEY_TITLE, title);
     	values.put(Values.ASSIGNMENT_KEY_COURSE, course);
@@ -330,18 +323,10 @@ public class AssignmentEditFragment extends Activity {
     	values.put(Values.ASSIGNMENT_KEY_DUE_DATE, dueDate);
     	values.put(Values.ASSIGNMENT_KEY_POINTS, points);
     	
-    	return dbAdapter.add(values);
-    }
-    
-    private boolean updateAssignment(String title, short course, String description, long dueDate, long points, Long rowId) {
-    	ContentValues values = new ContentValues();
-    	values.put(Values.KEY_TITLE, title);
-    	values.put(Values.ASSIGNMENT_KEY_COURSE, course);
-    	values.put(Values.KEY_DESCRIPTION, description);
-    	values.put(Values.ASSIGNMENT_KEY_DUE_DATE, dueDate);
-    	values.put(Values.ASSIGNMENT_KEY_POINTS, points);
-    	
-    	return dbAdapter.update(rowId, values);
+    	if (rowId == null)
+    		dbAdapter.add(values);
+    	else
+    		dbAdapter.update(rowId, values);
     }
 	
 }

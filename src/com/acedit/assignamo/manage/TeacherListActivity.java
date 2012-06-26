@@ -1,8 +1,8 @@
-package com.awesomeapplets.assignamo.preferences;
+package com.acedit.assignamo.manage;
 
+
+import com.acedit.assignamo.database.*;
 import com.awesomeapplets.assignamo.R;
-import com.awesomeapplets.assignamo.database.DbAdapter;
-import com.awesomeapplets.assignamo.database.Values;
 
 import android.app.ListActivity;
 import android.content.Intent;
@@ -20,12 +20,17 @@ import android.widget.ListView;
 import android.widget.SimpleCursorAdapter;
 import android.widget.AdapterView.AdapterContextMenuInfo;
 
-public class BookListActivity extends ListActivity {
+public class TeacherListActivity extends ListActivity {
 	
-	private DbAdapter bookDb;
+	private DbAdapter teacherDb;
 	
-	public BookListActivity() {
+	public TeacherListActivity() {
 		
+	}
+	
+	/** Called when the activity is first created. */
+	public void onCreate(Bundle savedInstanceState) {
+		super.onCreate(savedInstanceState);
 	}
 	
 	/** Called when the activity becomes visible. */
@@ -33,10 +38,9 @@ public class BookListActivity extends ListActivity {
 		super.onStart();
 		registerForContextMenu(getListView());
 	}
-	
+
 	public void onResume() {
 		super.onResume();
-		//context = getActivity();
 		openDatabase();
 		fillData();
 	}
@@ -46,60 +50,62 @@ public class BookListActivity extends ListActivity {
 		closeDatabase();
 	}
 	
-	public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstaceState) {
-		View v = inflater.inflate(R.layout.book_list, container, false);
+	public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
+		View v = inflater.inflate(R.layout.teacher_list, null);
 		//setHasOptionsMenu(true);
 		return v;
 	}
+
+	public void onCreateOptionsMenu(Menu menu, MenuInflater inflater) {
+		inflater.inflate(R.menu.teacher_menu, menu);
+	}
 	
 	public void openDatabase() {
-		if (bookDb == null)
-			bookDb = new DbAdapter(this, Values.DATABASE_NAME, Values.DATABASE_VERSION,
-					Values.BOOK_TABLE, new String[0], Values.KEY_ROWID);
-		bookDb.open();
+		if (teacherDb == null)
+			teacherDb = new DbAdapter(this, Values.DATABASE_NAME, Values.DATABASE_VERSION, Values.TEACHER_TABLE, new String[0], Values.KEY_ROWID);
+		teacherDb.open();
 	}
 	
 	public void closeDatabase() {
-		if (bookDb != null)
-			bookDb.close();
+		if (teacherDb != null)
+			teacherDb.close();
 	}
 	
     public void fillData() {
-    	Cursor booksCursor = bookDb.fetchAll(new String[] { Values.KEY_ROWID, Values.KEY_TITLE,
-    			Values.KEY_DESCRIPTION});
-    	startManagingCursor(booksCursor);
+    	Cursor teachersCursor = teacherDb.fetchAll(Values.TEACHER_FETCH);
+    	startManagingCursor(teachersCursor);
     	
     	// Create and array to specify the fields we want (only the TITLE)
-    	String[] from = new String[] {Values.KEY_TITLE, Values.KEY_DESCRIPTION};
+    	String[] from = new String[] {Values.KEY_NAME, Values.TEACHER_KEY_SUBJECT};
     	
     	// and an array of the fields we want to bind in the view
-    	int[] to = new int[]{R.id.book_list_title, R.id.book_list_description};
+    	int[] to = new int[]{R.id.course_list_name, R.id.course_list_teacher};
     	
     	// Now create a simple cursor adapter and set it to display
-    	SimpleCursorAdapter reminders = new SimpleCursorAdapter(this, R.layout.book_list_item, booksCursor, from, to);
+    	SimpleCursorAdapter reminders = new SimpleCursorAdapter(this, R.layout.course_list_item, teachersCursor, from, to);
     	setListAdapter(reminders);
     }
-    
+
     @Override
-    protected void onListItemClick(ListView l, View v, int position, long id) {
+    public void onListItemClick(ListView l, View v, int position, long id) {
 		super.onListItemClick(l, v, position, id);
-		Intent i = new Intent(this, BookViewFragment.class);
+		Intent i = new Intent(this, TeacherViewFragment.class);
 		i.putExtra(Values.KEY_ROWID, id);
 		startActivity(i);
 	}
     
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {
-		getMenuInflater().inflate(R.menu.book_menu, menu);
-		return true;
-	}
-	
+    	getMenuInflater().inflate(R.menu.teacher_menu, menu);
+    	return true;
+    }
+    
     // TODO
     @Override
     public boolean onOptionsItemSelected(MenuItem item) {
     	switch (item.getItemId()) {
-		case R.id.book_menu_add:
-			Intent i = new Intent(this, BookEditActivity.class);
+		case R.id.teacher_menu_add:
+			Intent i = new Intent(getApplication(), TeacherEditActivity.class);
 			startActivity(i);
 			return true;
 		}
@@ -110,24 +116,23 @@ public class BookListActivity extends ListActivity {
     public void onCreateContextMenu(ContextMenu menu, View v, ContextMenuInfo menuInfo) {
     	//super.onCreateContextMenu(menu, v, menuInfo);
 		MenuInflater mi = getMenuInflater();
-		mi.inflate(R.menu.book_longpress, menu);
+		mi.inflate(R.menu.teacher_context, menu);
     }
     
-    @Override
     public boolean onContextItemSelected(MenuItem item) {
+    	
     	AdapterContextMenuInfo info = (AdapterContextMenuInfo)item.getMenuInfo();
-		switch (item.getItemId()) {
-		case R.id.book_context_menu_delete:
-			// Delete the book
-			bookDb.delete(info.id);
+		
+    	switch (item.getItemId()) {
+    	case R.id.teacher_context_menu_delete:
+    		teacherDb.delete(info.id);
 			fillData();
 			return true;
-		case R.id.book_context_menu_edit:
-			Intent i = new Intent(this, BookEditActivity.class);
-			i.putExtra(Values.KEY_ROWID, info.id);
-			startActivity(i);
-			return true;
+    	case R.id.teacher_context_menu_edit:
+    		Intent i = new Intent(getApplicationContext(), TeacherEditActivity.class);
+    		i.putExtra(Values.KEY_ROWID, info.id);
+    		startActivity(i);
 		}
-		return super.onContextItemSelected(item);
+    	return true;
     }
 }

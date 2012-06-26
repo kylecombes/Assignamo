@@ -1,4 +1,4 @@
-package com.awesomeapplets.assignamo.preferences;
+package com.acedit.assignamo.manage;
 
 import java.util.HashMap;
 import java.util.Map;
@@ -16,9 +16,9 @@ import android.widget.CompoundButton;
 import android.widget.CompoundButton.OnCheckedChangeListener;
 import android.widget.TimePicker;
 
+import com.acedit.assignamo.database.Values;
+import com.acedit.assignamo.utils.DateUtils;
 import com.awesomeapplets.assignamo.R;
-import com.awesomeapplets.assignamo.database.Values;
-import com.awesomeapplets.assignamo.utils.DateUtils;
 
 public class DaySelectFragment extends FragmentActivity {
 	

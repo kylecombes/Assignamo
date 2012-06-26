@@ -26,24 +26,22 @@
         <activity
             android:name=".AssignmentEditFragment"  />
         <activity
-            android:name=".preferences.BookEditActivity" />
+            android:name="BookEditActivity" />
         <activity
             android:name=".preferences.BookViewActivity"
 			android:theme="@android:style/Theme.NoTitleBar" />
         <activity
-            android:name=".preferences.BookListActivity"
+            android:name="BookListActivity"
             android:label="@string/pref_manage_books" />
         <activity
-            android:name=".preferences.CourseListActivity"
+            android:name="CourseListActivity"
             android:label="@string/pref_manage_courses" />
-        <activity
-            android:name=".preferences.CourseEditActivity" />
         <activity
             android:name=".preferences.DaySelectFragment"
             android:label="@string/course_edit_days_select_title"
             android:theme="@style/CourseDaysSelect" />
         <activity
-            android:name=".preferences.CourseViewFragment"
+           	android:name="CourseEditActivity"
             android:theme="@android:style/Theme.NoTitleBar" />
         <activity
             android:name=".preferences.TeacherListActivity"

@@ -1,4 +1,4 @@
-package com.awesomeapplets.assignamo.preferences;
+package com.acedit.assignamo;
 
 import java.text.SimpleDateFormat;
 import java.util.Calendar;
@@ -15,10 +15,10 @@ import android.view.Menu;
 import android.view.MenuInflater;
 import android.view.MenuItem;
 
+import com.acedit.assignamo.database.Values;
+import com.acedit.assignamo.utils.DateUtils;
+import com.acedit.assignamo.utils.DbUtils;
 import com.awesomeapplets.assignamo.R;
-import com.awesomeapplets.assignamo.database.Values;
-import com.awesomeapplets.assignamo.utils.DateUtils;
-import com.awesomeapplets.assignamo.utils.DbUtils;
 
 public abstract class ViewFragment extends FragmentActivity {
 	

@@ -1,4 +1,4 @@
-package com.awesomeapplets.assignamo;
+package com.acedit.assignamo;
 
 import java.text.SimpleDateFormat;
 import java.util.Calendar;
@@ -26,11 +26,12 @@ import android.widget.AdapterView.AdapterContextMenuInfo;
 import android.widget.ListView;
 import android.widget.TextView;
 
-import com.awesomeapplets.assignamo.database.DbAdapter;
-import com.awesomeapplets.assignamo.database.Values;
-import com.awesomeapplets.assignamo.ui.ColorStrip;
-import com.awesomeapplets.assignamo.utils.DateUtils;
-import com.awesomeapplets.assignamo.utils.DbUtils;
+import com.acedit.assignamo.database.DbAdapter;
+import com.acedit.assignamo.database.Values;
+import com.acedit.assignamo.ui.ColorStrip;
+import com.acedit.assignamo.utils.DateUtils;
+import com.acedit.assignamo.utils.DbUtils;
+import com.awesomeapplets.assignamo.R;
 
 public class AssignmentListFragment extends ListFragment {
 	

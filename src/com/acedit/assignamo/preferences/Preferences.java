@@ -1,13 +1,17 @@
-package com.awesomeapplets.assignamo.preferences;
+package com.acedit.assignamo.preferences;
 
+import com.acedit.assignamo.database.Values;
 import com.awesomeapplets.assignamo.R;
 
 import android.content.Intent;
+import android.content.SharedPreferences;
+import android.content.SharedPreferences.Editor;
 import android.content.pm.PackageManager.NameNotFoundException;
 import android.net.Uri;
 import android.os.Bundle;
 import android.preference.Preference;
 import android.preference.PreferenceActivity;
+import android.preference.PreferenceManager;
 
 public class Preferences extends PreferenceActivity {
 	
@@ -23,8 +27,18 @@ public class Preferences extends PreferenceActivity {
 	public void onResume() {
 		super.onResume();
 		
-		Preference contactPref = (Preference)findPreference("pref_contact_key");
-		contactPref.setOnPreferenceClickListener(new Preference.OnPreferenceClickListener() {
+		/*
+		 * SharedPreferences prefs = PreferenceManager.getDefaultSharedPreferences(this);
+			Editor prefEditor = prefs.edit();
+			if (prefs.getBoolean(Values.ASSIGNMENT_KEY_SHOWING_COMPLETED, false))
+				prefEditor.putBoolean(Values.ASSIGNMENT_KEY_SHOWING_COMPLETED, false);
+			else
+				prefEditor.putBoolean(Values.ASSIGNMENT_KEY_SHOWING_COMPLETED, true);
+			prefEditor.commit();
+		 */
+		
+		((Preference)findPreference("pref_contact_key"))
+		.setOnPreferenceClickListener(new Preference.OnPreferenceClickListener() {
 			
 			@Override
 			public boolean onPreferenceClick(Preference preference) {
@@ -37,8 +51,8 @@ public class Preferences extends PreferenceActivity {
 			}
 		});
 		
-		Preference visitPref = (Preference)findPreference("pref_visit_key");
-		visitPref.setOnPreferenceClickListener(new Preference.OnPreferenceClickListener() {
+		((Preference)findPreference("pref_visit_key"))
+		.setOnPreferenceClickListener(new Preference.OnPreferenceClickListener() {
 			
 			@Override
 			public boolean onPreferenceClick(Preference preference) {

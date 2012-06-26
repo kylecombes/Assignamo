@@ -1,4 +1,4 @@
-package com.awesomeapplets.assignamo.database;
+package com.acedit.assignamo.database;
 
 // Variable names used by the database
 

@@ -1,4 +1,4 @@
-package com.awesomeapplets.assignamo.preferences;
+package com.acedit.assignamo.manage;
 
 import org.json.JSONArray;
 import org.json.JSONException;
@@ -18,10 +18,10 @@ import android.widget.Button;
 import android.widget.Spinner;
 import android.widget.TextView;
 
+import com.acedit.assignamo.database.DbAdapter;
+import com.acedit.assignamo.database.Values;
+import com.acedit.assignamo.utils.DbUtils;
 import com.awesomeapplets.assignamo.R;
-import com.awesomeapplets.assignamo.database.DbAdapter;
-import com.awesomeapplets.assignamo.database.Values;
-import com.awesomeapplets.assignamo.utils.DbUtils;
 
 public class CourseEditActivity extends Activity {
 	

@@ -1,24 +1,22 @@
-package com.awesomeapplets.assignamo;
+package com.acedit.assignamo;
 
 import android.content.Context;
 import android.content.Intent;
-import android.content.SharedPreferences;
-import android.content.SharedPreferences.Editor;
 import android.os.Bundle;
-import android.preference.PreferenceManager;
 import android.support.v4.app.FragmentActivity;
 import android.support.v4.app.FragmentManager;
-import android.support.v4.content.LocalBroadcastManager;
 import android.support.v4.view.ViewPager;
 import android.support.v4.view.ViewPager.OnPageChangeListener;
 import android.view.Menu;
 import android.view.MenuItem;
 
-import com.awesomeapplets.assignamo.database.DbAdapter;
-import com.awesomeapplets.assignamo.database.Values;
-import com.awesomeapplets.assignamo.preferences.Preferences;
-import com.awesomeapplets.assignamo.utils.DbUtils;
-import com.viewpagerindicator.*;
+import com.acedit.assignamo.database.DbAdapter;
+import com.acedit.assignamo.database.Values;
+import com.acedit.assignamo.preferences.Preferences;
+import com.acedit.assignamo.utils.DbUtils;
+import com.awesomeapplets.assignamo.R;
+import com.viewpagerindicator.TabPageIndicator;
+import com.viewpagerindicator.TitleProvider;
 
 public class MainActivity extends FragmentActivity {
 	
@@ -34,7 +32,7 @@ public class MainActivity extends FragmentActivity {
     	//TODO Add Welcome/Setup screen
     	if (savedInstanceState != null)
     		selectedPos = savedInstanceState.getShort(KEY_POSITION);
-        setContentView(R.layout.main);
+        setContentView(R.layout.tab_pager);
     	
     	checkForExistingDatabase();
     }
@@ -102,50 +100,37 @@ public class MainActivity extends FragmentActivity {
     	outState.putShort(KEY_POSITION, selectedPos);
     }
     
-
+    /* ---------- Options Menu for All Assignment Lists ---------- */
+    
+    private final int OPTIONS_ASSIGNMENT_ADD = 0;
+    private final int OPTIONS_MANAGE = 1;
+    private final int OPTIONS_PREFERENCES = 2;
+    
 	public boolean onPrepareOptionsMenu(Menu menu) {
 		menu.clear();
-		menu.add(0, 0, 0, R.string.assignment_add).setIcon(android.R.drawable.ic_menu_add);
-		//menu.add(0, 1, 0, R.string.assignment_add_book).setIcon(android.R.drawable.ic_menu_add);
-		if (PreferenceManager.getDefaultSharedPreferences(this).getBoolean(Values.ASSIGNMENT_KEY_SHOWING_COMPLETED, false))
-			menu.add(0, 2, 0, R.string.show_all_assignments).setIcon(android.R.drawable.button_onoff_indicator_on);
-		else
-			menu.add(0, 2, 0, R.string.show_all_assignments).setIcon(android.R.drawable.button_onoff_indicator_off);
-		menu.add(0, 3, 0, R.string.preferences).setIcon(android.R.drawable.ic_menu_preferences);
+		menu.add(0, OPTIONS_ASSIGNMENT_ADD, 0, R.string.assignment_add).setIcon(android.R.drawable.ic_menu_add);
+		menu.add(0, OPTIONS_MANAGE, 0, R.string.assignment_menu_manage).setIcon(android.R.drawable.ic_menu_manage);
+		menu.add(0, OPTIONS_PREFERENCES, 0, R.string.preferences).setIcon(android.R.drawable.ic_menu_preferences);
 		return true;
 	}
 
 	@Override
 	public boolean onOptionsItemSelected(MenuItem item) {
 		switch (item.getItemId()) {
-		case 0:
+		case OPTIONS_ASSIGNMENT_ADD:
 			Intent iA = new Intent(this, AssignmentEditFragment.class);
 			iA.putExtra(Values.NEW_ASSIGNMENT_COURSE_KEY, (short)(selectedPos - 1));
 			startActivity(iA);
 			return true;
-		case 2:
-			SharedPreferences prefs = PreferenceManager.getDefaultSharedPreferences(this);
-			Editor prefEditor = prefs.edit();
-			if (prefs.getBoolean(Values.ASSIGNMENT_KEY_SHOWING_COMPLETED, false))
-				prefEditor.putBoolean(Values.ASSIGNMENT_KEY_SHOWING_COMPLETED, false);
-			else
-				prefEditor.putBoolean(Values.ASSIGNMENT_KEY_SHOWING_COMPLETED, true);
-			prefEditor.commit();
-			fillData();
-			return true;
-		case 3:
+		case OPTIONS_MANAGE:
+			//TODO
+			break;
+		case OPTIONS_PREFERENCES:
 			Intent iP = new Intent(this, Preferences.class);
 			startActivity(iP);
 			return true;
 		}
 		return true;
-	}
-	
-	private void fillData() {
-		Intent i = new Intent();
-		i.setAction(Values.INTENT_REFRESH_ACTION);
-		
-		LocalBroadcastManager.getInstance(this).sendBroadcast(i);
 	}
     
     class TitlePageAdapter extends FragmentAdapter implements TitleProvider {

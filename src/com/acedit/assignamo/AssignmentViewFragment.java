@@ -1,4 +1,4 @@
-package com.awesomeapplets.assignamo;
+package com.acedit.assignamo;
 
 import android.content.Intent;
 import android.content.SharedPreferences;
@@ -9,10 +9,10 @@ import android.view.MenuItem;
 import android.widget.TextView;
 import android.widget.TextView.BufferType;
 
-import com.awesomeapplets.assignamo.database.DbAdapter;
-import com.awesomeapplets.assignamo.database.Values;
-import com.awesomeapplets.assignamo.preferences.ViewFragment;
-import com.awesomeapplets.assignamo.utils.DbUtils;
+import com.acedit.assignamo.database.DbAdapter;
+import com.acedit.assignamo.database.Values;
+import com.acedit.assignamo.utils.DbUtils;
+import com.awesomeapplets.assignamo.R;
 
 public class AssignmentViewFragment extends ViewFragment {
 	

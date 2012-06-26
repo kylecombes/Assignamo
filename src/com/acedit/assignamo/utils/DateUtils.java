@@ -1,4 +1,4 @@
-package com.awesomeapplets.assignamo.utils;
+package com.acedit.assignamo.utils;
 
 import java.text.SimpleDateFormat;
 import java.util.Calendar;

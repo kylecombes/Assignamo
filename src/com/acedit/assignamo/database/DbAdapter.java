@@ -1,4 +1,4 @@
-package com.awesomeapplets.assignamo.database;
+package com.acedit.assignamo.database;
 
 import android.content.ContentValues;
 import android.content.Context;

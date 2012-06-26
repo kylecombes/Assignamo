@@ -1,4 +1,4 @@
-package com.awesomeapplets.assignamo.ui;
+package com.acedit.assignamo.ui;
 
 import android.content.Context;
 import android.content.res.Resources;

@@ -1,4 +1,4 @@
-package com.awesomeapplets.assignamo;
+package com.acedit.assignamo;
 
 
 import android.os.Parcel;
