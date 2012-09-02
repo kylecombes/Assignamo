@@ -18,10 +18,10 @@ import android.widget.Button;
 import android.widget.Spinner;
 import android.widget.TextView;
 
+import com.acedit.assignamo.R;
 import com.acedit.assignamo.database.DbAdapter;
 import com.acedit.assignamo.database.Values;
 import com.acedit.assignamo.utils.DbUtils;
-import com.awesomeapplets.assignamo.R;
 
 public class CourseEditActivity extends Activity {
 	
@@ -55,7 +55,7 @@ public class CourseEditActivity extends Activity {
 			AlertDialog.Builder d = new AlertDialog.Builder(this);
 			d.setTitle(R.string.course_edit_teacher_required_title);
 			d.setMessage(R.string.course_edit_teacher_required_message);
-			d.setPositiveButton(R.string.ok, new AlertDialog.OnClickListener() {
+			d.setPositiveButton(android.R.string.ok, new AlertDialog.OnClickListener() {
 				@Override
 				public void onClick(DialogInterface dialog, int which) {
 					Intent i = new Intent(context, TeacherEditActivity.class);

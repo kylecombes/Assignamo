@@ -16,9 +16,9 @@ import android.widget.CompoundButton;
 import android.widget.CompoundButton.OnCheckedChangeListener;
 import android.widget.TimePicker;
 
+import com.acedit.assignamo.R;
 import com.acedit.assignamo.database.Values;
 import com.acedit.assignamo.utils.DateUtils;
-import com.awesomeapplets.assignamo.R;
 
 public class DaySelectFragment extends FragmentActivity {
 	

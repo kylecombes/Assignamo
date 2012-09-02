@@ -85,12 +85,6 @@
         android:layout_height="wrap_content"
         android:inputType="number" />
 
-    <TextView
-        android:id="@+id/course_edit_books"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:text="@string/books"
-        android:textAppearance="?android:attr/textAppearanceSmall" />
 	<LinearLayout android:layout_width="fill_parent"
 	    android:layout_height="wrap_content"
 	    android:orientation="horizontal">
@@ -104,7 +98,7 @@
         android:id="@+id/course_edit_cancel"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:text="@string/cancel" />
+        android:text="@android:string/cancel" />
 	</LinearLayout>
 </LinearLayout>
 </ScrollView>

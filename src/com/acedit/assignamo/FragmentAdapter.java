@@ -5,7 +5,7 @@ import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentManager;
 import android.support.v4.app.FragmentPagerAdapter;
 
-class FragmentAdapter extends FragmentPagerAdapter {
+public class FragmentAdapter extends FragmentPagerAdapter {
 	protected static String[] CONTENT;
 	protected Context context;
 	private short currentPosition;
@@ -20,7 +20,7 @@ class FragmentAdapter extends FragmentPagerAdapter {
 
 	@Override
 	public Fragment getItem(int position) {
-		currentPosition = (short)position;
+		setCurrentPosition(position);
 		switch (position) {
 		case 0:
 			return new AssignmentListFragment(context);
@@ -28,7 +28,15 @@ class FragmentAdapter extends FragmentPagerAdapter {
 			return new AssignmentListFragment(context, (short)(position - 1));
 		}
 	}
-
+	
+	public void setCurrentPosition(short pos) {
+		currentPosition = pos;
+	}
+	
+	public void setCurrentPosition(int pos) {
+		currentPosition = (short)pos;
+	}
+	
 	@Override
 	public int getCount() {
 		return mCount;

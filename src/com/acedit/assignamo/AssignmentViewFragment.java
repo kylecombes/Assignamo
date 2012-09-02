@@ -9,10 +9,10 @@ import android.view.MenuItem;
 import android.widget.TextView;
 import android.widget.TextView.BufferType;
 
+import com.acedit.assignamo.R;
 import com.acedit.assignamo.database.DbAdapter;
 import com.acedit.assignamo.database.Values;
 import com.acedit.assignamo.utils.DbUtils;
-import com.awesomeapplets.assignamo.R;
 
 public class AssignmentViewFragment extends ViewFragment {
 	
@@ -25,7 +25,7 @@ public class AssignmentViewFragment extends ViewFragment {
 	public void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
 		
-		setContentView(R.layout.assignment_view_phone);
+		setContentView(R.layout.assignment_view);
 		courseLabel = (TextView)findViewById(R.id.assignment_view_course);
 		titleLabel = (TextView)findViewById(R.id.assignment_view_title);
 		dueDateLabel = (TextView)findViewById(R.id.assignment_view_date);

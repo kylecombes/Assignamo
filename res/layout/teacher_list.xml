@@ -5,20 +5,12 @@
     android:orientation="vertical" >
     
     <ListView android:id="@id/android:list"
-        android:layout_width="fill_parent"
-        android:layout_height="fill_parent" />
+        style="@style/ListView" />
         <TextView android:id="@+id/android:empty"
-            android:layout_width="fill_parent"
-            android:layout_height="wrap_content"
-   		    android:text="@string/no_teachers"
-   		    android:textSize="20dip"
-   		    android:padding="10dip" />
-        <TextView android:id="@+id/android:empty"
-            android:layout_width="fill_parent"
-            android:layout_height="wrap_content"
-            android:text="@string/add_teacher_instructions"
-            android:paddingLeft="10dip"
-            android:paddingRight="10dip"
-            android:paddingBottom="10dip" />
+            style="@style/ListEmptyTitle"
+   		    android:text="@string/no_teachers" />
+        <TextView android:id="@id/android:empty"
+            style="@style/ListEmptyDescription"
+            android:text="@string/add_teacher_instructions" />
         
 </LinearLayout>

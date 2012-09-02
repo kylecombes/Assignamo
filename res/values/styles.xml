@@ -1,13 +1,6 @@
 <resources>
-    
-    <!--     Tabs      -->
-    
-    <style name="StyledIndicators" parent="Widget.TitlePageIndicator">
-        <item name="vpiTabPageIndicatorStyle">@style/CustomTabPageIndicator</item>
-        <item name="vpiTabTextStyle">@style/CustomTabPageIndicator.Text</item>
-        <item name="android:windowNoTitle">true</item>
-    </style>
 
+    <!--     Tabs     -->
     <style name="CustomTabPageIndicator" parent="Widget.TabPageIndicator">
         <item name="android:background">@drawable/tab_indicator</item>
     </style>
@@ -15,22 +8,114 @@
         <item name="android:textColor">@color/list_text</item>
     </style>
     
+    <!--    ListView    -->
+    
+    <style name="ListView">
+        <item name="android:layout_width">fill_parent</item>
+        <item name="android:layout_height">fill_parent</item>
+        <item name="android:divider">@color/list_divider</item>
+        <item name="android:dividerHeight">1dip</item>
+        <item name="android:cacheColorHint">@color/background</item>
+    </style>
+    
+    <style name="ListView.Assignment">
+        <item name="android:divider">@color/assignment_list_divider</item>
+    </style>
+    
+    <!--    Empty List    -->
+    
+    <style name="ListEmpty">
+        <item name="android:layout_height">wrap_content</item>
+        <item name="android:layout_width">fill_parent</item>
+        <item name="android:textColor">@color/list_text</item>
+        <item name="android:paddingTop">@dimen/list_item_edge_padding</item>
+        <item name="android:paddingLeft">@dimen/list_item_edge_padding</item>
+        <item name="android:paddingRight">@dimen/list_item_edge_padding</item>
+    </style>
+    
+    <style name="ListEmptyTitle" parent="ListEmpty">
+        <item name="android:textSize">23sp</item>
+    </style>
+    
+    <style name="ListEmptyDescription" parent="ListEmpty">
+        <item name="android:textSize">16sp</item>
+    </style>
+    
     <!--    List Items    -->
-    
-    <style name="ListTitleText" parent="ListText">
-        <item name="android:textSize">20sp</item>
-    </style>
-    
-    <style name="ListDescriptionText" parent="ListText">
-        <item name="android:textSize">12sp</item>
-    </style>
-    
-    <style name="ListDueText" parent="ListText">
-        <item name="android:textSize">15sp</item>
-    </style>
     
     <style name="ListText">
         <item name="android:textColor">@color/list_text</item>
+        <item name="android:singleLine">true</item>
+        <item name="android:layout_width">fill_parent</item>
+        <item name="android:layout_height">wrap_content</item>
+        <item name="android:padding">@dimen/list_item_edge_padding</item>
+    </style>
+    
+    <style name="ListText.Primary">
+        <item name="android:textSize">20sp</item>
+        <item name="android:paddingBottom">@dimen/list_item_vertical_spacing</item>
+    </style>
+    
+    <style name="ListText.Secondary">
+        <item name="android:textSize">12sp</item>
+        <item name="android:layout_width">wrap_content</item>
+        <item name="android:paddingTop">@dimen/list_item_vertical_spacing</item>
+    </style>
+    
+    <style name="ListText.Secondary.Left">
+        <item name="android:paddingRight">@dimen/list_item_horizontal_spacing</item>
+        <item name="android:layout_alignParentLeft">true</item>
+    </style>
+    
+    <style name="ListText.Secondary.Left.Bold">
+        <item name="android:textStyle">bold</item>
+    </style>
+    
+    <style name="ListText.Secondary.Right">
+        <item name="android:paddingLeft">@dimen/list_item_horizontal_spacing</item>
+        <item name="android:layout_alignParentRight">true</item>
+    </style>
+    
+    <style name="ListText.Due">
+        <item name="android:textSize">15sp</item>
+    </style>
+    
+    <!-- Label Styling -->
+    
+    <style name="Label">
+        <item name="android:layout_width">match_parent</item>
+        <item name="android:layout_height">wrap_content</item>
+        <item name="android:padding">2dip</item>
+        
+    </style>
+    
+    <!-- Text Box Styling -->
+    
+    <style name="TextBox">
+        <item name="android:layout_width">match_parent</item>
+        <item name="android:layout_height">wrap_content</item>
+    </style>
+    
+    <style name="TextBox.Title">
+        <item name="android:inputType">textCapSentences|textAutoCorrect</item>
+    </style>
+    
+    <style name="TextBox.Description">
+        <item name="android:inputType">textMultiLine|textCapSentences|textAutoCorrect</item>
+	    <item name="android:minLines">3</item>
+	    <item name="android:gravity">top</item>
+    </style>
+    
+    <!-- Button Styling -->
+    
+    <style name="Button">
+	    <item name="android:layout_width">wrap_content</item>
+	    <item name="android:layout_height">wrap_content</item>
+    </style>
+    
+    <style name="Button.ButtonBar">
+        <item name="android:layout_width">0dp</item>
+        <item name="android:layout_weight">1</item>
     </style>
     
     <!-- Course Days Select -->

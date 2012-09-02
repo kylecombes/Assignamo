@@ -1,8 +1,8 @@
 package com.acedit.assignamo.manage;
 
+import com.acedit.assignamo.R;
 import com.acedit.assignamo.database.DbAdapter;
 import com.acedit.assignamo.database.Values;
-import com.awesomeapplets.assignamo.R;
 
 import android.app.Activity;
 import android.content.ContentValues;
@@ -100,7 +100,7 @@ public class BookEditActivity extends Activity {
 	
 	private void initializeButtons() {
 		
-		saveButton = (Button)findViewById(R.id.book_add_save_button);
+		saveButton = (Button)findViewById(R.id.book_edit_save_button);
 	    saveButton.setOnClickListener(new View.OnClickListener() {
 			@Override
 			public void onClick(View v) {
@@ -109,7 +109,7 @@ public class BookEditActivity extends Activity {
 			}
 		});
 	    
-		cancelButton = (Button)findViewById(R.id.book_add_cancel_button);
+		cancelButton = (Button)findViewById(R.id.book_edit_cancel_button);
 	    cancelButton.setOnClickListener(new View.OnClickListener() {
 			@Override
 			public void onClick(View v) {
@@ -136,41 +136,51 @@ public class BookEditActivity extends Activity {
 					Values.DATABASE_CREATE,
 					Values.KEY_ROWID);
 			db.open();
-			Cursor bookData = db.fetch(rowId, Values.BOOK_FETCH);
-			titleField.setText(bookData.getString(bookData.getColumnIndexOrThrow(Values.KEY_TITLE)));
-			authorField.setText(bookData.getString(bookData.getColumnIndexOrThrow(Values.BOOK_KEY_AUTHOR)));
-			descriptionField.setText(bookData.getString(bookData.getColumnIndexOrThrow(Values.KEY_DESCRIPTION)));
-			pagesField.setText("" + bookData.getLong(bookData.getColumnIndexOrThrow(Values.BOOK_KEY_PAGES)));
-			chaptersField.setText("" + bookData.getString(bookData.getColumnIndexOrThrow(Values.BOOK_KEY_CHAPTERS)));
-			typeSpinner.setSelection(bookData.getShort(bookData.getColumnIndexOrThrow(Values.BOOK_KEY_TYPE)));
-			ISBNField.setText("" + bookData.getString(bookData.getColumnIndexOrThrow(Values.BOOK_KEY_ISBN)));
+			Cursor cursor = db.fetch(rowId, Values.BOOK_FETCH);
+			titleField.setText(cursor.getString(cursor.getColumnIndexOrThrow(Values.KEY_TITLE)));
+			authorField.setText(cursor.getString(cursor.getColumnIndexOrThrow(Values.BOOK_KEY_AUTHOR)));
+			descriptionField.setText(cursor.getString(cursor.getColumnIndexOrThrow(Values.KEY_DESCRIPTION)));
+			long pages = cursor.getLong(cursor.getColumnIndexOrThrow(Values.BOOK_KEY_PAGES));
+			if (pages > 0)
+				pagesField.setText("" + pages);
+			long chapters = cursor.getLong(cursor.getColumnIndexOrThrow(Values.BOOK_KEY_CHAPTERS));
+			if (chapters > 0)
+				chaptersField.setText("" + chapters);
+			typeSpinner.setSelection(cursor.getShort(cursor.getColumnIndexOrThrow(Values.BOOK_KEY_TYPE)));
+			long ISBN = cursor.getLong(cursor.getColumnIndexOrThrow(Values.BOOK_KEY_ISBN));
+			if (ISBN > 0)
+				ISBNField.setText("" + ISBN);
+			db.close();
 		}
 	}
 	
 	private boolean saveData() {
 		
 		// Parse ISBN
-		if (ISBNField.length() != 10 && ISBNField.length() != 13) {
+		if (ISBNField.length() != 0 && ISBNField.length() != 10 && ISBNField.length() != 13) {
 			Toast.makeText(this, R.string.add_book_invalid_ISBN, Toast.LENGTH_SHORT).show();
 			return false;
 		}
+		
+		String pgStr = pagesField.getText().toString();
+		long pages = pgStr.length() > 0 ? Long.parseLong(pgStr) : 0;
+		String chapStr = chaptersField.getText().toString();
+		long chapters = chapStr.length() > 0 ? Long.parseLong(chapStr) : 0;
+		String isbnStr = ISBNField.getText().toString();
+		long ISBN = isbnStr.length() > 0 ? Long.parseLong(isbnStr) : 0;
+		
 		if (rowId == null)
 			addBook(titleField.getText().toString(),
 					authorField.getText().toString(),
 					descriptionField.getText().toString(),
 					(short)typeSpinner.getSelectedItemPosition(),
-					Long.parseLong(pagesField.getText().toString()),
-					Long.parseLong(chaptersField.getText().toString()),
-					Long.parseLong(ISBNField.getText().toString()));
+					pages, chapters, ISBN);
 		else
 			updateBook(titleField.getText().toString(),
 					authorField.getText().toString(),
 					descriptionField.getText().toString(),
 					(short)typeSpinner.getSelectedItemPosition(),
-					Long.parseLong(pagesField.getText().toString()),
-					Long.parseLong(chaptersField.getText().toString()),
-					Long.parseLong(ISBNField.getText().toString()),
-					rowId);
+					pages, chapters, ISBN, rowId);
 		return true;
 		
 	}

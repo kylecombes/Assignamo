@@ -10,17 +10,17 @@ import android.support.v4.view.ViewPager.OnPageChangeListener;
 import android.view.Menu;
 import android.view.MenuItem;
 
+import com.acedit.assignamo.R;
 import com.acedit.assignamo.database.DbAdapter;
 import com.acedit.assignamo.database.Values;
+import com.acedit.assignamo.manage.ManageActivity;
 import com.acedit.assignamo.preferences.Preferences;
 import com.acedit.assignamo.utils.DbUtils;
-import com.awesomeapplets.assignamo.R;
 import com.viewpagerindicator.TabPageIndicator;
 import com.viewpagerindicator.TitleProvider;
 
 public class MainActivity extends FragmentActivity {
 	
-	static enum ACTIVITY_STATE { ADD, EDIT }
     short titleCount;
     short selectedPos;
     TitlePageAdapter adapter;
@@ -106,7 +106,8 @@ public class MainActivity extends FragmentActivity {
     private final int OPTIONS_MANAGE = 1;
     private final int OPTIONS_PREFERENCES = 2;
     
-	public boolean onPrepareOptionsMenu(Menu menu) {
+    @Override
+	public boolean onCreateOptionsMenu(Menu menu) {
 		menu.clear();
 		menu.add(0, OPTIONS_ASSIGNMENT_ADD, 0, R.string.assignment_add).setIcon(android.R.drawable.ic_menu_add);
 		menu.add(0, OPTIONS_MANAGE, 0, R.string.assignment_menu_manage).setIcon(android.R.drawable.ic_menu_manage);
@@ -116,21 +117,23 @@ public class MainActivity extends FragmentActivity {
 
 	@Override
 	public boolean onOptionsItemSelected(MenuItem item) {
+		Intent i;
 		switch (item.getItemId()) {
 		case OPTIONS_ASSIGNMENT_ADD:
-			Intent iA = new Intent(this, AssignmentEditFragment.class);
-			iA.putExtra(Values.NEW_ASSIGNMENT_COURSE_KEY, (short)(selectedPos - 1));
-			startActivity(iA);
+			i = new Intent(this, AssignmentEditFragment.class);
+			i.putExtra(Values.NEW_ASSIGNMENT_COURSE_KEY, (short)(selectedPos - 1));
+			startActivity(i);
 			return true;
 		case OPTIONS_MANAGE:
-			//TODO
+			i = new Intent(this, ManageActivity.class);
+			startActivity(i);
 			break;
 		case OPTIONS_PREFERENCES:
-			Intent iP = new Intent(this, Preferences.class);
-			startActivity(iP);
+			i = new Intent(this, Preferences.class);
+			startActivity(i);
 			return true;
 		}
-		return true;
+		return false;
 	}
     
     class TitlePageAdapter extends FragmentAdapter implements TitleProvider {

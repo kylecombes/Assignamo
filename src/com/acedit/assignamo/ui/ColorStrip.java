@@ -9,7 +9,7 @@ import android.util.AttributeSet;
 import android.util.TypedValue;
 import android.view.View;
 
-import com.awesomeapplets.assignamo.R;
+import com.acedit.assignamo.R;
 
 public class ColorStrip extends View {
 	

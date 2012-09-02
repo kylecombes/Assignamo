@@ -5,28 +5,13 @@
     android:orientation="vertical" >
 	
     <ListView android:id="@id/android:list"
-        android:layout_width="fill_parent"
-        android:layout_height="fill_parent"
-        android:divider="@color/list_divider"
-        android:dividerHeight="1dip"
-        android:cacheColorHint="@color/background" />
-        <!-- android:selector="@drawable/list_selector"
-        android:drawSelectorOnTop="true" -->
+        style="@style/ListView.Assignment" />
         
         <TextView android:id="@id/android:empty"
-            android:layout_width="fill_parent"
-            android:layout_height="wrap_content"
-   		    android:text="@string/no_assignments"
-   		    android:textSize="20dip"
-   		    android:textColor="@color/list_text"
-   		    android:padding="10dip" />
+            style="@style/ListEmptyTitle"
+   		    android:text="@string/no_assignments" />
         <TextView android:id="@id/android:empty"
-            android:layout_width="fill_parent"
-            android:layout_height="wrap_content"
-            android:text="@string/add_assignment_instructions"
-   		    android:textColor="@color/list_text"
-            android:paddingLeft="10dip"
-            android:paddingRight="10dip"
-            android:paddingBottom="10dip" />
+            style="@style/ListEmptyDescription"
+            android:text="@string/add_assignment_instructions" />
         
 </LinearLayout>

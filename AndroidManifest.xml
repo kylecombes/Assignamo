@@ -1,56 +1,59 @@
 <?xml version="1.0" encoding="utf-8"?>
 <manifest xmlns:android="http://schemas.android.com/apk/res/android"
-    package="com.awesomeapplets.assignamo"
-    android:versionCode="6"
-    android:versionName="0.3.4" >
+    package="com.acedit.assignamo"
+    android:versionCode="7"
+    android:versionName="0.3.5" >
 
-    <uses-sdk android:minSdkVersion="10"
+    <uses-sdk android:minSdkVersion="7"
         android:targetSdkVersion="15" />
 
     <application
         android:icon="@drawable/icon"
-        android:label="@string/app_name" >
+        android:label="@string/app_name"
+        android:theme="@style/MainStyle" >
         <activity
             android:name=".MainActivity"
             android:label="@string/app_name"
             android:theme="@style/StyledIndicators" >
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
-
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
         </activity>
         <activity
-            android:name=".AssignmentViewFragment"
-			android:theme="@style/StyledIndicators" />
+            android:name=".AssignmentViewFragment" />
         <activity
-            android:name=".AssignmentEditFragment"  />
+            android:name=".AssignmentEditFragment" />
+        <!-- Manage -->
         <activity
-            android:name="BookEditActivity" />
+            android:name=".manage.ManageActivity"
+            android:theme="@style/StyledIndicators" />
         <activity
-            android:name=".preferences.BookViewActivity"
-			android:theme="@android:style/Theme.NoTitleBar" />
+            android:name=".manage.BookListFragment" />
         <activity
-            android:name="BookListActivity"
-            android:label="@string/pref_manage_books" />
+            android:name=".manage.BookViewFragment"
+            android:label="@string/book_view_title" />
         <activity
-            android:name="CourseListActivity"
-            android:label="@string/pref_manage_courses" />
+            android:name=".manage.BookEditActivity" />
         <activity
-            android:name=".preferences.DaySelectFragment"
+            android:name=".manage.CourseListFragment" />
+        <activity
+            android:name=".manage.CourseViewFragment"
+            android:label="@string/course_view_title" />
+        <activity
+            android:name=".manage.DaySelectFragment"
             android:label="@string/course_edit_days_select_title"
             android:theme="@style/CourseDaysSelect" />
         <activity
-           	android:name="CourseEditActivity"
-            android:theme="@android:style/Theme.NoTitleBar" />
+           	android:name=".manage.CourseEditActivity" />
         <activity
-            android:name=".preferences.TeacherListActivity"
-            android:label="@string/pref_manage_teachers" />
+            android:name=".manage.TeacherListFragment" />
         <activity
-            android:name=".preferences.TeacherEditActivity" />
+            android:name=".manage.TeacherEditActivity" />
         <activity
-            android:name=".preferences.TeacherViewFragment"
-			android:theme="@android:style/Theme.NoTitleBar" />
+            android:name=".manage.TeacherViewFragment"
+            android:label="@string/teacher_view_title" />
+        <!-- Preferences -->
         <activity
             android:name=".preferences.Preferences"
             android:label="@string/preferences" />

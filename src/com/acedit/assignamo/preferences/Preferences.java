@@ -1,17 +1,13 @@
 package com.acedit.assignamo.preferences;
 
-import com.acedit.assignamo.database.Values;
-import com.awesomeapplets.assignamo.R;
-
 import android.content.Intent;
-import android.content.SharedPreferences;
-import android.content.SharedPreferences.Editor;
 import android.content.pm.PackageManager.NameNotFoundException;
 import android.net.Uri;
 import android.os.Bundle;
 import android.preference.Preference;
 import android.preference.PreferenceActivity;
-import android.preference.PreferenceManager;
+
+import com.acedit.assignamo.R;
 
 public class Preferences extends PreferenceActivity {
 	

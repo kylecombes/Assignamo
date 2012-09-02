@@ -8,11 +8,11 @@ import android.view.MenuInflater;
 import android.view.MenuItem;
 import android.widget.TextView;
 
+import com.acedit.assignamo.R;
 import com.acedit.assignamo.ViewFragment;
 import com.acedit.assignamo.database.DbAdapter;
 import com.acedit.assignamo.database.Values;
 import com.acedit.assignamo.utils.DbUtils;
-import com.awesomeapplets.assignamo.R;
 
 public class BookViewFragment extends ViewFragment {
 		
@@ -27,7 +27,7 @@ public class BookViewFragment extends ViewFragment {
 	public void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
 		
-		setContentView(R.layout.book_view_phone);
+		setContentView(R.layout.book_view);
 		typeLabel = (TextView)findViewById(R.id.book_view_type);
 		titleLabel = (TextView)findViewById(R.id.book_view_title);
 		authorLabel = (TextView)findViewById(R.id.book_view_author);
@@ -97,11 +97,14 @@ public class BookViewFragment extends ViewFragment {
 		pagesLabel.setText(cursor.getString(cursor.getColumnIndexOrThrow(Values.BOOK_KEY_PAGES))
 				+ " " + getString(R.string.add_book_pages).toLowerCase());
 		String ISBN = parseISBN(cursor.getLong(cursor.getColumnIndexOrThrow(Values.BOOK_KEY_ISBN)));
-		ISBNLabel.setText(getString(R.string.add_book_ISBN) + ": " + ISBN);
+		if (ISBN != null)
+			ISBNLabel.setText(getString(R.string.add_book_ISBN) + ": " + ISBN);
 		
 	}
 	
 	private String parseISBN(long in) {
+		if (in == 0)
+			return null;
 		String ISBN = "" + in;
 		String newISBN = "";
 		if (ISBN.length() == 9)

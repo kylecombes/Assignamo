@@ -1,0 +1,13 @@
+<resources>
+
+    <style name="StyledIndicators" parent="Widget.TitlePageIndicator">
+        <item name="vpiTabPageIndicatorStyle">@style/CustomTabPageIndicator</item>
+        <item name="vpiTabTextStyle">@style/CustomTabPageIndicator.Text</item>
+        <item name="android:windowNoTitle">true</item>
+    </style>
+    
+    <style name="MainStyle" parent="@android:style/Theme.Light">
+        
+    </style>
+	
+</resources>

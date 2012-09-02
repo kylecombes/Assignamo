@@ -1,108 +1,80 @@
 <?xml version="1.0" encoding="utf-8"?>
-<ScrollView xmlns:android="http://schemas.android.com/apk/res/android"
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="fill_parent"
-    android:layout_height="wrap_content"
-    android:scrollbarStyle="insideOverlay" >
-<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
-    android:layout_width="match_parent"
-    android:layout_height="wrap_content"
-    android:orientation="vertical" >
-	
-    
-    <TextView android:id="@+id/assignment_edit_course_spinner_label"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:text="@string/course"
-        android:paddingTop="3dip" />
-    <Spinner
-        android:id="@+id/assignment_add_course_select"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content" />
-	
-    <TextView android:id="@+id/assignment_add_title_label"
-        android:layout_width="fill_parent"
-        android:layout_height="wrap_content"
-        android:text="@string/title" />
-    
-    <EditText
-        android:id="@+id/assignment_add_title_field"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:inputType="textCapSentences|textAutoCorrect" >
-    </EditText>
-    
-    <TextView android:id="@+id/assignment_add_description_label"
-        android:layout_width="fill_parent"
-        android:layout_height="wrap_content"
-        android:text="@string/description" />
-    
-    <EditText
-        android:id="@+id/assignment_add_description_field"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:inputType="textMultiLine|textCapSentences|textAutoCorrect"
-        android:minLines="3"
-        android:gravity="top" />
-    
-    <LinearLayout android:orientation="horizontal"
-           	android:layout_width="wrap_content"
-           	android:layout_height="wrap_content">
-           	<LinearLayout android:orientation="vertical"
-           	    android:layout_width="fill_parent"
-           	    android:layout_height="wrap_content">
-           	    <TextView android:layout_width="wrap_content"
-		            android:layout_height="wrap_content"
-		            android:text="@string/assignment_due_date"
-		            android:paddingLeft="3dip" />
-		        <Button
-		            android:id="@+id/assignment_add_date_due"
-		            android:layout_height="wrap_content"
-		            android:layout_width="wrap_content"
-		            android:text="@string/assignment_due_date" />
-           	</LinearLayout>
-	        <LinearLayout android:orientation="vertical"
-           	    android:layout_width="wrap_content"
-           	    android:layout_height="wrap_content">
-		        <TextView android:layout_width="wrap_content"
-		            android:layout_height="wrap_content"
-		            android:text="@string/assignment_time_due"
-		            android:paddingLeft="3dip" />
-		        <Button
-		            android:id="@+id/assignment_add_time_due"
-		            android:layout_height="wrap_content"
-		            android:layout_width="wrap_content"
-		            android:text="@string/assignment_time_due" />
-		    </LinearLayout>
-		    <LinearLayout android:orientation="vertical"
-		        android:layout_width="wrap_content"
-		        android:layout_height="wrap_content">
-		        <TextView android:layout_width="wrap_content"
-		            android:layout_height="wrap_content"
-		            android:text="@string/points"
-		            android:paddingLeft="1dip" />
-				<EditText
-			       android:id="@+id/assignment_add_points"
-			       android:layout_width="50dip"
-			       android:layout_height="wrap_content"
-			       android:minEms="10"
-			       android:inputType="number" >
-			       <requestFocus />
-			   </EditText>
-		    </LinearLayout>
+    android:layout_height="fill_parent">
+	<ScrollView android:layout_width="fill_parent"
+	    android:layout_height="wrap_content"
+	    android:scrollbarStyle="insideOverlay" >
+	<LinearLayout android:layout_width="match_parent"
+	    android:layout_height="wrap_content"
+	    android:orientation="vertical" >
+		
+	    <TextView android:text="@string/course"
+	        style="@style/Label" />
+	    <Spinner
+	        android:id="@+id/assignment_add_course_select"
+	        android:layout_width="match_parent"
+	        android:layout_height="wrap_content" />
+		
+	    <EditText android:id="@+id/assignment_add_title_field"
+	        style="@style/TextBox.Title"
+	        android:hint="@string/title" >
+			<requestFocus />
+	    </EditText>
+	    
+	    <EditText android:id="@+id/assignment_add_description_field"
+	        style="@style/TextBox.Description"
+	        android:hint="@string/description" />
+	    
+	    <LinearLayout android:orientation="horizontal"
+	           	android:layout_width="wrap_content"
+	           	android:layout_height="wrap_content">
+	           	<!-- Due date -->
+	           	<LinearLayout android:orientation="vertical"
+	           	    android:layout_width="fill_parent"
+	           	    android:layout_height="wrap_content">
+	           	    <TextView android:text="@string/assignment_due_date"
+			            style="@style/Label" />
+			        <Button android:id="@+id/assignment_add_date_due"
+			            android:text="@string/assignment_due_date"
+			            style="@style/Button" />
+	           	</LinearLayout>
+	           	<!-- Due time -->
+		        <LinearLayout android:orientation="vertical"
+	           	    android:layout_width="wrap_content"
+	           	    android:layout_height="wrap_content">
+			        <TextView android:text="@string/assignment_time_due"
+			            style="@style/Label" />
+			        <Button android:id="@+id/assignment_add_time_due"
+			            android:text="@string/assignment_time_due"
+			            style="@style/Button" />
+			    </LinearLayout>
+			    <!-- Points -->
+			    <LinearLayout android:orientation="vertical"
+			        android:layout_width="wrap_content"
+			        android:layout_height="wrap_content">
+			        <TextView android:text="@string/points"
+			            style="@style/Label" />
+					<EditText android:id="@+id/assignment_add_points"
+				       android:layout_width="50dip"
+				       android:layout_height="wrap_content"
+				       android:minEms="10"
+				       android:inputType="number" >
+				   </EditText>
+			    </LinearLayout>
+			</LinearLayout>
 		</LinearLayout>
-		<LinearLayout android:orientation="horizontal"
-		    android:layout_height="wrap_content"
-		    android:layout_width="fill_parent" >
-	    <Button
-    	    android:id="@+id/assignment_add_save"
-    	    android:layout_width="wrap_content"
-    	    android:layout_height="wrap_content"
-    	    android:text="@string/save" />
-	    <Button
-    	    android:id="@+id/assignment_add_cancel"
-    	    android:layout_width="wrap_content"
-    	    android:layout_height="wrap_content"
-    	    android:text="@string/cancel" />
-	    </LinearLayout>
-	</LinearLayout>
-</ScrollView>
+	</ScrollView>
+	<LinearLayout android:orientation="horizontal"
+	    android:layout_height="wrap_content"
+	    android:layout_width="fill_parent"
+	    android:layout_alignParentBottom="true"
+	    style="@android:style/ButtonBar" >
+	    <Button android:id="@+id/assignment_add_save"
+	   	    android:text="@string/save"
+	   	    style="@style/Button.ButtonBar" />
+	    <Button android:id="@+id/assignment_add_cancel"
+	   	    android:text="@android:string/cancel"
+	   	    style="@style/Button.ButtonBar" />
+    </LinearLayout>
+</RelativeLayout>

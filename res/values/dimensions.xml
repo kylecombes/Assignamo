@@ -3,13 +3,8 @@
     <dimen name="list_item_font_size">20sp</dimen>
     <dimen name="list_item_subfont_size">15sp</dimen>
     <dimen name="list_item_edge_padding">10dip</dimen>
-    <!-- Since the Description text is smaller than the Due Date text,
-    we need to move it up so that it stays level with the Due string.
-    Three more than list_item_edge_padding seems to be the magic number
-    at the moment. -->
-    <dimen name="list_item_description_bottom_padding">13dip</dimen>
-    <dimen name="list_item_min_spacing_between_description_and_date">5dip</dimen>
-    <dimen name="list_item_height">100dip</dimen>
+    <dimen name="list_item_vertical_spacing">2dip</dimen>
+    <dimen name="list_item_horizontal_spacing">5dip</dimen>
     
     <dimen name="color_strip_height">70dip</dimen>
     <dimen name="color_strip_width">15dip</dimen>

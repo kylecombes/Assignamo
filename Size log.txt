@@ -1,2 +1,3 @@
 Before cleaning up code and removing unused Fragment activities: 596KB
 After: 592KB
+Before cleaning up XML layout and using more styles and removing ids for labels: 632KB

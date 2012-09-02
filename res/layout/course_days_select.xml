@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="utf-8"?>
-<FrameLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<merge xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="fill_parent"
     android:layout_height="fill_parent"
     android:layout_weight="1">
@@ -26,7 +26,7 @@
 			    <TextView android:layout_width="wrap_content"
 			        android:layout_height="wrap_content"
 			        style="@style/CourseDaysSelect.Text"
-			        android:text="-"/>
+			        android:text="@string/course_edit_days_select_time_separator"/>
 			    <Button android:id="@+id/course_edit_days_select_day1_button2"
 			        android:layout_width="wrap_content"
 			        android:layout_height="wrap_content"/>
@@ -47,7 +47,7 @@
 			    <TextView android:layout_width="wrap_content"
 			        android:layout_height="wrap_content"
 			        style="@style/CourseDaysSelect.Text"
-			        android:text="-"/>
+			        android:text="@string/course_edit_days_select_time_separator"/>
 			    <Button android:id="@+id/course_edit_days_select_day2_button2"
 			        android:layout_width="wrap_content"
 			        android:layout_height="wrap_content"/>
@@ -68,7 +68,7 @@
 			    <TextView android:layout_width="wrap_content"
 			        android:layout_height="wrap_content"
 			        style="@style/CourseDaysSelect.Text"
-			        android:text="-"/>
+			        android:text="@string/course_edit_days_select_time_separator"/>
 			    <Button android:id="@+id/course_edit_days_select_day3_button2"
 			        android:layout_width="wrap_content"
 			        android:layout_height="wrap_content"/>
@@ -89,7 +89,7 @@
 			    <TextView android:layout_width="wrap_content"
 			        android:layout_height="wrap_content"
 			        style="@style/CourseDaysSelect.Text"
-			        android:text="-"/>
+			        android:text="@string/course_edit_days_select_time_separator"/>
 			    <Button android:id="@+id/course_edit_days_select_day4_button2"
 			        android:layout_width="wrap_content"
 			        android:layout_height="wrap_content"/>
@@ -110,7 +110,7 @@
 			    <TextView android:layout_width="wrap_content"
 			        android:layout_height="wrap_content"
 			        style="@style/CourseDaysSelect.Text"
-			        android:text="-"/>
+			        android:text="@string/course_edit_days_select_time_separator"/>
 			    <Button android:id="@+id/course_edit_days_select_day5_button2"
 			        android:layout_width="wrap_content"
 			        android:layout_height="wrap_content"/>
@@ -131,7 +131,7 @@
 			    <TextView android:layout_width="wrap_content"
 			        android:layout_height="wrap_content"
 			        style="@style/CourseDaysSelect.Text"
-			        android:text="-"/>
+			        android:text="@string/course_edit_days_select_time_separator"/>
 			    <Button android:id="@+id/course_edit_days_select_day6_button2"
 			        android:layout_width="wrap_content"
 			        android:layout_height="wrap_content"/>
@@ -152,7 +152,7 @@
 			    <TextView android:layout_width="wrap_content"
 			        android:layout_height="wrap_content"
 			        style="@style/CourseDaysSelect.Text"
-			        android:text="-"/>
+			        android:text="@string/course_edit_days_select_time_separator"/>
 			    <Button android:id="@+id/course_edit_days_select_day7_button2"
 			        android:layout_width="wrap_content"
 			        android:layout_height="wrap_content"/>
@@ -174,4 +174,4 @@
 	        android:layout_width="fill_parent"
 	        android:layout_weight="1" />
    	</LinearLayout>
-</FrameLayout>
+</merge>

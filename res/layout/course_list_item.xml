@@ -2,26 +2,14 @@
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="fill_parent"
     android:layout_height="fill_parent"
-    android:orientation="vertical"
-    android:title="Courses">
-    <TextView xmlns:android="http://schemas.android.com/apk/res/android"
-	    android:id="@+id/course_list_name"
-	    android:layout_width="fill_parent"
-	    android:layout_height="wrap_content"
-	    android:paddingLeft="20dip"
-	    android:paddingRight="20dip"
-	    android:paddingTop="10dip"
-	    android:paddingBottom="5dip">
-	    
-	</TextView>
-	<TextView xmlns:android="http://schemas.android.com/apk/res/android"
-	    android:id="@+id/course_list_teacher"
-	    android:layout_width="fill_parent"
-	    android:layout_height="wrap_content"
-	    android:paddingLeft="20dip"
-	    android:paddingRight="20dip"
-	    android:paddingBottom="10dip"
-	    android:textSize="12dip">
-	    
-	</TextView>
+    android:orientation="vertical">
+    <TextView android:id="@+id/list_title"
+		style="@style/ListText.Primary" />
+	<RelativeLayout android:layout_width="fill_parent"
+	    android:layout_height="wrap_content" >
+	    <TextView android:id="@+id/list_teacher"
+			style="@style/ListText.Secondary.Left"/>
+		<TextView android:id="@+id/list_days"
+		    style="@style/ListText.Secondary.Right" />
+	</RelativeLayout>
 </LinearLayout>

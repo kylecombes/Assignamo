@@ -5,7 +5,7 @@
  * should not be modified by hand.
  */
 
-package com.awesomeapplets.assignamo;
+package com.acedit.assignamo;
 
 public final class R {
     public static final class array {
@@ -263,6 +263,7 @@ or to a theme attribute in the form "<code>?[<i>package</i>:][<i>type</i>:]<i>na
         public static final int default_title_indicator_selected_bold=0x7f070002;
     }
     public static final class color {
+        public static final int assignment_list_divider=0x7f060013;
         public static final int background=0x7f06000f;
         public static final int brown=0x7f060011;
         public static final int default_circle_indicator_fill_color=0x7f060008;
@@ -271,22 +272,22 @@ or to a theme attribute in the form "<code>?[<i>package</i>:][<i>type</i>:]<i>na
         /**  <color name="background">#f4e5b6</color> 
  ListView Strip Colors 
          */
-        public static final int default_strip=0x7f060013;
+        public static final int default_strip=0x7f060014;
         public static final int default_title_indicator_footer_color=0x7f06000b;
         public static final int default_title_indicator_selected_color=0x7f06000c;
         public static final int default_title_indicator_text_color=0x7f06000d;
         public static final int list_divider=0x7f060012;
         public static final int list_text=0x7f06000e;
-        public static final int strip_color_1=0x7f060014;
-        public static final int strip_color_1_light=0x7f060019;
-        public static final int strip_color_2=0x7f060015;
-        public static final int strip_color_2_light=0x7f06001a;
-        public static final int strip_color_3=0x7f060016;
-        public static final int strip_color_3_light=0x7f06001b;
-        public static final int strip_color_4=0x7f060017;
-        public static final int strip_color_4_light=0x7f06001c;
-        public static final int strip_color_5=0x7f060018;
-        public static final int strip_color_5_light=0x7f06001d;
+        public static final int strip_color_1=0x7f060015;
+        public static final int strip_color_1_light=0x7f06001a;
+        public static final int strip_color_2=0x7f060016;
+        public static final int strip_color_2_light=0x7f06001b;
+        public static final int strip_color_3=0x7f060017;
+        public static final int strip_color_3_light=0x7f06001c;
+        public static final int strip_color_4=0x7f060018;
+        public static final int strip_color_4_light=0x7f06001d;
+        public static final int strip_color_5=0x7f060019;
+        public static final int strip_color_5_light=0x7f06001e;
         public static final int tab_background=0x7f060010;
         public static final int vpi__background_holo_dark=0x7f060000;
         public static final int vpi__background_holo_light=0x7f060001;
@@ -296,17 +297,17 @@ or to a theme attribute in the form "<code>?[<i>package</i>:][<i>type</i>:]<i>na
         public static final int vpi__bright_foreground_holo_light=0x7f060003;
         public static final int vpi__bright_foreground_inverse_holo_dark=0x7f060006;
         public static final int vpi__bright_foreground_inverse_holo_light=0x7f060007;
-        public static final int vpi__dark_theme=0x7f06001e;
-        public static final int vpi__light_theme=0x7f06001f;
+        public static final int vpi__dark_theme=0x7f06001f;
+        public static final int vpi__light_theme=0x7f060020;
     }
     public static final class dimen {
-        public static final int color_strip_height=0x7f090010;
-        public static final int color_strip_width=0x7f090011;
-        public static final int course_edit_days_select_checkbox_dimen=0x7f090014;
+        public static final int color_strip_height=0x7f09000f;
+        public static final int color_strip_width=0x7f090010;
+        public static final int course_edit_days_select_checkbox_dimen=0x7f090013;
         /**  Course Days Select 
          */
-        public static final int course_edit_days_select_text_padding=0x7f090012;
-        public static final int course_edit_days_select_text_size=0x7f090013;
+        public static final int course_edit_days_select_text_padding=0x7f090011;
+        public static final int course_edit_days_select_text_size=0x7f090012;
         public static final int default_circle_indicator_radius=0x7f090000;
         public static final int default_circle_indicator_stroke_width=0x7f090001;
         public static final int default_title_indicator_clip_padding=0x7f090002;
@@ -317,17 +318,11 @@ or to a theme attribute in the form "<code>?[<i>package</i>:][<i>type</i>:]<i>na
         public static final int default_title_indicator_text_size=0x7f090007;
         public static final int default_title_indicator_title_padding=0x7f090008;
         public static final int default_title_indicator_top_padding=0x7f090009;
-        /**  Since the Description text is smaller than the Due Date text,
-    we need to move it up so that it stays level with the Due string.
-    Three more than list_item_edge_padding seems to be the magic number
-    at the moment. 
-         */
-        public static final int list_item_description_bottom_padding=0x7f09000d;
         public static final int list_item_edge_padding=0x7f09000c;
         public static final int list_item_font_size=0x7f09000a;
-        public static final int list_item_height=0x7f09000f;
-        public static final int list_item_min_spacing_between_description_and_date=0x7f09000e;
+        public static final int list_item_horizontal_spacing=0x7f09000e;
         public static final int list_item_subfont_size=0x7f09000b;
+        public static final int list_item_vertical_spacing=0x7f09000d;
     }
     public static final class drawable {
         public static final int checkmark=0x7f020000;
@@ -352,145 +347,133 @@ or to a theme attribute in the form "<code>?[<i>package</i>:][<i>type</i>:]<i>na
         public static final int yellow_tab_unselected_pressed=0x7f020013;
     }
     public static final class id {
-        public static final int add_book_ISBN_field=0x7f05002d;
-        public static final int add_book_ISBN_label=0x7f05002c;
-        public static final int add_book_author_field=0x7f050020;
-        public static final int add_book_author_label=0x7f05001f;
-        public static final int add_book_chapters_field=0x7f050029;
-        public static final int add_book_chapters_label=0x7f050026;
-        public static final int add_book_description_field=0x7f050022;
-        public static final int add_book_description_label=0x7f050021;
-        public static final int add_book_fields_row=0x7f050027;
-        public static final int add_book_header=0x7f05001c;
-        public static final int add_book_labels_row=0x7f050024;
-        public static final int add_book_pages_chapters_table=0x7f050023;
-        public static final int add_book_pages_field=0x7f050028;
-        public static final int add_book_pages_label=0x7f050025;
-        public static final int add_book_title=0x7f05001d;
-        public static final int add_book_title_field=0x7f05001e;
-        public static final int add_book_type_label=0x7f05002a;
-        public static final int add_book_type_spinner=0x7f05002b;
-        public static final int assignment_add_cancel=0x7f05000f;
-        public static final int assignment_add_course_select=0x7f050006;
-        public static final int assignment_add_date_due=0x7f05000b;
-        public static final int assignment_add_description_field=0x7f05000a;
-        public static final int assignment_add_description_label=0x7f050009;
-        public static final int assignment_add_points=0x7f05000d;
-        public static final int assignment_add_save=0x7f05000e;
-        public static final int assignment_add_time_due=0x7f05000c;
-        public static final int assignment_add_title_field=0x7f050008;
-        public static final int assignment_add_title_label=0x7f050007;
-        public static final int assignment_edit_course_spinner_label=0x7f050005;
-        public static final int assignment_list_color_strip=0x7f050010;
-        public static final int assignment_list_description=0x7f050013;
-        public static final int assignment_list_due=0x7f050012;
-        public static final int assignment_list_title=0x7f050011;
-        public static final int assignment_view_course=0x7f050014;
-        public static final int assignment_view_date=0x7f050017;
-        public static final int assignment_view_date_label=0x7f050016;
-        public static final int assignment_view_description=0x7f050019;
-        public static final int assignment_view_description_label=0x7f050018;
-        public static final int assignment_view_points=0x7f05001b;
-        public static final int assignment_view_points_label=0x7f05001a;
-        public static final int assignment_view_title=0x7f050015;
-        public static final int book_add_buttons_table=0x7f05002e;
-        public static final int book_add_cancel_button=0x7f050030;
-        public static final int book_add_save_button=0x7f05002f;
-        public static final int book_context_menu_delete=0x7f050080;
-        public static final int book_context_menu_edit=0x7f050081;
-        public static final int book_list_description=0x7f050032;
-        public static final int book_list_title=0x7f050031;
-        public static final int book_menu_add=0x7f050082;
-        public static final int book_view_ISBN=0x7f050039;
-        public static final int book_view_author=0x7f050035;
-        public static final int book_view_chapters=0x7f050038;
-        public static final int book_view_description=0x7f050036;
-        public static final int book_view_pages=0x7f050037;
-        public static final int book_view_title=0x7f050034;
-        public static final int book_view_type=0x7f050033;
-        public static final int course_context_menu_delete=0x7f050084;
-        public static final int course_context_menu_edit=0x7f050083;
-        public static final int course_edit_books=0x7f05005d;
-        public static final int course_edit_cancel=0x7f05005f;
-        public static final int course_edit_credit_hours_field=0x7f05005c;
-        public static final int course_edit_credit_hours_label=0x7f05005b;
-        public static final int course_edit_days_button=0x7f050058;
-        public static final int course_edit_days_select_cancel=0x7f05004f;
-        public static final int course_edit_days_select_day1_button1=0x7f05003b;
-        public static final int course_edit_days_select_day1_button2=0x7f05003c;
-        public static final int course_edit_days_select_day1_checkbox=0x7f05003a;
-        public static final int course_edit_days_select_day2_button1=0x7f05003e;
-        public static final int course_edit_days_select_day2_button2=0x7f05003f;
-        public static final int course_edit_days_select_day2_checkbox=0x7f05003d;
-        public static final int course_edit_days_select_day3_button1=0x7f050041;
-        public static final int course_edit_days_select_day3_button2=0x7f050042;
-        public static final int course_edit_days_select_day3_checkbox=0x7f050040;
-        public static final int course_edit_days_select_day4_button1=0x7f050044;
-        public static final int course_edit_days_select_day4_button2=0x7f050045;
-        public static final int course_edit_days_select_day4_checkbox=0x7f050043;
-        public static final int course_edit_days_select_day5_button1=0x7f050047;
-        public static final int course_edit_days_select_day5_button2=0x7f050048;
-        public static final int course_edit_days_select_day5_checkbox=0x7f050046;
-        public static final int course_edit_days_select_day6_button1=0x7f05004a;
-        public static final int course_edit_days_select_day6_button2=0x7f05004b;
-        public static final int course_edit_days_select_day6_checkbox=0x7f050049;
-        public static final int course_edit_days_select_day7_button1=0x7f05004d;
-        public static final int course_edit_days_select_day7_button2=0x7f05004e;
-        public static final int course_edit_days_select_day7_checkbox=0x7f05004c;
-        public static final int course_edit_days_select_ok=0x7f050050;
-        public static final int course_edit_days_title_label=0x7f050057;
-        public static final int course_edit_description_field=0x7f050056;
-        public static final int course_edit_description_label=0x7f050055;
-        public static final int course_edit_room_field=0x7f05005a;
-        public static final int course_edit_room_label=0x7f050059;
-        public static final int course_edit_save=0x7f05005e;
-        public static final int course_edit_teacher_label=0x7f050053;
-        public static final int course_edit_teacher_spinner=0x7f050054;
-        public static final int course_edit_title_field=0x7f050052;
-        public static final int course_edit_title_label=0x7f050051;
-        public static final int course_list_name=0x7f050060;
-        public static final int course_list_teacher=0x7f050061;
-        public static final int course_menu_add=0x7f050085;
-        public static final int course_view_description=0x7f050066;
-        public static final int course_view_description_label=0x7f050065;
-        public static final int course_view_name=0x7f050062;
-        public static final int course_view_room=0x7f050068;
-        public static final int course_view_room_label=0x7f050067;
-        public static final int course_view_teacher                   =0x7f050064;
-        public static final int course_view_teacher_label=0x7f050063;
+        public static final int add_book_ISBN_field=0x7f05002a;
+        public static final int add_book_ISBN_label=0x7f050029;
+        public static final int add_book_author_field=0x7f05001d;
+        public static final int add_book_author_label=0x7f05001c;
+        public static final int add_book_chapters_field=0x7f050026;
+        public static final int add_book_chapters_label=0x7f050023;
+        public static final int add_book_description_field=0x7f05001f;
+        public static final int add_book_description_label=0x7f05001e;
+        public static final int add_book_fields_row=0x7f050024;
+        public static final int add_book_header=0x7f050019;
+        public static final int add_book_labels_row=0x7f050021;
+        public static final int add_book_pages_chapters_table=0x7f050020;
+        public static final int add_book_pages_field=0x7f050025;
+        public static final int add_book_pages_label=0x7f050022;
+        public static final int add_book_title=0x7f05001a;
+        public static final int add_book_title_field=0x7f05001b;
+        public static final int add_book_type_label=0x7f050027;
+        public static final int add_book_type_spinner=0x7f050028;
+        public static final int assignment_add_cancel=0x7f05000c;
+        public static final int assignment_add_course_select=0x7f050005;
+        public static final int assignment_add_date_due=0x7f050008;
+        public static final int assignment_add_description_field=0x7f050007;
+        public static final int assignment_add_points=0x7f05000a;
+        public static final int assignment_add_save=0x7f05000b;
+        public static final int assignment_add_time_due=0x7f050009;
+        public static final int assignment_add_title_field=0x7f050006;
+        public static final int assignment_list_color_strip=0x7f05000d;
+        public static final int assignment_view_course=0x7f050011;
+        public static final int assignment_view_date=0x7f050014;
+        public static final int assignment_view_date_label=0x7f050013;
+        public static final int assignment_view_description=0x7f050016;
+        public static final int assignment_view_description_label=0x7f050015;
+        public static final int assignment_view_points=0x7f050018;
+        public static final int assignment_view_points_label=0x7f050017;
+        public static final int assignment_view_title=0x7f050012;
+        public static final int book_edit_cancel_button=0x7f05002c;
+        public static final int book_edit_save_button=0x7f05002b;
+        public static final int book_view_ISBN=0x7f050034;
+        public static final int book_view_author=0x7f050030;
+        public static final int book_view_chapters=0x7f050033;
+        public static final int book_view_description=0x7f050031;
+        public static final int book_view_pages=0x7f050032;
+        public static final int book_view_title=0x7f05002f;
+        public static final int book_view_type=0x7f05002e;
+        public static final int course_edit_cancel=0x7f050059;
+        public static final int course_edit_credit_hours_field=0x7f050057;
+        public static final int course_edit_credit_hours_label=0x7f050056;
+        public static final int course_edit_days_button=0x7f050053;
+        public static final int course_edit_days_select_cancel=0x7f05004a;
+        public static final int course_edit_days_select_day1_button1=0x7f050036;
+        public static final int course_edit_days_select_day1_button2=0x7f050037;
+        public static final int course_edit_days_select_day1_checkbox=0x7f050035;
+        public static final int course_edit_days_select_day2_button1=0x7f050039;
+        public static final int course_edit_days_select_day2_button2=0x7f05003a;
+        public static final int course_edit_days_select_day2_checkbox=0x7f050038;
+        public static final int course_edit_days_select_day3_button1=0x7f05003c;
+        public static final int course_edit_days_select_day3_button2=0x7f05003d;
+        public static final int course_edit_days_select_day3_checkbox=0x7f05003b;
+        public static final int course_edit_days_select_day4_button1=0x7f05003f;
+        public static final int course_edit_days_select_day4_button2=0x7f050040;
+        public static final int course_edit_days_select_day4_checkbox=0x7f05003e;
+        public static final int course_edit_days_select_day5_button1=0x7f050042;
+        public static final int course_edit_days_select_day5_button2=0x7f050043;
+        public static final int course_edit_days_select_day5_checkbox=0x7f050041;
+        public static final int course_edit_days_select_day6_button1=0x7f050045;
+        public static final int course_edit_days_select_day6_button2=0x7f050046;
+        public static final int course_edit_days_select_day6_checkbox=0x7f050044;
+        public static final int course_edit_days_select_day7_button1=0x7f050048;
+        public static final int course_edit_days_select_day7_button2=0x7f050049;
+        public static final int course_edit_days_select_day7_checkbox=0x7f050047;
+        public static final int course_edit_days_select_ok=0x7f05004b;
+        public static final int course_edit_days_title_label=0x7f050052;
+        public static final int course_edit_description_field=0x7f050051;
+        public static final int course_edit_description_label=0x7f050050;
+        public static final int course_edit_room_field=0x7f050055;
+        public static final int course_edit_room_label=0x7f050054;
+        public static final int course_edit_save=0x7f050058;
+        public static final int course_edit_teacher_label=0x7f05004e;
+        public static final int course_edit_teacher_spinner=0x7f05004f;
+        public static final int course_edit_title_field=0x7f05004d;
+        public static final int course_edit_title_label=0x7f05004c;
+        public static final int course_view_description=0x7f050060;
+        public static final int course_view_description_label=0x7f05005f;
+        public static final int course_view_name=0x7f05005c;
+        public static final int course_view_room=0x7f050062;
+        public static final int course_view_room_label=0x7f050061;
+        public static final int course_view_teacher                   =0x7f05005e;
+        public static final int course_view_teacher_label=0x7f05005d;
         public static final int horizontal=0x7f050000;
-        public static final int indicator=0x7f050069;
+        public static final int indicator=0x7f050063;
+        public static final int list_author=0x7f05002d;
+        public static final int list_days=0x7f05005b;
+        public static final int list_department=0x7f050073;
+        public static final int list_description=0x7f05000f;
+        public static final int list_due=0x7f050010;
+        public static final int list_room_num=0x7f050074;
+        public static final int list_teacher=0x7f05005a;
+        public static final int list_title=0x7f05000e;
+        public static final int manage_context_menu_delete=0x7f05007c;
+        public static final int manage_context_menu_edit=0x7f05007b;
         public static final int none=0x7f050002;
-        public static final int room_label=0x7f050071;
-        public static final int teacher_context_menu_delete=0x7f050087;
-        public static final int teacher_context_menu_edit=0x7f050086;
-        public static final int teacher_edit_button_linear_layout=0x7f050077;
-        public static final int teacher_edit_cancel=0x7f050079;
-        public static final int teacher_edit_email_field=0x7f050074;
-        public static final int teacher_edit_email_label=0x7f050073;
-        public static final int teacher_edit_name_field=0x7f05006c;
-        public static final int teacher_edit_name_label=0x7f05006b;
-        public static final int teacher_edit_notes_field=0x7f050070;
-        public static final int teacher_edit_notes_label=0x7f05006f;
-        public static final int teacher_edit_phone_field=0x7f050076;
-        public static final int teacher_edit_phone_label=0x7f050075;
-        public static final int teacher_edit_room_field=0x7f050072;
-        public static final int teacher_edit_save=0x7f050078;
-        public static final int teacher_edit_subject_field=0x7f05006e;
-        public static final int teacher_edit_subject_label=0x7f05006d;
-        public static final int teacher_menu_add=0x7f050088;
-        public static final int teacher_view_email=0x7f05007d;
-        public static final int teacher_view_name=0x7f05007b;
-        public static final int teacher_view_notes=0x7f05007f;
-        public static final int teacher_view_phone_number=0x7f05007e;
-        public static final int teacher_view_room=0x7f05007c;
-        public static final int teacher_view_subject=0x7f05007a;
+        public static final int room_label=0x7f05006b;
+        public static final int teacher_edit_cancel=0x7f050072;
+        public static final int teacher_edit_email_field=0x7f05006e;
+        public static final int teacher_edit_email_label=0x7f05006d;
+        public static final int teacher_edit_name_field=0x7f050066;
+        public static final int teacher_edit_name_label=0x7f050065;
+        public static final int teacher_edit_notes_field=0x7f05006a;
+        public static final int teacher_edit_notes_label=0x7f050069;
+        public static final int teacher_edit_phone_field=0x7f050070;
+        public static final int teacher_edit_phone_label=0x7f05006f;
+        public static final int teacher_edit_room_field=0x7f05006c;
+        public static final int teacher_edit_save=0x7f050071;
+        public static final int teacher_edit_subject_field=0x7f050068;
+        public static final int teacher_edit_subject_label=0x7f050067;
+        public static final int teacher_view_email=0x7f050078;
+        public static final int teacher_view_name=0x7f050076;
+        public static final int teacher_view_notes=0x7f05007a;
+        public static final int teacher_view_phone_number=0x7f050079;
+        public static final int teacher_view_room=0x7f050077;
+        public static final int teacher_view_subject=0x7f050075;
         public static final int triangle=0x7f050003;
         public static final int underline=0x7f050004;
         public static final int vertical=0x7f050001;
-        public static final int view_delete=0x7f05008a;
-        public static final int view_edit=0x7f050089;
-        public static final int viewpager=0x7f05006a;
+        public static final int view_delete=0x7f05007e;
+        public static final int view_edit=0x7f05007d;
+        public static final int viewpager=0x7f050064;
     }
     public static final class integer {
         public static final int default_circle_indicator_orientation=0x7f080000;
@@ -500,203 +483,217 @@ or to a theme attribute in the form "<code>?[<i>package</i>:][<i>type</i>:]<i>na
         public static final int assignment_edit=0x7f030000;
         public static final int assignment_list=0x7f030001;
         public static final int assignment_list_item=0x7f030002;
-        public static final int assignment_view_phone=0x7f030003;
+        public static final int assignment_view=0x7f030003;
         public static final int book_edit=0x7f030004;
         public static final int book_list=0x7f030005;
         public static final int book_list_item=0x7f030006;
-        public static final int book_view_phone=0x7f030007;
+        public static final int book_view=0x7f030007;
         public static final int course_days_select=0x7f030008;
         public static final int course_edit=0x7f030009;
         public static final int course_list=0x7f03000a;
         public static final int course_list_item=0x7f03000b;
-        public static final int course_view_phone=0x7f03000c;
+        public static final int course_view=0x7f03000c;
         public static final int tab_pager=0x7f03000d;
         public static final int teacher_edit=0x7f03000e;
         public static final int teacher_list=0x7f03000f;
         public static final int teacher_list_item=0x7f030010;
-        public static final int teacher_view_phone=0x7f030011;
+        public static final int teacher_view=0x7f030011;
         public static final int vpi__tab=0x7f030012;
     }
     public static final class menu {
         public static final int book_longpress=0x7f0d0000;
-        public static final int book_menu=0x7f0d0001;
-        public static final int course_longpress=0x7f0d0002;
-        public static final int course_menu=0x7f0d0003;
-        public static final int teacher_context=0x7f0d0004;
-        public static final int teacher_menu=0x7f0d0005;
-        public static final int view_menu=0x7f0d0006;
+        public static final int course_longpress=0x7f0d0001;
+        public static final int teacher_context=0x7f0d0002;
+        public static final int view_menu=0x7f0d0003;
     }
     public static final class string {
-        public static final int add_assignment_instructions=0x7f0c0011;
-        public static final int add_book_ISBN=0x7f0c0024;
-        public static final int add_book_author=0x7f0c0023;
-        public static final int add_book_chapters=0x7f0c0022;
-        public static final int add_book_instructions=0x7f0c0040;
-        public static final int add_book_invalid_ISBN=0x7f0c0042;
-        public static final int add_book_pages=0x7f0c0021;
-        public static final int add_book_type=0x7f0c0020;
-        public static final int add_course_instructions=0x7f0c0027;
-        public static final int add_teacher=0x7f0c005a;
-        public static final int add_teacher_instructions=0x7f0c0053;
+        public static final int add_assignment_instructions=0x7f0c0010;
+        public static final int add_book_ISBN=0x7f0c0026;
+        public static final int add_book_author=0x7f0c0025;
+        public static final int add_book_chapters=0x7f0c0024;
+        public static final int add_book_instructions=0x7f0c0036;
+        public static final int add_book_invalid_ISBN=0x7f0c0037;
+        public static final int add_book_pages=0x7f0c0023;
+        public static final int add_book_type=0x7f0c0022;
+        public static final int add_course_instructions=0x7f0c0029;
+        public static final int add_teacher_instructions=0x7f0c004d;
         public static final int all_assignments=0x7f0c0001;
         public static final int app_name=0x7f0c0000;
         /**           Menus          
  Add/Edit 
          */
-        public static final int assignment_add=0x7f0c0069;
-        public static final int assignment_add_book=0x7f0c006a;
-        public static final int assignment_add_points_out_of_range_message=0x7f0c0016;
-        public static final int assignment_add_points_out_of_range_title=0x7f0c0015;
-        public static final int assignment_delete=0x7f0c006c;
-        public static final int assignment_due_date=0x7f0c0017;
-        public static final int assignment_edit=0x7f0c006b;
-        public static final int assignment_edit_course_required_message=0x7f0c0066;
-        public static final int assignment_edit_course_required_title=0x7f0c0065;
-        public static final int assignment_menu_manage=0x7f0c0079;
-        public static final int assignment_menu_mark_as_completed=0x7f0c006e;
-        public static final int assignment_menu_mark_as_incomplete=0x7f0c006f;
-        public static final int assignment_no_points=0x7f0c0012;
-        public static final int assignment_point=0x7f0c0013;
-        public static final int assignment_points=0x7f0c0014;
-        public static final int assignment_time_due=0x7f0c0018;
+        public static final int assignment_add=0x7f0c0062;
+        public static final int assignment_add_book=0x7f0c0063;
+        public static final int assignment_confirm_delete_message=0x7f0c001d;
+        public static final int assignment_delete=0x7f0c0065;
+        public static final int assignment_due_date=0x7f0c0018;
+        public static final int assignment_edit=0x7f0c0064;
+        public static final int assignment_edit_course_required_message=0x7f0c0017;
+        public static final int assignment_edit_course_required_title=0x7f0c0016;
+        public static final int assignment_edit_points_out_of_range_message=0x7f0c0015;
+        public static final int assignment_edit_points_out_of_range_title=0x7f0c0014;
+        public static final int assignment_menu_manage=0x7f0c0071;
+        public static final int assignment_menu_mark_as_completed=0x7f0c0067;
+        public static final int assignment_menu_mark_as_incomplete=0x7f0c0068;
+        public static final int assignment_no_points=0x7f0c0011;
+        public static final int assignment_point=0x7f0c0012;
+        public static final int assignment_points=0x7f0c0013;
+        public static final int assignment_time_due=0x7f0c0019;
         /**           Assignments          
          */
-        public static final int assignments_title=0x7f0c000f;
-        public static final int at=0x7f0c001b;
-        public static final int book_add=0x7f0c0070;
-        public static final int book_context_menu_delete=0x7f0c0041;
-        public static final int book_delete=0x7f0c0072;
-        public static final int book_edit=0x7f0c0071;
-        public static final int book_edit_add_book=0x7f0c001d;
-        public static final int book_edit_edit_book=0x7f0c001e;
-        public static final int book_menu_add=0x7f0c003f;
+        public static final int assignments_title=0x7f0c000e;
+        public static final int at=0x7f0c001c;
+        public static final int book_add=0x7f0c0069;
+        public static final int book_delete=0x7f0c006b;
+        public static final int book_edit=0x7f0c006a;
+        public static final int book_edit_add_book=0x7f0c001f;
+        public static final int book_edit_edit_book=0x7f0c0020;
+        public static final int book_view_title=0x7f0c0035;
         /**  Books 
          */
-        public static final int books=0x7f0c003e;
+        public static final int books=0x7f0c0034;
         /**           Books         
          */
-        public static final int books_title=0x7f0c001c;
-        public static final int cancel=0x7f0c0006;
-        public static final int configure=0x7f0c0048;
-        public static final int contact_email=0x7f0c0060;
-        public static final int course=0x7f0c000e;
-        public static final int course_add=0x7f0c0073;
-        public static final int course_credit_hours=0x7f0c0044;
-        public static final int course_days_of_week=0x7f0c0046;
-        public static final int course_delete=0x7f0c0075;
-        public static final int course_edit=0x7f0c0074;
-        public static final int course_edit_days_select_friday=0x7f0c0050;
-        public static final int course_edit_days_select_monday=0x7f0c004c;
-        public static final int course_edit_days_select_not_set=0x7f0c004a;
-        public static final int course_edit_days_select_saturday=0x7f0c0051;
-        public static final int course_edit_days_select_sunday=0x7f0c004b;
-        public static final int course_edit_days_select_thursday=0x7f0c004f;
-        /**  Selecting the course days 
-         */
-        public static final int course_edit_days_select_title=0x7f0c0049;
-        public static final int course_edit_days_select_tuesday=0x7f0c004d;
-        public static final int course_edit_days_select_wednesday=0x7f0c004e;
-        public static final int course_edit_teacher_required_message=0x7f0c0068;
-        public static final int course_edit_teacher_required_title=0x7f0c0067;
+        public static final int books_title=0x7f0c001e;
+        public static final int configure=0x7f0c003e;
+        public static final int confirm_delete=0x7f0c000c;
+        public static final int contact_email=0x7f0c005d;
+        public static final int course=0x7f0c000d;
         /**  Courses 
          */
-        public static final int course_menu_add=0x7f0c0043;
-        public static final int course_times=0x7f0c0047;
-        public static final int course_view_no_room=0x7f0c0028;
+        public static final int course_add=0x7f0c0038;
+        public static final int course_credit_hours=0x7f0c003a;
+        public static final int course_days_of_week=0x7f0c003c;
+        public static final int course_delete=0x7f0c006d;
+        public static final int course_edit=0x7f0c006c;
+        public static final int course_edit_days_select_friday=0x7f0c0049;
+        public static final int course_edit_days_select_monday=0x7f0c0045;
+        public static final int course_edit_days_select_not_set=0x7f0c0042;
+        public static final int course_edit_days_select_saturday=0x7f0c004a;
+        public static final int course_edit_days_select_sunday=0x7f0c0044;
+        public static final int course_edit_days_select_thursday=0x7f0c0048;
+        public static final int course_edit_days_select_time_separator=0x7f0c0043;
+        /**  Selecting the course days 
+         */
+        public static final int course_edit_days_select_title=0x7f0c0041;
+        public static final int course_edit_days_select_tuesday=0x7f0c0046;
+        public static final int course_edit_days_select_wednesday=0x7f0c0047;
+        public static final int course_edit_teacher_required_message=0x7f0c0040;
+        public static final int course_edit_teacher_required_title=0x7f0c003f;
+        public static final int course_times=0x7f0c003d;
+        public static final int course_view_no_room=0x7f0c002a;
+        public static final int course_view_title=0x7f0c0039;
         /**           Courses         
          */
-        public static final int courses_title=0x7f0c0025;
-        public static final int delete=0x7f0c0008;
-        public static final int description=0x7f0c0009;
-        public static final int due=0x7f0c001a;
-        public static final int edit=0x7f0c0007;
-        public static final int edit_teacher=0x7f0c0059;
-        public static final int menu_manage_courses=0x7f0c0045;
+        public static final int courses_title=0x7f0c0027;
+        public static final int delete=0x7f0c0006;
+        public static final int description=0x7f0c0007;
+        public static final int due=0x7f0c001b;
+        public static final int edit=0x7f0c0005;
+        /**           Manage            
+         */
+        public static final int manage_books=0x7f0c0031;
+        public static final int manage_courses=0x7f0c0032;
+        public static final int manage_teachers=0x7f0c0033;
+        public static final int menu_manage_courses=0x7f0c003b;
         public static final int name=0x7f0c0003;
-        public static final int no_assignments=0x7f0c0010;
-        public static final int no_books=0x7f0c001f;
-        public static final int no_courses=0x7f0c0026;
-        public static final int no_description=0x7f0c000a;
-        public static final int no_notes=0x7f0c000c;
-        public static final int no_teachers=0x7f0c002c;
-        public static final int notes=0x7f0c000b;
-        public static final int ok=0x7f0c0005;
-        public static final int points=0x7f0c0019;
+        public static final int no_assignments=0x7f0c000f;
+        public static final int no_books=0x7f0c0021;
+        public static final int no_courses=0x7f0c0028;
+        public static final int no_description=0x7f0c0008;
+        public static final int no_notes=0x7f0c000a;
+        public static final int no_teachers=0x7f0c002e;
+        public static final int notes=0x7f0c0009;
+        public static final int points=0x7f0c001a;
         /**  About 
          */
-        public static final int pref_about_screen_title=0x7f0c005c;
-        public static final int pref_app_version_title=0x7f0c005d;
-        public static final int pref_appearance_screen_summary=0x7f0c0031;
+        public static final int pref_about_screen_title=0x7f0c0059;
+        public static final int pref_app_version_title=0x7f0c005a;
+        public static final int pref_appearance_screen_summary=0x7f0c0056;
         /**  Appearance 
          */
-        public static final int pref_appearance_screen_title=0x7f0c0030;
-        public static final int pref_appearance_show_time_summary=0x7f0c0033;
-        public static final int pref_appearance_show_time_title=0x7f0c0032;
-        public static final int pref_contact_title=0x7f0c0061;
-        public static final int pref_email_chooser_title=0x7f0c0062;
-        public static final int pref_manage_books=0x7f0c0035;
-        public static final int pref_manage_books_summary=0x7f0c0037;
-        public static final int pref_manage_books_title=0x7f0c0036;
-        public static final int pref_manage_courses=0x7f0c0038;
-        public static final int pref_manage_courses_summary=0x7f0c003a;
-        public static final int pref_manage_courses_title=0x7f0c0039;
-        /**  Manage 
-         */
-        public static final int pref_manage_screen_summary=0x7f0c0034;
-        public static final int pref_manage_teachers=0x7f0c003b;
-        public static final int pref_manage_teachers_summary=0x7f0c003d;
-        public static final int pref_manage_teachers_title=0x7f0c003c;
-        public static final int pref_unknown_version=0x7f0c005f;
-        public static final int pref_visit_title=0x7f0c0064;
+        public static final int pref_appearance_screen_title=0x7f0c0055;
+        public static final int pref_appearance_show_time_summary=0x7f0c0058;
+        public static final int pref_appearance_show_time_title=0x7f0c0057;
+        public static final int pref_contact_title=0x7f0c005e;
+        public static final int pref_email_chooser_title=0x7f0c005f;
+        public static final int pref_unknown_version=0x7f0c005c;
+        public static final int pref_visit_title=0x7f0c0061;
         /**           Preferences          
          */
-        public static final int preferences=0x7f0c002f;
-        public static final int room=0x7f0c000d;
+        public static final int preferences=0x7f0c0054;
+        public static final int room=0x7f0c000b;
         public static final int save=0x7f0c0004;
-        public static final int show_all_assignments=0x7f0c006d;
+        public static final int show_all_assignments=0x7f0c0066;
+        public static final int teacher=0x7f0c004c;
+        public static final int teacher_add=0x7f0c006e;
+        public static final int teacher_context_menu_delete=0x7f0c004e;
+        public static final int teacher_delete=0x7f0c0070;
+        public static final int teacher_edit=0x7f0c006f;
+        public static final int teacher_edit_add_teacher=0x7f0c002c;
+        public static final int teacher_edit_edit_teacher=0x7f0c002d;
+        public static final int teacher_edit_room=0x7f0c0050;
+        public static final int teacher_email=0x7f0c0051;
+        public static final int teacher_phone=0x7f0c0052;
+        public static final int teacher_subject=0x7f0c004f;
+        public static final int teacher_view_no_phone=0x7f0c0053;
+        public static final int teacher_view_no_room=0x7f0c0030;
+        public static final int teacher_view_room=0x7f0c002f;
         /**  Teachers 
          */
-        public static final int teacher=0x7f0c0052;
-        public static final int teacher_add=0x7f0c0076;
-        public static final int teacher_context_menu_delete=0x7f0c0054;
-        public static final int teacher_delete=0x7f0c0078;
-        public static final int teacher_edit=0x7f0c0077;
-        public static final int teacher_edit_add_teacher=0x7f0c002a;
-        public static final int teacher_edit_edit_teacher=0x7f0c002b;
-        public static final int teacher_edit_room=0x7f0c0056;
-        public static final int teacher_email=0x7f0c0057;
-        public static final int teacher_phone=0x7f0c0058;
-        public static final int teacher_subject=0x7f0c0055;
-        public static final int teacher_view_no_phone=0x7f0c005b;
-        public static final int teacher_view_no_room=0x7f0c002e;
-        public static final int teacher_view_room=0x7f0c002d;
+        public static final int teacher_view_title=0x7f0c004b;
         /**           Teachers          
          */
-        public static final int teachers_title=0x7f0c0029;
+        public static final int teachers_title=0x7f0c002b;
         /**           Shared         
          */
         public static final int title=0x7f0c0002;
-        public static final int version=0x7f0c005e;
-        public static final int website=0x7f0c0063;
+        public static final int version=0x7f0c005b;
+        public static final int website=0x7f0c0060;
     }
     public static final class style {
+        /**  Button Styling 
+         */
+        public static final int Button=0x7f0a0019;
+        public static final int Button_ButtonBar=0x7f0a001a;
         /**  Course Days Select 
          */
-        public static final int CourseDaysSelect=0x7f0a000e;
-        public static final int CourseDaysSelect_Buttons=0x7f0a0010;
-        public static final int CourseDaysSelect_Text=0x7f0a000f;
-        public static final int CustomTabPageIndicator=0x7f0a0008;
-        public static final int CustomTabPageIndicator_Text=0x7f0a0009;
-        public static final int ListDescriptionText=0x7f0a000b;
-        public static final int ListDueText=0x7f0a000c;
-        public static final int ListText=0x7f0a000d;
+        public static final int CourseDaysSelect=0x7f0a001b;
+        public static final int CourseDaysSelect_Buttons=0x7f0a001d;
+        public static final int CourseDaysSelect_Text=0x7f0a001c;
+        /**      Tabs     
+         */
+        public static final int CustomTabPageIndicator=0x7f0a0007;
+        public static final int CustomTabPageIndicator_Text=0x7f0a0008;
+        /**  Label Styling 
+         */
+        public static final int Label=0x7f0a0015;
+        /**     Empty List    
+         */
+        public static final int ListEmpty=0x7f0a000b;
+        public static final int ListEmptyDescription=0x7f0a000d;
+        public static final int ListEmptyTitle=0x7f0a000c;
         /**     List Items    
          */
-        public static final int ListTitleText=0x7f0a000a;
-        /**      Tabs      
+        public static final int ListText=0x7f0a000e;
+        public static final int ListText_Due=0x7f0a0014;
+        public static final int ListText_Primary=0x7f0a000f;
+        public static final int ListText_Secondary=0x7f0a0010;
+        public static final int ListText_Secondary_Left=0x7f0a0011;
+        public static final int ListText_Secondary_Left_Bold=0x7f0a0012;
+        public static final int ListText_Secondary_Right=0x7f0a0013;
+        /**     ListView    
          */
-        public static final int StyledIndicators=0x7f0a0007;
+        public static final int ListView=0x7f0a0009;
+        public static final int ListView_Assignment=0x7f0a000a;
+        public static final int MainStyle=0x7f0a001f;
+        public static final int StyledIndicators=0x7f0a001e;
         public static final int TextAppearance_TabPageIndicator=0x7f0a0006;
+        /**  Text Box Styling 
+         */
+        public static final int TextBox=0x7f0a0016;
+        public static final int TextBox_Description=0x7f0a0018;
+        public static final int TextBox_Title=0x7f0a0017;
         public static final int Theme_PageIndicatorDefaults=0x7f0a0000;
         public static final int Widget=0x7f0a0001;
         public static final int Widget_CirclePageIndicator=0x7f0a0002;
@@ -714,14 +711,14 @@ or to a theme attribute in the form "<code>?[<i>package</i>:][<i>type</i>:]<i>na
            <colgroup align="left" />
            <colgroup align="left" />
            <tr><th>Attribute</th><th>Description</th></tr>
-           <tr><td><code>{@link #CirclePageIndicator_centered com.awesomeapplets.assignamo:centered}</code></td><td> Whether or not the indicators should be centered.</td></tr>
-           <tr><td><code>{@link #CirclePageIndicator_fillColor com.awesomeapplets.assignamo:fillColor}</code></td><td> Color of the filled circle that represents the current page.</td></tr>
-           <tr><td><code>{@link #CirclePageIndicator_orientation com.awesomeapplets.assignamo:orientation}</code></td><td> Orientation of the indicator.</td></tr>
-           <tr><td><code>{@link #CirclePageIndicator_pageColor com.awesomeapplets.assignamo:pageColor}</code></td><td> Color of the filled circles that represents pages.</td></tr>
-           <tr><td><code>{@link #CirclePageIndicator_radius com.awesomeapplets.assignamo:radius}</code></td><td> Radius of the circles.</td></tr>
-           <tr><td><code>{@link #CirclePageIndicator_snap com.awesomeapplets.assignamo:snap}</code></td><td> Whether or not the selected indicator snaps to the circles.</td></tr>
-           <tr><td><code>{@link #CirclePageIndicator_strokeColor com.awesomeapplets.assignamo:strokeColor}</code></td><td> Color of the open circles.</td></tr>
-           <tr><td><code>{@link #CirclePageIndicator_strokeWidth com.awesomeapplets.assignamo:strokeWidth}</code></td><td> Width of the stroke used to draw the circles.</td></tr>
+           <tr><td><code>{@link #CirclePageIndicator_centered com.acedit.assignamo:centered}</code></td><td> Whether or not the indicators should be centered.</td></tr>
+           <tr><td><code>{@link #CirclePageIndicator_fillColor com.acedit.assignamo:fillColor}</code></td><td> Color of the filled circle that represents the current page.</td></tr>
+           <tr><td><code>{@link #CirclePageIndicator_orientation com.acedit.assignamo:orientation}</code></td><td> Orientation of the indicator.</td></tr>
+           <tr><td><code>{@link #CirclePageIndicator_pageColor com.acedit.assignamo:pageColor}</code></td><td> Color of the filled circles that represents pages.</td></tr>
+           <tr><td><code>{@link #CirclePageIndicator_radius com.acedit.assignamo:radius}</code></td><td> Radius of the circles.</td></tr>
+           <tr><td><code>{@link #CirclePageIndicator_snap com.acedit.assignamo:snap}</code></td><td> Whether or not the selected indicator snaps to the circles.</td></tr>
+           <tr><td><code>{@link #CirclePageIndicator_strokeColor com.acedit.assignamo:strokeColor}</code></td><td> Color of the open circles.</td></tr>
+           <tr><td><code>{@link #CirclePageIndicator_strokeWidth com.acedit.assignamo:strokeWidth}</code></td><td> Width of the stroke used to draw the circles.</td></tr>
            </table>
            @see #CirclePageIndicator_centered
            @see #CirclePageIndicator_fillColor
@@ -880,19 +877,19 @@ containing a value of this type.
            <colgroup align="left" />
            <colgroup align="left" />
            <tr><th>Attribute</th><th>Description</th></tr>
-           <tr><td><code>{@link #TitlePageIndicator_clipPadding com.awesomeapplets.assignamo:clipPadding}</code></td><td> Screen edge padding.</td></tr>
-           <tr><td><code>{@link #TitlePageIndicator_footerColor com.awesomeapplets.assignamo:footerColor}</code></td><td> Color of the footer line and indicator.</td></tr>
-           <tr><td><code>{@link #TitlePageIndicator_footerIndicatorHeight com.awesomeapplets.assignamo:footerIndicatorHeight}</code></td><td> Height of the indicator above the footer line.</td></tr>
-           <tr><td><code>{@link #TitlePageIndicator_footerIndicatorStyle com.awesomeapplets.assignamo:footerIndicatorStyle}</code></td><td> Style of the indicator.</td></tr>
-           <tr><td><code>{@link #TitlePageIndicator_footerIndicatorUnderlinePadding com.awesomeapplets.assignamo:footerIndicatorUnderlinePadding}</code></td><td> Left and right padding of the underline indicator.</td></tr>
-           <tr><td><code>{@link #TitlePageIndicator_footerLineHeight com.awesomeapplets.assignamo:footerLineHeight}</code></td><td> Height of the footer line.</td></tr>
-           <tr><td><code>{@link #TitlePageIndicator_footerPadding com.awesomeapplets.assignamo:footerPadding}</code></td><td> Padding between the bottom of the title and the footer.</td></tr>
-           <tr><td><code>{@link #TitlePageIndicator_selectedBold com.awesomeapplets.assignamo:selectedBold}</code></td><td> Whether or not the selected item is displayed as bold.</td></tr>
-           <tr><td><code>{@link #TitlePageIndicator_selectedColor com.awesomeapplets.assignamo:selectedColor}</code></td><td> Color of the selected title.</td></tr>
-           <tr><td><code>{@link #TitlePageIndicator_textColor com.awesomeapplets.assignamo:textColor}</code></td><td> Color of regular titles.</td></tr>
-           <tr><td><code>{@link #TitlePageIndicator_textSize com.awesomeapplets.assignamo:textSize}</code></td><td> Size of title text.</td></tr>
-           <tr><td><code>{@link #TitlePageIndicator_titlePadding com.awesomeapplets.assignamo:titlePadding}</code></td><td> Padding between titles when bumping into each other.</td></tr>
-           <tr><td><code>{@link #TitlePageIndicator_topPadding com.awesomeapplets.assignamo:topPadding}</code></td><td> Padding between titles and the top of the View.</td></tr>
+           <tr><td><code>{@link #TitlePageIndicator_clipPadding com.acedit.assignamo:clipPadding}</code></td><td> Screen edge padding.</td></tr>
+           <tr><td><code>{@link #TitlePageIndicator_footerColor com.acedit.assignamo:footerColor}</code></td><td> Color of the footer line and indicator.</td></tr>
+           <tr><td><code>{@link #TitlePageIndicator_footerIndicatorHeight com.acedit.assignamo:footerIndicatorHeight}</code></td><td> Height of the indicator above the footer line.</td></tr>
+           <tr><td><code>{@link #TitlePageIndicator_footerIndicatorStyle com.acedit.assignamo:footerIndicatorStyle}</code></td><td> Style of the indicator.</td></tr>
+           <tr><td><code>{@link #TitlePageIndicator_footerIndicatorUnderlinePadding com.acedit.assignamo:footerIndicatorUnderlinePadding}</code></td><td> Left and right padding of the underline indicator.</td></tr>
+           <tr><td><code>{@link #TitlePageIndicator_footerLineHeight com.acedit.assignamo:footerLineHeight}</code></td><td> Height of the footer line.</td></tr>
+           <tr><td><code>{@link #TitlePageIndicator_footerPadding com.acedit.assignamo:footerPadding}</code></td><td> Padding between the bottom of the title and the footer.</td></tr>
+           <tr><td><code>{@link #TitlePageIndicator_selectedBold com.acedit.assignamo:selectedBold}</code></td><td> Whether or not the selected item is displayed as bold.</td></tr>
+           <tr><td><code>{@link #TitlePageIndicator_selectedColor com.acedit.assignamo:selectedColor}</code></td><td> Color of the selected title.</td></tr>
+           <tr><td><code>{@link #TitlePageIndicator_textColor com.acedit.assignamo:textColor}</code></td><td> Color of regular titles.</td></tr>
+           <tr><td><code>{@link #TitlePageIndicator_textSize com.acedit.assignamo:textSize}</code></td><td> Size of title text.</td></tr>
+           <tr><td><code>{@link #TitlePageIndicator_titlePadding com.acedit.assignamo:titlePadding}</code></td><td> Padding between titles when bumping into each other.</td></tr>
+           <tr><td><code>{@link #TitlePageIndicator_topPadding com.acedit.assignamo:topPadding}</code></td><td> Padding between titles and the top of the View.</td></tr>
            </table>
            @see #TitlePageIndicator_clipPadding
            @see #TitlePageIndicator_footerColor
@@ -1151,10 +1148,10 @@ containing a value of this type.
            <colgroup align="left" />
            <colgroup align="left" />
            <tr><th>Attribute</th><th>Description</th></tr>
-           <tr><td><code>{@link #ViewPagerIndicator_vpiCirclePageIndicatorStyle com.awesomeapplets.assignamo:vpiCirclePageIndicatorStyle}</code></td><td> Style of the circle indicator.</td></tr>
-           <tr><td><code>{@link #ViewPagerIndicator_vpiTabPageIndicatorStyle com.awesomeapplets.assignamo:vpiTabPageIndicatorStyle}</code></td><td> Style of the tab indicator.</td></tr>
-           <tr><td><code>{@link #ViewPagerIndicator_vpiTabTextStyle com.awesomeapplets.assignamo:vpiTabTextStyle}</code></td><td> Style of the text in a tab.</td></tr>
-           <tr><td><code>{@link #ViewPagerIndicator_vpiTitlePageIndicatorStyle com.awesomeapplets.assignamo:vpiTitlePageIndicatorStyle}</code></td><td> Style of the title indicator.</td></tr>
+           <tr><td><code>{@link #ViewPagerIndicator_vpiCirclePageIndicatorStyle com.acedit.assignamo:vpiCirclePageIndicatorStyle}</code></td><td> Style of the circle indicator.</td></tr>
+           <tr><td><code>{@link #ViewPagerIndicator_vpiTabPageIndicatorStyle com.acedit.assignamo:vpiTabPageIndicatorStyle}</code></td><td> Style of the tab indicator.</td></tr>
+           <tr><td><code>{@link #ViewPagerIndicator_vpiTabTextStyle com.acedit.assignamo:vpiTabTextStyle}</code></td><td> Style of the text in a tab.</td></tr>
+           <tr><td><code>{@link #ViewPagerIndicator_vpiTitlePageIndicatorStyle com.acedit.assignamo:vpiTitlePageIndicatorStyle}</code></td><td> Style of the title indicator.</td></tr>
            </table>
            @see #ViewPagerIndicator_vpiCirclePageIndicatorStyle
            @see #ViewPagerIndicator_vpiTabPageIndicatorStyle

@@ -147,7 +147,6 @@ public class DbAdapter {
 		
 		@Override
 		public void onCreate(SQLiteDatabase db) {
-			Log.d("onCreate", "onCreate() called.");
 			if (DATABASE_CREATE != null && DATABASE_CREATE.length > 0)
 				for (String table : DATABASE_CREATE)
 					db.execSQL(table);

@@ -7,8 +7,6 @@
     <string name="title">Title</string>
     <string name="name">Name</string>
     <string name="save">Save</string>
-    <string name="ok">OK</string>
-    <string name="cancel">Cancel</string>
     <string name="edit">Edit</string>
     <string name="delete">Delete</string>
     <string name="description">Description</string>
@@ -16,6 +14,7 @@
     <string name="notes">Notes</string>
     <string name="no_notes">No notes</string>
     <string name="room">Room</string>
+    <string name="confirm_delete">Confirm Delete</string>
     
     <string name="course">Course</string>
     
@@ -26,13 +25,16 @@
     <string name="assignment_no_points">No points</string>
     <string name="assignment_point">point</string>
     <string name="assignment_points">points</string>
-    <string name="assignment_add_points_out_of_range_title">Points value too big</string>
-    <string name="assignment_add_points_out_of_range_message">The point value for this assignment is too large. It will be saved as 9,223,372,036,854,775,807.</string>
+    <string name="assignment_edit_points_out_of_range_title">Points value too big</string>
+    <string name="assignment_edit_points_out_of_range_message">The point value for this assignment is too large. It will be saved as 9,223,372,036,854,775,807.</string>
+    <string name="assignment_edit_course_required_title">Course Required</string>
+    <string name="assignment_edit_course_required_message">You need to add a course before you can add an assignment.</string>
     <string name="assignment_due_date">Due Date</string>
     <string name="assignment_time_due">Time Due</string>
     <string name="points">Points</string>
     <string name="due">Due</string>
     <string name="at">at</string>
+    <string name="assignment_confirm_delete_message">Are you sure you want to delete this assignment?</string>
     
     <!--          Books         -->
     <string name="books_title">Books</string>
@@ -65,44 +67,32 @@
     <string name="teacher_view_room">Room</string>
     <string name="teacher_view_no_room">No room</string>
     
-    <!--          Preferences          -->
-    <string name="preferences">Preferences</string>
-    
-    <!-- Appearance -->
-    <string name="pref_appearance_screen_title">Appearance</string>
-    <string name="pref_appearance_screen_summary">Customize the look of Assignamo.</string>
-    <string name="pref_appearance_show_time_title">Show time</string>
-    <string name="pref_appearance_show_time_summary">Display time due when viewing assignments</string>
-    
-    <!-- Manage -->
-    <string name="pref_manage_screen_summary">Manage your courses, books, and teachers.</string>
-    <string name="pref_manage_books">Manage Books</string>
-    <string name="pref_manage_books_title">Manage books</string>
-    <string name="pref_manage_books_summary">Add, remove, and edit books that you use in your courses.</string>
-    <string name="pref_manage_courses">Manage Courses</string>
-    <string name="pref_manage_courses_title">Manage courses</string>
-    <string name="pref_manage_courses_summary">Add, remove, and edit your courses.</string>
-    <string name="pref_manage_teachers">Manage Teachers</string>
-    <string name="pref_manage_teachers_title">Manage teachers</string>
-    <string name="pref_manage_teachers_summary">Add, remove, and edit your teachers.</string>
+     
+    <!--          Manage            -->
+    <string name="manage_books">Books</string>
+    <string name="manage_courses">Courses</string>
+    <string name="manage_teachers">Teachers</string>
     
     <!-- Books -->
     <string name="books">Books</string>
-    <string name="book_menu_add">Add Book</string>
+    <string name="book_view_title">Book Details</string>
     <string name="add_book_instructions">Press Menu → Add Book to add a new book.</string>
-    <string name="book_context_menu_delete">Delete Book</string>
     <string name="add_book_invalid_ISBN">Sorry, the ISBN you entered is not valid. Please re-enter the ISBN or leave it blank.</string>
     
     <!-- Courses -->
-    <string name="course_menu_add">Add Course</string>
+    <string name="course_add">Add Course</string>
+    <string name="course_view_title">Course Details</string>
     <string name="course_credit_hours">Credit Hours</string>
     <string name="menu_manage_courses">Manage Courses</string>
     <string name="course_days_of_week">Days of Week</string>
     <string name="course_times">Times</string>
     <string name="configure">Configure</string>
+    <string name="course_edit_teacher_required_title">Teacher Required</string>
+    <string name="course_edit_teacher_required_message">You need to add a teacher before you can add a course.</string>
     <!-- Selecting the course days -->
     <string name="course_edit_days_select_title">Course Edit - Select Days of Week</string>
     <string name="course_edit_days_select_not_set">Not Set</string>
+    <string name="course_edit_days_select_time_separator">-</string>
     <string name="course_edit_days_select_sunday">Sunday</string>
     <string name="course_edit_days_select_monday">Monday</string>
     <string name="course_edit_days_select_tuesday">Tuesday</string>
@@ -111,8 +101,8 @@
     <string name="course_edit_days_select_friday">Friday</string>
     <string name="course_edit_days_select_saturday">Saturday</string>
     
-    
     <!-- Teachers -->
+    <string name="teacher_view_title">Teacher Details</string>
     <string name="teacher">Teacher</string>
     <string name="add_teacher_instructions">Press Menu → Add Teacher to add a new teacher.</string>
     <string name="teacher_context_menu_delete">Delete Teacher</string>
@@ -120,10 +110,18 @@
     <string name="teacher_edit_room">Room</string>
     <string name="teacher_email">Email Address</string>
     <string name="teacher_phone">Phone Number</string>
-    <string name="edit_teacher">Edit Teacher</string>
-    <string name="add_teacher">Add Teacher</string>
     <string name="teacher_view_no_phone">No phone number</string>
     
+    
+    <!--          Preferences          -->
+    <string name="preferences">Preferences</string>
+    
+    <!-- Appearance -->
+    <string name="pref_appearance_screen_title">Appearance</string>
+    <string name="pref_appearance_screen_summary">Customize the look of Assignamo.</string>
+    <string name="pref_appearance_show_time_title">Show time</string>
+    <string name="pref_appearance_show_time_summary">Display time due when viewing assignments</string>
+   
     <!-- About -->
     <string name="pref_about_screen_title">About</string>
     <string name="pref_app_version_title">Application version</string>
@@ -134,10 +132,6 @@
     <string name="pref_email_chooser_title">Send using:</string>
     <string name="website">http://www.aceitapps.com/</string>
     <string name="pref_visit_title">Visit us</string>
-    <string name="assignment_edit_course_required_title">Course Required</string>
-    <string name="assignment_edit_course_required_message">You need to add a course before you can add an assignment.</string>
-    <string name="course_edit_teacher_required_title">Teacher Required</string>
-    <string name="course_edit_teacher_required_message">You need to add a teacher before you can add a course.</string>
     
     
     <!--          Menus          -->

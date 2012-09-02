@@ -31,7 +31,6 @@ import com.acedit.assignamo.database.Values;
 import com.acedit.assignamo.ui.ColorStrip;
 import com.acedit.assignamo.utils.DateUtils;
 import com.acedit.assignamo.utils.DbUtils;
-import com.awesomeapplets.assignamo.R;
 
 public class AssignmentListFragment extends ListFragment {
 	
@@ -175,8 +174,8 @@ public class AssignmentListFragment extends ListFragment {
 	}
 
 	public void onCreateContextMenu(ContextMenu menu, View v, ContextMenuInfo menuInfo) {
-		AdapterContextMenuInfo info = (AdapterContextMenuInfo) menuInfo;
-		if (DbUtils.isAssignmentCompleted(context, info.id))
+		long rowId = ((AdapterContextMenuInfo) menuInfo).id;
+		if (DbUtils.isAssignmentCompleted(context, rowId))
 			menu.add(0, 0, 0, R.string.assignment_menu_mark_as_incomplete);
 		else
 			menu.add(0, 0, 0, R.string.assignment_menu_mark_as_completed);
@@ -210,8 +209,45 @@ public class AssignmentListFragment extends ListFragment {
 		return super.onContextItemSelected(item);
 	}
 	
+	//TODO Finish implementing prompt when deleting assignment
+	/*---------- Assignment-Delete Prompt ----------*
 	
-	/*--------- Fetching Assignments from the Database ----------*/
+	public static class DeleteDialogFragment extends DialogFragment {
+		
+		static DeleteDialogFragment newInstance(int arg) {
+			return new DeleteDialogFragment();
+		}
+		
+		@Override
+		public Dialog onCreateDialog(Bundle savedInstanceState) {
+			return new AlertDialog.Builder(getActivity())
+				.setTitle(R.string.assignment_confirm_delete_title)
+				.setMessage(R.string.assignment_confirm_delete_message)
+				.setPositiveButton(android.R.string.yes, new DialogInterface.OnClickListener() {
+					
+					@Override
+					public void onClick(DialogInterface dialog, int which) {
+						((AssignmentListFragment)getTargetFragment()).doPositiveClick();
+					}
+				})
+				.setNegativeButton(android.R.string.no, new DialogInterface.OnClickListener() {
+					
+					@Override
+					public void onClick(DialogInterface dialog, int which) {
+						
+					}
+				})
+				.create();
+		}
+	}
+	
+	public void doPositiveClick() {
+		// Delete the assignment
+		DbUtils.deleteAssignment(context, info.id);
+		broadcastRefresh();
+	}
+	
+	/*---------- Fetching Assignments from the Database ----------*/
 	
 	public Cursor fetchAllAssignments(Short course) {
 		Cursor c;
@@ -285,9 +321,9 @@ public class AssignmentListFragment extends ListFragment {
 				convertView = mInflater.inflate(R.layout.assignment_list_item, parent, false);
 				holder = new ViewHolder();
 				holder.colorStrip = (ColorStrip) convertView.findViewById(R.id.assignment_list_color_strip);
-				holder.titleLabel = (TextView) convertView.findViewById(R.id.assignment_list_title);
-				holder.descriptionLabel = (TextView) convertView.findViewById(R.id.assignment_list_description);
-				holder.dueLabel = (TextView) convertView.findViewById(R.id.assignment_list_due);
+				holder.titleLabel = (TextView) convertView.findViewById(R.id.list_title);
+				holder.descriptionLabel = (TextView) convertView.findViewById(R.id.list_description);
+				holder.dueLabel = (TextView) convertView.findViewById(R.id.list_due);
 				
 				convertView.setTag(holder);
 			} else
