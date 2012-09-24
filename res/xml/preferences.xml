@@ -6,6 +6,11 @@
         android:key="pref_appearance_screen"
         android:title="@string/pref_appearance_screen_title" >
         <CheckBoxPreference
+            android:key="pref_appearance_show_completed"
+            android:title="@string/pref_appearance_show_completed_title"
+            android:summary="@string/pref_appearance_show_completed_summary"
+            android:defaultValue="false" />
+        <CheckBoxPreference
             android:key="pref_appearance_show_time"
             android:title="@string/pref_appearance_show_time_title"
             android:summary="@string/pref_appearance_show_time_summary"

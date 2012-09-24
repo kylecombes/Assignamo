@@ -2,6 +2,7 @@ package com.acedit.assignamo;
 
 import android.content.Intent;
 import android.content.SharedPreferences;
+import android.database.Cursor;
 import android.os.Bundle;
 import android.preference.PreferenceManager;
 import android.view.Menu;
@@ -9,7 +10,6 @@ import android.view.MenuItem;
 import android.widget.TextView;
 import android.widget.TextView.BufferType;
 
-import com.acedit.assignamo.R;
 import com.acedit.assignamo.database.DbAdapter;
 import com.acedit.assignamo.database.Values;
 import com.acedit.assignamo.utils.DbUtils;
@@ -53,8 +53,14 @@ public class AssignmentViewFragment extends ViewFragment {
 		
 		// Set course label
 		short courseId = (short)cursor.getInt(cursor.getColumnIndexOrThrow(Values.ASSIGNMENT_KEY_COURSE));
-		String[] courses = DbUtils.getCoursesAsArray(getApplicationContext());
-		courseLabel.setText(courses[courseId]);
+		Cursor c = DbUtils.getCoursesAsCursor(getApplicationContext());
+		for (short i = 0; i < c.getCount(); i++) {
+			c.moveToPosition(i);
+			if (c.getInt(0) == courseId) {
+				courseLabel.setText(c.getString(1));
+				break;
+			}
+		}
 		
 		// Set title label
 		titleLabel.setText(cursor.getString(cursor.getColumnIndexOrThrow(Values.KEY_TITLE)));

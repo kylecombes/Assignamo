@@ -87,6 +87,7 @@ public class TeacherListFragment extends BaseListFragment {
     		Intent i = new Intent(context, TeacherEditActivity.class);
     		i.putExtra(Values.KEY_ROWID, info.id);
     		startActivity(i);
+    		break;
     	case CONTEXT_DELETE:
     		delete(info.id);
 			fillData();

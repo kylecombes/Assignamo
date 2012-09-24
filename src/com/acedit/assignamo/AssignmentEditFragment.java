@@ -25,7 +25,6 @@ import android.widget.DatePicker;
 import android.widget.Spinner;
 import android.widget.TextView;
 import android.widget.TimePicker;
-import android.widget.Toast;
 
 import com.acedit.assignamo.database.DbAdapter;
 import com.acedit.assignamo.database.Values;
@@ -42,6 +41,9 @@ public class AssignmentEditFragment extends Activity {
 	private static final short TIME_PICKER_DIALOG = 1;
 	private Long rowId;
 	private boolean userSetDateTime;
+	private Cursor courseCursor;
+	// If we just restored the state, we don't need to reload the next class time
+	private boolean justRestoredState;
 	
 	private Spinner courseSpinner;
 	private TextView titleField;
@@ -55,18 +57,18 @@ public class AssignmentEditFragment extends Activity {
 		super.onCreate(savedInstanceState);
 		
 		if (DbUtils.getCourseCount(getApplicationContext()) == 0) {
-			AlertDialog.Builder d = new AlertDialog.Builder(this);
-			d.setTitle(R.string.assignment_edit_course_required_title);
-			d.setMessage(R.string.assignment_edit_course_required_message);
-			d.setPositiveButton(android.R.string.ok, new AlertDialog.OnClickListener() {
+			new AlertDialog.Builder(this)
+			.setTitle(R.string.assignment_edit_course_required_title)
+			.setMessage(R.string.assignment_edit_course_required_message)
+			.setPositiveButton(android.R.string.ok, new AlertDialog.OnClickListener() {
 				
 				@Override
 				public void onClick(DialogInterface dialog, int which) {
 					Intent i = new Intent(getBaseContext(), CourseEditActivity.class);
 					startActivity(i);
 				}
-			});
-			d.show();
+			})
+			.show();
 		}
 		
 		setContentView(R.layout.assignment_edit);
@@ -81,26 +83,28 @@ public class AssignmentEditFragment extends Activity {
 		populateFields();
 		
 		updateButtons(0);
-		//titleField.requestFocus();
 	}
 	
 	private void initializeViews() {
 		// Initialize the Spinner
 		courseSpinner = (Spinner)findViewById(R.id.assignment_add_course_select);
-		Cursor courses = DbUtils.getCoursesAsCursor(this);
+		courseCursor = DbUtils.getCoursesAsCursor(this);
 		String[] from = new String[]{Values.KEY_NAME};
 		int[] to = new int[]{android.R.id.text1};
 		SimpleCursorAdapter adapter = new SimpleCursorAdapter(this, android.R.layout.simple_spinner_item,
-				courses, from, to, 0);
+				courseCursor, from, to, 0);
 		adapter.setDropDownViewResource( android.R.layout.simple_spinner_dropdown_item );
 		courseSpinner.setAdapter(adapter);
 		courseSpinner.setOnItemSelectedListener(new OnItemSelectedListener() {
 			@Override
 			public void onItemSelected(AdapterView<?> arg0, View arg1, int arg2, long arg3) {
-				if (!userSetDateTime) {
-					setDueDateToNextClassTime();
-					updateButtons(0);
-				}
+				if (!justRestoredState)
+					if (!userSetDateTime) {
+						setDueDateToNextClassTime();
+						updateButtons(0);
+					}
+				else
+					justRestoredState = false;
 			}
 			@Override
 			public void onNothingSelected(AdapterView<?> arg0) {}
@@ -146,7 +150,7 @@ public class AssignmentEditFragment extends Activity {
 					Values.ASSIGNMENT_TABLE, Values.DATABASE_CREATE, Values.KEY_ROWID);
 			dbAdapter.open();
 			Cursor data = dbAdapter.fetch(rowId, Values.ASSIGNMENT_FETCH);
-			courseSpinner.setSelection(data.getShort(data.getColumnIndexOrThrow(Values.ASSIGNMENT_KEY_COURSE)));
+			courseSpinner.setSelection(getPositionFromRowID(courseCursor, data.getShort(data.getColumnIndexOrThrow(Values.ASSIGNMENT_KEY_COURSE))));
 			titleField.setText(data.getString(data.getColumnIndexOrThrow(Values.KEY_TITLE)));
 			descriptionField.setText(data.getString(data.getColumnIndexOrThrow(Values.KEY_DESCRIPTION)));
 			
@@ -155,11 +159,24 @@ public class AssignmentEditFragment extends Activity {
 				pointsField.setText("" + points);
 			
 			long time = data.getLong(data.getColumnIndexOrThrow(Values.ASSIGNMENT_KEY_DUE_DATE));
+			dbAdapter.close();
+			data.close();
 			time = DateUtils.convertMinutesToMills(time);
+			calendar = Calendar.getInstance();
 			calendar.setTimeInMillis(time);
 		} else {
 			setDueDateToNextClassTime();
 		}
+	}
+
+	private static short getPositionFromRowID(Cursor c, short rowId) {
+		c.moveToFirst();
+		for (short i = 0; i < c.getCount(); i++) {
+			c.moveToPosition(i);
+			if (c.getShort(0) == rowId)
+				return i;
+		}
+		return -1;
 	}
 	
 	private void setDueDateToNextClassTime() {
@@ -174,7 +191,7 @@ public class AssignmentEditFragment extends Activity {
 		// Used to keep track of the class start time. Defaults to noon.
 		short startTime = 720;
 		for (int i = curDayOfWeek + 1; i != curDayOfWeek; i++, dayDiff++) {
-			if (i > 7)
+			if (i == 7)
 				i = 0;
 			if (days[i] == true) {
 				startTime = courseStartTimes[i];
@@ -215,11 +232,13 @@ public class AssignmentEditFragment extends Activity {
 	}
 	
 	private static final String CALENDAR_TIME_KEY = "calendar_time";
+	private static final String USER_SET_DUE_DATE = "user_set_due_date";
 	
 	public void onSaveInstanceState(Bundle state) {
 		state.putShort(Values.ASSIGNMENT_KEY_COURSE, (short)courseSpinner.getSelectedItemPosition()); // Selected course
 		state.putString(Values.KEY_TITLE, titleField.getText().toString());
 		state.putString(Values.KEY_DESCRIPTION, descriptionField.getText().toString());
+		state.putBoolean(USER_SET_DUE_DATE, userSetDateTime);
 		short pointsEntered = -1;
 		String pointsTxt = pointsField.getText().toString();
 		if (pointsTxt.length() > 0)
@@ -227,7 +246,8 @@ public class AssignmentEditFragment extends Activity {
 				pointsEntered = Short.parseShort(pointsTxt);
 			} catch (NumberFormatException e) {}
 		state.putShort(Values.ASSIGNMENT_KEY_POINTS, pointsEntered);
-		state.putLong(CALENDAR_TIME_KEY, calendar.getTimeInMillis());
+		long time = calendar.getTimeInMillis();
+		state.putLong(CALENDAR_TIME_KEY, time);
 	}
 	
 	public void onRestoreInstanceState(Bundle oldState) {
@@ -236,10 +256,15 @@ public class AssignmentEditFragment extends Activity {
 				courseSpinner.setSelection(oldState.getShort(Values.ASSIGNMENT_KEY_COURSE));
 				titleField.setText(oldState.getString(Values.KEY_TITLE));
 				descriptionField.setText(oldState.getString(Values.KEY_DESCRIPTION));
-				calendar.setTimeInMillis(oldState.getLong(CALENDAR_TIME_KEY));
+				long time = oldState.getLong(CALENDAR_TIME_KEY);
+				calendar.setTimeInMillis(time);
 				updateButtons(0);
-				pointsField.setText(oldState.getShort(Values.ASSIGNMENT_KEY_POINTS) + "");
+				short points = oldState.getShort(Values.ASSIGNMENT_KEY_POINTS);
+				if (points >= 0)
+					pointsField.setText(points + "");
+				userSetDateTime = oldState.getBoolean(USER_SET_DUE_DATE);
 			} catch (NullPointerException e) {}
+			justRestoredState = true;
 		}
 	}
 	
@@ -259,25 +284,6 @@ public class AssignmentEditFragment extends Activity {
 		}
 	}
 	
-	private void saveData() {
-				
-		// Get the assignment's point value
-		long points = -1;
-		if (pointsField.getText().length() > 0) {
-			try {
-				points = Long.parseLong(pointsField.getText().toString());
-			} catch (NumberFormatException e) {
-				Toast.makeText(this, R.string.assignment_edit_points_out_of_range_message, Toast.LENGTH_LONG).show();
-			}
-		}
-		
-		addAssignment(titleField.getText().toString(),
-				(short)courseSpinner.getSelectedItemPosition(),
-				descriptionField.getText().toString(),
-				DateUtils.convertMillsToMinutes(calendar.getTimeInMillis()),
-				points, rowId);
-	}
-
 	@Override
 	protected Dialog onCreateDialog(int id) {
 		switch (id) {
@@ -327,6 +333,27 @@ public class AssignmentEditFragment extends Activity {
 			dueDateButton.setText(DateUtils.formatAsString(calendar, DATE_FORMAT));
 		if (which == 0 || which == 2)
 			timeDueButton.setText(DateUtils.formatAsString(calendar, TIME_FORMAT));
+	}
+	
+	private void saveData() {
+		
+		// Get the ID of the selected course
+		courseCursor.moveToPosition(courseSpinner.getSelectedItemPosition());
+		short courseId = courseCursor.getShort(0);
+		
+		// Get the assignment's point value
+		long points = -1;
+		if (pointsField.getText().length() > 0) {
+			try {
+				points = Long.parseLong(pointsField.getText().toString());
+			} catch (NumberFormatException e) {}
+		}
+		
+		addAssignment(titleField.getText().toString(),
+				courseId,
+				descriptionField.getText().toString(),
+				DateUtils.convertMillsToMinutes(calendar.getTimeInMillis()),
+				points, rowId);
 	}
 	
 	/**

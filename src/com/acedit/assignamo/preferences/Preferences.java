@@ -1,15 +1,22 @@
 package com.acedit.assignamo.preferences;
 
+import android.content.Context;
 import android.content.Intent;
+import android.content.SharedPreferences;
+import android.content.SharedPreferences.Editor;
 import android.content.pm.PackageManager.NameNotFoundException;
 import android.net.Uri;
 import android.os.Bundle;
 import android.preference.Preference;
 import android.preference.PreferenceActivity;
+import android.preference.PreferenceManager;
 
 import com.acedit.assignamo.R;
+import com.acedit.assignamo.database.Values;
 
 public class Preferences extends PreferenceActivity {
+	
+	Context context;
 	
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
@@ -23,15 +30,24 @@ public class Preferences extends PreferenceActivity {
 	public void onResume() {
 		super.onResume();
 		
-		/*
-		 * SharedPreferences prefs = PreferenceManager.getDefaultSharedPreferences(this);
+		context = this;
+		
+		((Preference)findPreference("pref_appearance_show_completed"))
+		.setOnPreferenceClickListener(new Preference.OnPreferenceClickListener() {
+			
+			@Override
+			public boolean onPreferenceClick(Preference preference) {
+				SharedPreferences prefs = PreferenceManager.getDefaultSharedPreferences(context);
 			Editor prefEditor = prefs.edit();
 			if (prefs.getBoolean(Values.ASSIGNMENT_KEY_SHOWING_COMPLETED, false))
 				prefEditor.putBoolean(Values.ASSIGNMENT_KEY_SHOWING_COMPLETED, false);
 			else
 				prefEditor.putBoolean(Values.ASSIGNMENT_KEY_SHOWING_COMPLETED, true);
 			prefEditor.commit();
-		 */
+			
+			return true;
+			}
+		});
 		
 		((Preference)findPreference("pref_contact_key"))
 		.setOnPreferenceClickListener(new Preference.OnPreferenceClickListener() {

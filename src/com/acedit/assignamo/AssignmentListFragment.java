@@ -336,8 +336,8 @@ public class AssignmentListFragment extends ListFragment {
 			long due = assignmentsCursor.getLong(4);
 			
 			holder.titleLabel.setText(title);
-			holder.colorStrip.setColor(stripColors[course]);
-			convertView.setBackgroundColor(stripColorsLight[course]);
+			//holder.colorStrip.setColor(stripColors[course]);
+			//convertView.setBackgroundColor(stripColorsLight[course]);
 			String dueString = getDateString(due);
 			holder.dueLabel.setText(dueString);
 			holder.descriptionLabel.setText(desc);

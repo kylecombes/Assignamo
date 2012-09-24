@@ -59,8 +59,7 @@
 				       android:layout_width="50dip"
 				       android:layout_height="wrap_content"
 				       android:minEms="10"
-				       android:inputType="number" >
-				   </EditText>
+				       android:inputType="number" />
 			    </LinearLayout>
 			</LinearLayout>
 		</LinearLayout>
@@ -70,11 +69,11 @@
 	    android:layout_width="fill_parent"
 	    android:layout_alignParentBottom="true"
 	    style="@android:style/ButtonBar" >
-	    <Button android:id="@+id/assignment_add_save"
-	   	    android:text="@string/save"
-	   	    style="@style/Button.ButtonBar" />
 	    <Button android:id="@+id/assignment_add_cancel"
 	   	    android:text="@android:string/cancel"
+	   	    style="@style/Button.ButtonBar" />
+	    <Button android:id="@+id/assignment_add_save"
+	   	    android:text="@string/save"
 	   	    style="@style/Button.ButtonBar" />
     </LinearLayout>
 </RelativeLayout>

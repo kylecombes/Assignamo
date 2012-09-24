@@ -20,13 +20,12 @@
     
     <!--          Assignments          -->
     <string name="assignments_title">Assignments</string>
+    <string name="assignment_view_title">Assignment Details</string>
     <string name="no_assignments">No assignments</string>
     <string name="add_assignment_instructions">Press Menu → Add Assignment to add a new assignment.</string>
     <string name="assignment_no_points">No points</string>
     <string name="assignment_point">point</string>
     <string name="assignment_points">points</string>
-    <string name="assignment_edit_points_out_of_range_title">Points value too big</string>
-    <string name="assignment_edit_points_out_of_range_message">The point value for this assignment is too large. It will be saved as 9,223,372,036,854,775,807.</string>
     <string name="assignment_edit_course_required_title">Course Required</string>
     <string name="assignment_edit_course_required_message">You need to add a course before you can add an assignment.</string>
     <string name="assignment_due_date">Due Date</string>
@@ -119,6 +118,8 @@
     <!-- Appearance -->
     <string name="pref_appearance_screen_title">Appearance</string>
     <string name="pref_appearance_screen_summary">Customize the look of Assignamo.</string>
+    <string name="pref_appearance_show_completed_title">Display completed assignments</string>
+    <string name="pref_appearance_show_completed_summary">Display both incomplete and completed assignments</string>
     <string name="pref_appearance_show_time_title">Show time</string>
     <string name="pref_appearance_show_time_summary">Display time due when viewing assignments</string>
    

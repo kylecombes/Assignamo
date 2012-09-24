@@ -51,6 +51,7 @@ Version 2
 Casual dates (I.e. "This Wednesday")
 Overdue message: "Due X days ago" in red
 Add ability to archive assignments when deleting a course.
+ActionBar Save/Cancel in Edit Activities. Confirm cancel.
 
 Ideas
 --------------

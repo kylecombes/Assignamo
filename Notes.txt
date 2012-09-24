@@ -1,0 +1,10 @@
+When needs to refresh:
+	
+	A.) Return the activity and have the main activity refresh everything
+	
+	B.) Send an intent to tell all the other apps that display course x to refresh
+	
+	onRetainNonconfigurationInstance
+	before onStop and onDestroy
+
+	getLastNonconfigurationInstance

@@ -21,7 +21,8 @@
             </intent-filter>
         </activity>
         <activity
-            android:name=".AssignmentViewFragment" />
+            android:name=".AssignmentViewFragment"
+            android:label="@string/assignment_view_title" />
         <activity
             android:name=".AssignmentEditFragment" />
         <!-- Manage -->
