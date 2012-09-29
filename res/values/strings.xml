@@ -79,13 +79,14 @@
     <string name="add_book_invalid_ISBN">Sorry, the ISBN you entered is not valid. Please re-enter the ISBN or leave it blank.</string>
     
     <!-- Courses -->
-    <string name="course_add">Add Course</string>
     <string name="course_view_title">Course Details</string>
     <string name="course_credit_hours">Credit Hours</string>
     <string name="menu_manage_courses">Manage Courses</string>
     <string name="course_days_of_week">Days of Week</string>
     <string name="course_times">Times</string>
     <string name="configure">Configure</string>
+    <string name="select_color">Select color</string>
+    <string name="choose_a_color">Choose a color</string>
     <string name="course_edit_teacher_required_title">Teacher Required</string>
     <string name="course_edit_teacher_required_message">You need to add a teacher before you can add a course.</string>
     <!-- Selecting the course days -->
@@ -127,12 +128,10 @@
     <string name="pref_about_screen_title">About</string>
     <string name="pref_app_version_title">Application version</string>
     <string name="version">Version</string>
-    <string name="pref_unknown_version">Hmm&#8230; I can\'t seem to find the version info. Please report this to the developer.</string>
-    <string name="contact_email">development@aceditapps.com</string>
     <string name="pref_contact_title">Contact us</string>
-    <string name="pref_email_chooser_title">Send using:</string>
-    <string name="website">http://www.aceitapps.com/</string>
+    <string name="contact_email">development@aceditapps.com</string>
     <string name="pref_visit_title">Visit us</string>
+    <string name="website">http://www.aceitapps.com/</string>
     
     
     <!--          Menus          -->

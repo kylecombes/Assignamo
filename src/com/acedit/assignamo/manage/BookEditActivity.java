@@ -85,13 +85,11 @@ public class BookEditActivity extends Activity {
 		typeSpinner.setAdapter(adapter);
 		
 	    typeSpinner.setOnItemSelectedListener(new OnItemSelectedListener() {
-	    	@Override
 	    	public void onItemSelected(AdapterView<?> parent,
 	    	        View view, int pos, long id) {
 	    		selectedCourse = parent.getItemAtPosition(pos);
 	    	}
 	    	
-	    	@Override
 	    	public void onNothingSelected(AdapterView<?> parent) {
 	    		
 	    	}
@@ -102,7 +100,6 @@ public class BookEditActivity extends Activity {
 		
 		saveButton = (Button)findViewById(R.id.book_edit_save_button);
 	    saveButton.setOnClickListener(new View.OnClickListener() {
-			@Override
 			public void onClick(View v) {
 				if ( saveData() )
 					finish();
@@ -111,7 +108,6 @@ public class BookEditActivity extends Activity {
 	    
 		cancelButton = (Button)findViewById(R.id.book_edit_cancel_button);
 	    cancelButton.setOnClickListener(new View.OnClickListener() {
-			@Override
 			public void onClick(View v) {
 				finish();
 			}

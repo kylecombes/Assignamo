@@ -75,7 +75,6 @@ public class TeacherEditActivity extends Activity {
 		saveButton = (Button)findViewById(R.id.teacher_edit_save);
 	    saveButton.setOnClickListener(new View.OnClickListener() {
 			
-			@Override
 			public void onClick(View v) {
 				saveData();
 				finish();
@@ -85,7 +84,6 @@ public class TeacherEditActivity extends Activity {
 		cancelButton = (Button)findViewById(R.id.teacher_edit_cancel);
 	    cancelButton.setOnClickListener(new View.OnClickListener() {
 			
-			@Override
 			public void onClick(View v) {
 				finish();
 			}

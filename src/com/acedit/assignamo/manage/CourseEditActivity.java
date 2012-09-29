@@ -5,6 +5,7 @@ import org.json.JSONException;
 
 import android.app.Activity;
 import android.app.AlertDialog;
+import android.app.Dialog;
 import android.content.ContentValues;
 import android.content.Context;
 import android.content.DialogInterface;
@@ -44,6 +45,8 @@ public class CourseEditActivity extends Activity {
 	private Button saveButton;
 	private Button cancelButton;
 	private short[][] times;
+	
+	int courseColor;
 		
 	public void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
@@ -56,7 +59,6 @@ public class CourseEditActivity extends Activity {
 			d.setTitle(R.string.course_edit_teacher_required_title);
 			d.setMessage(R.string.course_edit_teacher_required_message);
 			d.setPositiveButton(android.R.string.ok, new AlertDialog.OnClickListener() {
-				@Override
 				public void onClick(DialogInterface dialog, int which) {
 					Intent i = new Intent(context, TeacherEditActivity.class);
 					startActivity(i);
@@ -94,9 +96,15 @@ public class CourseEditActivity extends Activity {
 		saveButton = (Button)findViewById(R.id.course_edit_save);
 		cancelButton = (Button)findViewById(R.id.course_edit_cancel);
 		
+		((Button)findViewById(R.id.course_edit_color_select_button))
+		.setOnClickListener(new OnClickListener() {
+			
+			public void onClick(View v) {
+				showDialog(0);
+			}
+		});
 	    saveButton.setOnClickListener(new View.OnClickListener() {
 			
-			@Override
 			public void onClick(View v) {
 				saveData();
 				finish();
@@ -104,11 +112,21 @@ public class CourseEditActivity extends Activity {
 		});
 	    cancelButton.setOnClickListener(new View.OnClickListener() {
 			
-			@Override
 			public void onClick(View v) {
 				finish();
 			}
 		});
+	}
+	
+	protected Dialog onCreateDialog(int id) {
+		ColorPickerDialog.OnColorChangedListener listener = new ColorPickerDialog.OnColorChangedListener() {
+			
+			public void colorChanged(int color) {
+				courseColor = color;
+			}
+		};
+		int initialColor = 534;
+		return new ColorPickerDialog(context, listener, initialColor);
 	}
 	
 	private void populateFields() {
@@ -156,7 +174,6 @@ public class CourseEditActivity extends Activity {
 		
 		((Button)findViewById(R.id.course_edit_days_button)).setOnClickListener(new OnClickListener() {
 			
-			@Override
 			public void onClick(View v) {
 				Intent intent = new Intent(context, DaySelectFragment.class);
 				if (times != null) {

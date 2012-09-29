@@ -35,7 +35,6 @@ public class TeacherListFragment extends BaseListFragment {
 		setListItem(R.layout.teacher_list_item);
 		setViewBinder(new ViewBinder() {
 			
-			@Override
 			public boolean setViewValue(View view, Cursor cursor, int columnIndex) {
 				switch (view.getId()) {
 				case R.id.list_room_num:

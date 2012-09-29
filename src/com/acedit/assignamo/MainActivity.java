@@ -72,15 +72,12 @@ public class MainActivity extends FragmentActivity {
         indicator.setViewPager(pager);
         indicator.setOnPageChangeListener(new OnPageChangeListener() {
 			
-			@Override
 			public void onPageSelected(int arg0) {
 				setPosition(arg0);
 			}
 			
-			@Override
 			public void onPageScrolled(int arg0, float arg1, int arg2) {}
 			
-			@Override
 			public void onPageScrollStateChanged(int arg0) {}
 		});
         indicator.setCurrentItem(selectedPos);
@@ -149,7 +146,6 @@ public class MainActivity extends FragmentActivity {
 			return titles.length;
 		}
 
-		@Override
 		public String getTitle(int position) {
 			return titles[position % titles.length].toUpperCase();
 		}

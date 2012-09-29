@@ -6,13 +6,10 @@ import org.json.JSONArray;
 import org.json.JSONException;
 
 import android.app.Activity;
-import android.app.AlertDialog;
 import android.app.DatePickerDialog;
 import android.app.Dialog;
 import android.app.TimePickerDialog;
 import android.content.ContentValues;
-import android.content.DialogInterface;
-import android.content.Intent;
 import android.database.Cursor;
 import android.os.Bundle;
 import android.support.v4.widget.SimpleCursorAdapter;
@@ -28,7 +25,6 @@ import android.widget.TimePicker;
 
 import com.acedit.assignamo.database.DbAdapter;
 import com.acedit.assignamo.database.Values;
-import com.acedit.assignamo.manage.CourseEditActivity;
 import com.acedit.assignamo.utils.DateUtils;
 import com.acedit.assignamo.utils.DbUtils;
 
@@ -56,20 +52,7 @@ public class AssignmentEditFragment extends Activity {
 	public void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
 		
-		if (DbUtils.getCourseCount(getApplicationContext()) == 0) {
-			new AlertDialog.Builder(this)
-			.setTitle(R.string.assignment_edit_course_required_title)
-			.setMessage(R.string.assignment_edit_course_required_message)
-			.setPositiveButton(android.R.string.ok, new AlertDialog.OnClickListener() {
-				
-				@Override
-				public void onClick(DialogInterface dialog, int which) {
-					Intent i = new Intent(getBaseContext(), CourseEditActivity.class);
-					startActivity(i);
-				}
-			})
-			.show();
-		}
+		//TODO Needs something to check if a course exists
 		
 		setContentView(R.layout.assignment_edit);
 		// Set the title of the Activity
@@ -96,7 +79,6 @@ public class AssignmentEditFragment extends Activity {
 		adapter.setDropDownViewResource( android.R.layout.simple_spinner_dropdown_item );
 		courseSpinner.setAdapter(adapter);
 		courseSpinner.setOnItemSelectedListener(new OnItemSelectedListener() {
-			@Override
 			public void onItemSelected(AdapterView<?> arg0, View arg1, int arg2, long arg3) {
 				if (!justRestoredState)
 					if (!userSetDateTime) {
@@ -106,7 +88,6 @@ public class AssignmentEditFragment extends Activity {
 				else
 					justRestoredState = false;
 			}
-			@Override
 			public void onNothingSelected(AdapterView<?> arg0) {}
 		});
 		
@@ -116,27 +97,23 @@ public class AssignmentEditFragment extends Activity {
 		
 		dueDateButton = (Button)findViewById(R.id.assignment_add_date_due);
 		dueDateButton.setOnClickListener(new View.OnClickListener() {
-			@Override
 			public void onClick(View v) {
 				showDialog(DATE_PICKER_DIALOG);
 			}
 		});
 		timeDueButton = (Button)findViewById(R.id.assignment_add_time_due);
 		timeDueButton.setOnClickListener(new OnClickListener() {
-			@Override
 			public void onClick(View v) {
 				showDialog(TIME_PICKER_DIALOG);
 			}
 		});
 		((Button)findViewById(R.id.assignment_add_save)).setOnClickListener(new View.OnClickListener() {
-			@Override
 			public void onClick(View v) {
 				saveData();
 				finish();
 			}
 		});
 		((Button)findViewById(R.id.assignment_add_cancel)).setOnClickListener(new View.OnClickListener() {
-			@Override
 			public void onClick(View v) {
 				finish();
 			}
@@ -297,7 +274,6 @@ public class AssignmentEditFragment extends Activity {
 	
 	private DatePickerDialog showDatePicker() {
 		DatePickerDialog datePicker = new DatePickerDialog(this, new DatePickerDialog.OnDateSetListener() {
-			@Override
 			public void onDateSet(DatePicker view, int year, int monthOfYear, int dayOfMonth) {
 				calendar.set(Calendar.YEAR, year);
 				calendar.set(Calendar.MONTH, monthOfYear);
@@ -313,7 +289,6 @@ public class AssignmentEditFragment extends Activity {
 
 	private TimePickerDialog showTimePicker() {
 		return new TimePickerDialog(this, new TimePickerDialog.OnTimeSetListener() {
-			@Override
 			public void onTimeSet(TimePicker view, int hourOfDay, int minute) {
 				calendar.set(Calendar.HOUR_OF_DAY, hourOfDay);
 				calendar.set(Calendar.MINUTE, minute);

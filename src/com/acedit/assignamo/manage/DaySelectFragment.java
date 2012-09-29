@@ -59,7 +59,6 @@ public class DaySelectFragment extends FragmentActivity {
 			checkboxes[d] = (CheckBox)findViewById(checkboxIds[d]);
 			checkboxes[d].setOnCheckedChangeListener(new OnCheckedChangeListener() {
 				
-				@Override
 				public void onCheckedChanged(CompoundButton buttonView, boolean isChecked) {
 					checkBoxToggled(buttonView.getId(), isChecked);
 				}
@@ -74,7 +73,6 @@ public class DaySelectFragment extends FragmentActivity {
 			for (short i = 0; i < 2; i++) {
 				buttons[d][i].setOnClickListener(new OnClickListener() {
 					
-					@Override
 					public void onClick(View v) {
 						buttonPressed(v.getId());
 					}
@@ -91,7 +89,6 @@ public class DaySelectFragment extends FragmentActivity {
 		
 		// Configure Cancel button
 		findViewById(R.id.course_edit_days_select_cancel).setOnClickListener(new OnClickListener() {
-			@Override
 			public void onClick(View v) {
 				setResult(RESULT_CANCELED);
 				finish();
@@ -101,7 +98,6 @@ public class DaySelectFragment extends FragmentActivity {
 		// Configure OK button
 		findViewById(R.id.course_edit_days_select_ok).setOnClickListener(new OnClickListener() {
 			
-			@Override
 			public void onClick(View v) {
 				for (short i = 0; i < 7; i++) {
 					// For each checkbox that is not checked, set the corresponding times to zero
@@ -149,7 +145,6 @@ public class DaySelectFragment extends FragmentActivity {
 	@Override
 	protected Dialog onCreateDialog(int id) {
 		return new TimePickerDialog(this, new TimePickerDialog.OnTimeSetListener() {
-			@Override
 			public void onTimeSet(TimePicker view, int hourOfDay, int minute) {
 				times[day][button] = (short)(hourOfDay * 60 + minute);
 				// If the ending time is not yet set, set it to an hour later
