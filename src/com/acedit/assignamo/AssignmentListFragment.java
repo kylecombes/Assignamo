@@ -2,15 +2,16 @@ package com.acedit.assignamo;
 
 import java.text.SimpleDateFormat;
 import java.util.Calendar;
+import java.util.HashMap;
+import java.util.Map;
 
 import android.content.BroadcastReceiver;
 import android.content.Context;
 import android.content.Intent;
 import android.content.IntentFilter;
 import android.content.SharedPreferences;
-import android.content.res.Resources;
-import android.content.res.TypedArray;
 import android.database.Cursor;
+import android.graphics.Color;
 import android.os.Bundle;
 import android.preference.PreferenceManager;
 import android.support.v4.app.ListFragment;
@@ -44,11 +45,7 @@ public class AssignmentListFragment extends ListFragment {
 	short course = -1;
 	
 	// Needed for recreating the fragment
-	public AssignmentListFragment() {
-		Bundle args = getArguments();
-		if (args != null)
-			course = args.getShort("courseId");
-	}
+	public AssignmentListFragment() {}
 	
 	@Override
 	public void onSaveInstanceState(Bundle outState) {
@@ -59,6 +56,11 @@ public class AssignmentListFragment extends ListFragment {
 	@Override
 	public void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
+
+		Bundle args = getArguments();
+		if (args != null)
+			course = args.getShort("courseId");
+		
 		if (savedInstanceState != null) {
 			course = savedInstanceState.getShort(Values.ASSIGNMENT_KEY_COURSE);
 		}
@@ -85,6 +87,7 @@ public class AssignmentListFragment extends ListFragment {
 		
 		if (context == null)
 			context = getActivity();
+		updateCourseColors();
 		refresh();
 		
 		// Register refresh Intent listener
@@ -281,28 +284,17 @@ public class AssignmentListFragment extends ListFragment {
 	
 	/*---------- ListView Adapter and Related Subroutines ----------*/
 	
+	private Map<Short,Integer> colors = new HashMap<Short,Integer>();
+	private Map<Short,Integer> colorsLight = new HashMap<Short,Integer>();
+	
 	private class CustomCursorAdapter extends CursorAdapter {
 		
 		LayoutInflater mInflater;
 		ViewHolder holder;
-		int[] stripColors;
-		int[] stripColorsLight;
 		
 		public CustomCursorAdapter(Context context, Cursor c, int flags) {
 			super(context, c, flags);
 			this.mContext = context;
-			
-			// Load the strip colors
-			//TODO Thread this?
-			Resources res = getResources();
-			TypedArray colors = res.obtainTypedArray(R.array.strip_colors);
-			stripColors = new int[colors.length()];
-			for (short i = 0; i < colors.length(); i++)
-				stripColors[i] = colors.getColor(i, res.getColor(R.color.default_strip));
-			colors = res.obtainTypedArray(R.array.strip_colors_light);
-			stripColorsLight = new int[colors.length()];
-			for (short i = 0; i < colors.length(); i++)
-				stripColorsLight[i] = colors.getColor(i, res.getColor(R.color.default_strip));
 			
 			mInflater = (LayoutInflater) context.getSystemService(Context.LAYOUT_INFLATER_SERVICE);
 		}
@@ -330,8 +322,8 @@ public class AssignmentListFragment extends ListFragment {
 			long due = assignmentsCursor.getLong(4);
 			
 			holder.titleLabel.setText(title);
-			//holder.colorStrip.setColor(stripColors[course]);
-			//convertView.setBackgroundColor(stripColorsLight[course]);
+			holder.colorStrip.setColor(colors.get(course));
+			convertView.setBackgroundColor(colorsLight.get(course));
 			String dueString = getDateString(due);
 			holder.dueLabel.setText(dueString);
 			holder.descriptionLabel.setText(desc);
@@ -353,12 +345,40 @@ public class AssignmentListFragment extends ListFragment {
 		
 		return (new SimpleDateFormat(DATE_FORMAT)).format(calendar.getTime());
 	}
+	
+	private void updateCourseColors() {
+		DbAdapter adapter = new DbAdapter(context, Values.DATABASE_NAME, Values.DATABASE_VERSION,
+				Values.COURSE_TABLE, null, Values.KEY_ROWID);
+		adapter.open();
+		Cursor c = adapter.fetchAll(new String[] { Values.KEY_ROWID, Values.COURSE_KEY_COLOR } );
+		c.moveToFirst();
+		for (short i = 0; i < c.getCount(); i++) {
+			short id = c.getShort(c.getColumnIndexOrThrow(Values.KEY_ROWID));
+			int color = c.getInt(c.getColumnIndexOrThrow(Values.COURSE_KEY_COLOR));
+			colors.put(id, color);
+			colorsLight.put(id,getLightColor(color));
+			c.moveToNext();
+		}
+		c.close();
+		c = null;
+		adapter.close();
+		adapter = null;
+	}
+	
+	private final static short ALPHA = 30;
+	
+	private static int getLightColor(int regColor) {
+		return Color.argb(ALPHA, Color.red(regColor),
+				Color.green(regColor), Color.blue(regColor));
+	}
 
 	private static class ViewHolder {
 		private static ColorStrip colorStrip;
 		private static TextView titleLabel;
 		private static TextView descriptionLabel;
 		private static TextView dueLabel;
+		
+		public ViewHolder() {}
 	}
 	
 }

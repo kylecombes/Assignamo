@@ -11,6 +11,7 @@ import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
 import android.database.Cursor;
+import android.graphics.Color;
 import android.os.Bundle;
 import android.support.v4.widget.SimpleCursorAdapter;
 import android.view.View;
@@ -29,13 +30,8 @@ public class CourseEditActivity extends Activity {
 	private Cursor courseCursor;
 	private Long rowId;
 	private DbAdapter dbAdapter;
-	private Context context;
-	static final String DATE_FORMAT_DISPLAY = "yyyy-MM-dd";
-	static final String DATE_FORMAT_SAVE = "MM/dd/yyyy";
-	static final String TIME_FORMAT_DISPLAY = "kk:mm";
-	static final String TIME_FORMAT_SAVE = "dd:mm a";
-	static final String DATE_TIME_FORMAT = "yyyy-MM-dd kk:mm:ss";
-	static final int DAY_SELECT_RESULT_ID = 1;
+	private Context context = this;
+	private static final int DAY_SELECT_RESULT_ID = 1;
 	
 	private TextView titleField;
 	private Spinner teacherSpinner;
@@ -50,8 +46,7 @@ public class CourseEditActivity extends Activity {
 		
 	public void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
-		context = getBaseContext();
-		dbAdapter = new DbAdapter(context, Values.DATABASE_NAME, Values.DATABASE_VERSION,
+		dbAdapter = new DbAdapter(this, Values.DATABASE_NAME, Values.DATABASE_VERSION,
 				Values.COURSE_TABLE, Values.DATABASE_CREATE, Values.KEY_ROWID);
 
 		if (!teacherExists()) {
@@ -78,8 +73,7 @@ public class CourseEditActivity extends Activity {
 	
 	public void onResume() {
 		super.onResume();
-		if (context == null)
-			context = getBaseContext();
+		context = this;
 	}
 	
 	public void onPause() {
@@ -125,13 +119,12 @@ public class CourseEditActivity extends Activity {
 				courseColor = color;
 			}
 		};
-		int initialColor = 534;
-		return new ColorPickerDialog(context, listener, initialColor);
+		return new ColorPickerDialog(context, listener, courseColor);
 	}
 	
 	private void populateFields() {
 		
-		courseCursor = DbUtils.getTeachersAsCursor(context);
+		courseCursor = DbUtils.getTeachersAsCursor(this);
 		
 		// create an array to specify which fields we want to display
 		String[] from = new String[]{Values.KEY_NAME};
@@ -170,7 +163,9 @@ public class CourseEditActivity extends Activity {
 			int creditHours = data.getInt(data.getColumnIndexOrThrow(Values.COURSE_KEY_CREDIT_HOURS));
 			if (creditHours >= 0)
 				creditHoursField.setText(creditHours + "");
-		}
+			courseColor = data.getInt(data.getColumnIndexOrThrow(Values.COURSE_KEY_COLOR));
+		} else
+			courseColor = Color.parseColor(getString(R.color.default_course_color));
 		
 		((Button)findViewById(R.id.course_edit_days_button)).setOnClickListener(new OnClickListener() {
 			
@@ -244,7 +239,7 @@ public class CourseEditActivity extends Activity {
 	}
 	
 	private boolean teacherExists() {
-		return DbUtils.getTeachersAsArray(context).length > 0;
+		return DbUtils.getTeachersAsCursor(getBaseContext()).getCount() > 0;
 	}
 	
 	private void addCourse(String name, short teacherId, String description, long roomNum, short[][] timesOfDay, short creditHours, Long rowId) {
@@ -261,6 +256,7 @@ public class CourseEditActivity extends Activity {
     	values.put(Values.COURSE_KEY_TIMES_OF_DAY, timesAsArray.toString());
     	
     	values.put(Values.COURSE_KEY_CREDIT_HOURS, creditHours);
+    	values.put(Values.COURSE_KEY_COLOR, courseColor);
     	
     	dbAdapter.open();
     	

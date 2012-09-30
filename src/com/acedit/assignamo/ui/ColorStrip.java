@@ -27,7 +27,6 @@ public class ColorStrip extends View {
 		hPx = (short)dipToPx((short)res.getDimension(R.dimen.color_strip_height));
 		
 		mDrawable = new ShapeDrawable(new RectShape());
-		mDrawable.getPaint().setColor(res.getColor(R.color.default_strip));
 		mDrawable.setBounds(0, 0, wPx, hPx);
 		
 	}
@@ -36,8 +35,8 @@ public class ColorStrip extends View {
 		mDrawable.draw(canvas);
 	}
 	
-	public void setColor(int resId) {
-		mDrawable.getPaint().setColor(resId);
+	public void setColor(int color) {
+		mDrawable.getPaint().setColor(color);
 	}
 	
 	public void setHeight(short pixels) {

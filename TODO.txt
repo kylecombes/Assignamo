@@ -11,33 +11,25 @@ Required
 * Default to course being viewed when adding an assignment.
 * Display due date when listing assignments!!
 * Make sure focused tab pictures are good.
+-- Tab names shortened --
+-- Custom list selectors. --
+-- Day select buttons act weird. You try to press one of the Set buttons and the OK button flashes. -- (ground problem with USB/phone, not app)
+* Save entered assignment data on orientation change.
+* Doesn't like blank ISBNs.
+* Get New Assignment due date/time from next class time.
 
 Loading spinner
 First-time setup wizard
 Reminders!!
-Finish preferences:
-	Add icons
-	Come up with better labels
-	Change color of tabs
-	Custom date/time format?
-	Change background color
-	Reorder course tabs?
 Better teacher view
-Tab names shortened
 Color-code courses in course list
 Add support for teacher phone number extensions.
 Add ability to call/email teacher directly from app.
-Confirmation of delete.
 Visual indicator signifying completed assignments when showing completed assignments.
-Get New Assignment due date/time from next class time.
-Save entered assignment data on orientation change.
-Custom list selectors.
 Change Subject label on Add Teacher to something more like "Department".
 Make sure content is saved on Edit pages when rotating and pausing activity.
 ListView flashes empty message after selecting an item.
 Day select buttons extend past edge of screen.
-Day select buttons act weird. You try to press one of the Set buttons and the OK button flashes.
-Doesn't like blank ISBNs.
 
 "invalid statement in fillWindow()"
 
@@ -45,6 +37,7 @@ Optional for version 1
 -------------
 Add support for Gym and Library Room Numbers.
 Add ability to choose between Light and Dark theme in Preferences.
+Confirmation of delete.
 
 Version 2
 -------------
@@ -62,6 +55,11 @@ Link teacher with contact
 Display No Assignments message on a Post-It
 Skins for schools (UCLA, Standford, etc.)
 When completing assignment, post "I finished __!" to 'Wall.'
+Preferences:
+	Add icons
+	Change color of tabs
+	Custom date/time format
+	Reorder course tabs
 
 -------------- Bugs: ----------------
 When there are no courses, cannot add an assignment due to the fact that there are no courses to link it to. Crashes.

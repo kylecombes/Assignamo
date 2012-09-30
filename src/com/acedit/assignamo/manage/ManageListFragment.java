@@ -5,8 +5,6 @@ import java.util.Calendar;
 
 import android.content.Context;
 import android.content.Intent;
-import android.content.res.Resources;
-import android.content.res.TypedArray;
 import android.database.Cursor;
 import android.os.Bundle;
 import android.support.v4.app.ListFragment;
@@ -221,18 +219,6 @@ public class ManageListFragment extends ListFragment {
 		public CustomCursorAdapter(Context context, Cursor c, int flags) {
 			super(context, c, flags);
 			this.mContext = context;
-			
-			// Load the strip colors
-			//TODO Thread this?
-			Resources res = getResources();
-			TypedArray colors = res.obtainTypedArray(R.array.strip_colors);
-			stripColors = new int[colors.length()];
-			for (short i = 0; i < colors.length(); i++)
-				stripColors[i] = colors.getColor(i, res.getColor(R.color.default_strip));
-			colors = res.obtainTypedArray(R.array.strip_colors_light);
-			stripColorsLight = new int[colors.length()];
-			for (short i = 0; i < colors.length(); i++)
-				stripColorsLight[i] = colors.getColor(i, res.getColor(R.color.default_strip));
 			
 			mInflater = (LayoutInflater) context.getSystemService(Context.LAYOUT_INFLATER_SERVICE);
 		}

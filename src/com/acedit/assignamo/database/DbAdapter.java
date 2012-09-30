@@ -33,8 +33,7 @@ public class DbAdapter {
 		DATABASE_NAME = databaseName;
 		DATABASE_VERSION = databaseVersion;
 		DATABASE_TABLE = tableName;
-		if (databaseCreate.length > 0)
-			DATABASE_CREATE = databaseCreate;
+		DATABASE_CREATE = databaseCreate;
 		KEY_ROWID = rowId;
 	}
 	
@@ -154,7 +153,7 @@ public class DbAdapter {
 		
 		@Override
 		public void onUpgrade(SQLiteDatabase db, int oldVersion, int newVersion) {
-			db.execSQL("ALTER TABLE " + Values.COURSE_TABLE + " ADD COLUMN " + Values.COURSE_COLOR + ";");
+			
 		}
 	}
 }
