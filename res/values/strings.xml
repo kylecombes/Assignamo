@@ -57,6 +57,16 @@
     <string name="no_courses">No courses</string>
     <string name="add_course_instructions">Press Menu → Add Course to add a new course.</string>
     <string name="course_view_no_room">No room entered </string>
+    <string-array name="days_of_week_short">
+        <item>Sun</item>
+        <item>Mon</item>
+        <item>Tues</item>
+        <item>Wed</item>
+        <item>Thurs</item>
+        <item>Fri</item>
+        <item>Sat</item>
+    </string-array>
+    <string name="course_no_days_set">No days set</string>
     
     <!--          Teachers          -->
     <string name="teachers_title">Teachers</string>

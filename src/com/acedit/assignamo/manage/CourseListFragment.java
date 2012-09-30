@@ -1,6 +1,14 @@
 package com.acedit.assignamo.manage;
 
+import java.util.HashMap;
+import java.util.Map;
+
+import org.json.JSONArray;
+import org.json.JSONException;
+
+import android.content.Context;
 import android.content.Intent;
+import android.database.Cursor;
 import android.os.Bundle;
 import android.view.ContextMenu;
 import android.view.ContextMenu.ContextMenuInfo;
@@ -12,16 +20,18 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.AdapterView.AdapterContextMenuInfo;
 import android.widget.ListView;
+import android.widget.SimpleCursorAdapter.ViewBinder;
+import android.widget.TextView;
 
 import com.acedit.assignamo.R;
 import com.acedit.assignamo.database.Values;
+import com.acedit.assignamo.utils.DbUtils;
 
 public class CourseListFragment extends BaseListFragment {
 	
-	public CourseListFragment() {
-		
-		
-	}
+	Map<Short,String> teachers = new HashMap<Short,String>();
+	
+	public CourseListFragment() {}
 	
 	/** Called when the activity is first created. */
 	public void onCreate(Bundle savedInstanceState) {
@@ -31,6 +41,50 @@ public class CourseListFragment extends BaseListFragment {
 				Values.COURSE_KEY_TIMES_OF_DAY } );
 		setListTo( new int[] { R.id.list_title, R.id.list_teacher, R.id.list_days } );
 		setListItem(R.layout.course_list_item);
+		
+		Context context = getActivity();
+		// Get the list of teachers
+		Cursor c = DbUtils.getTeachersAsCursor(context);
+		c.moveToFirst();
+		for (short i = 0; i < c.getCount(); i++) {
+			teachers.put(c.getShort(0),c.getString(1));
+			c.moveToNext();
+		}
+		
+		setViewBinder(new ViewBinder() {
+			
+			public boolean setViewValue(View view, Cursor cursor, int columnIndex) {
+				switch (view.getId()) {
+				case R.id.list_teacher:
+					((TextView)view).setText(teachers.get(cursor.getShort(cursor.getColumnIndexOrThrow(Values.COURSE_KEY_TEACHER))));
+					return true;
+				case R.id.list_days:
+					((TextView)view).setText(getDaysOfWeek(cursor.getString(cursor.getColumnIndexOrThrow(Values.COURSE_KEY_TIMES_OF_DAY))));
+					return true;
+				}
+				return false;
+			}
+		});
+	}
+	
+	private String getDaysOfWeek(String strArray) {
+		boolean [] days = new boolean[7];
+		try {
+			JSONArray array = new JSONArray(strArray);
+			for (short x = 0; x < 14; x += 2)
+				days[x/2] = (short)array.getInt(x) > 0;
+		} catch (JSONException e) { e.printStackTrace(); }
+		if (days.length == 0)
+			return getString(R.string.course_no_days_set);
+		else {
+			String[] daysOfWeek = getResources().getStringArray(R.array.days_of_week_short);
+			String rStr = "";
+			for (short i = 0; i < 7; i++) {
+				if (days[i])
+					rStr += daysOfWeek[i] + ", ";
+			}
+			return rStr.substring(0, rStr.length() - 2);
+		}
 	}
 	
 	public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {

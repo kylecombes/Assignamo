@@ -154,8 +154,6 @@ public class CourseEditActivity extends Activity {
 						times[x/2][0] = (short)array.getInt(x);
 					else
 						times[x/2][1] = (short)array.getInt(x);
-			} catch (IllegalArgumentException e) {
-				e.printStackTrace();
 			} catch (JSONException e) {
 				e.printStackTrace();
 			}
@@ -206,7 +204,7 @@ public class CourseEditActivity extends Activity {
 		}
 		
 		addCourse(titleField.getText().toString(),
-				(short)teacherSpinner.getSelectedItemPosition(),
+				(short)teacherSpinner.getSelectedItemId(),
 				descriptionField.getText().toString(),
 				roomNum,
 				times,
