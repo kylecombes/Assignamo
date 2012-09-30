@@ -312,10 +312,6 @@ public class AssignmentEditFragment extends Activity {
 	
 	private void saveData() {
 		
-		// Get the ID of the selected course
-		courseCursor.moveToPosition(courseSpinner.getSelectedItemPosition());
-		short courseId = courseCursor.getShort(0);
-		
 		// Get the assignment's point value
 		long points = -1;
 		if (pointsField.getText().length() > 0) {
@@ -325,7 +321,7 @@ public class AssignmentEditFragment extends Activity {
 		}
 		
 		addAssignment(titleField.getText().toString(),
-				courseId,
+				(short) courseSpinner.getSelectedItemId(),
 				descriptionField.getText().toString(),
 				DateUtils.convertMillsToMinutes(calendar.getTimeInMillis()),
 				points, rowId);
