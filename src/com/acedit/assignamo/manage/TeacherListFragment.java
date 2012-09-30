@@ -1,7 +1,6 @@
 package com.acedit.assignamo.manage;
 
 import android.content.Intent;
-import android.database.Cursor;
 import android.os.Bundle;
 import android.view.ContextMenu;
 import android.view.ContextMenu.ContextMenuInfo;
@@ -13,8 +12,6 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.AdapterView.AdapterContextMenuInfo;
 import android.widget.ListView;
-import android.widget.SimpleCursorAdapter.ViewBinder;
-import android.widget.TextView;
 
 import com.acedit.assignamo.R;
 import com.acedit.assignamo.database.Values;
@@ -33,17 +30,6 @@ public class TeacherListFragment extends BaseListFragment {
 		setListFrom( new String[] { Values.KEY_NAME, Values.TEACHER_KEY_SUBJECT, Values.KEY_NOTES } );
 		setListTo( new int[] { R.id.list_title, R.id.list_department, R.id.list_room_num } );
 		setListItem(R.layout.teacher_list_item);
-		setViewBinder(new ViewBinder() {
-			
-			public boolean setViewValue(View view, Cursor cursor, int columnIndex) {
-				switch (view.getId()) {
-				case R.id.list_room_num:
-					short roomNum = cursor.getShort(columnIndex);
-					((TextView)view).setText("Room " + roomNum);
-				}
-				return false;
-			}
-		});
 	}
 	
 	public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {

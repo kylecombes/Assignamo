@@ -106,8 +106,8 @@
     <string name="teacher">Teacher</string>
     <string name="add_teacher_instructions">Press Menu → Add Teacher to add a new teacher.</string>
     <string name="teacher_context_menu_delete">Delete Teacher</string>
-    <string name="teacher_subject">Subject</string>
-    <string name="teacher_edit_room">Room</string>
+    <string name="teacher_department">Department</string>
+    <string name="teacher_room">Room</string>
     <string name="teacher_email">Email Address</string>
     <string name="teacher_phone">Phone Number</string>
     <string name="teacher_view_no_phone">No phone number</string>

@@ -619,13 +619,13 @@ or to a theme attribute in the form "<code>?[<i>package</i>:][<i>type</i>:]<i>na
         public static final int teacher_add=0x7f0b006f;
         public static final int teacher_context_menu_delete=0x7f0b004e;
         public static final int teacher_delete=0x7f0b0071;
+        public static final int teacher_department=0x7f0b004f;
         public static final int teacher_edit=0x7f0b0070;
         public static final int teacher_edit_add_teacher=0x7f0b002b;
         public static final int teacher_edit_edit_teacher=0x7f0b002c;
-        public static final int teacher_edit_room=0x7f0b0050;
         public static final int teacher_email=0x7f0b0051;
         public static final int teacher_phone=0x7f0b0052;
-        public static final int teacher_subject=0x7f0b004f;
+        public static final int teacher_room=0x7f0b0050;
         public static final int teacher_view_no_phone=0x7f0b0053;
         public static final int teacher_view_no_room=0x7f0b002f;
         public static final int teacher_view_room=0x7f0b002e;

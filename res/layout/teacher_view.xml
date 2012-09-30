@@ -9,7 +9,7 @@
         android:layout_gravity="right"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:text="@string/teacher_subject"
+        android:text="@string/teacher_department"
         android:textAppearance="?android:attr/textAppearanceMedium"
         android:paddingTop="5dip"
         android:paddingRight="5dip"
