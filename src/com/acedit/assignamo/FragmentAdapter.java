@@ -2,6 +2,7 @@ package com.acedit.assignamo;
 
 import android.content.Context;
 import android.database.Cursor;
+import android.os.Bundle;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentManager;
 import android.support.v4.app.FragmentPagerAdapter;
@@ -25,16 +26,18 @@ public class FragmentAdapter extends FragmentPagerAdapter {
 	@Override
 	public Fragment getItem(int position) {
 		setCurrentPosition(position);
-		switch (position) {
-		case 0:
-			return new AssignmentListFragment(context);
-		default:
+		AssignmentListFragment frag = new AssignmentListFragment();
+		if (position != 0) {
+			// Get the course ID based on the position
 			if (courseCursor == null)
 				courseCursor = DbUtils.getCoursesAsCursor(context);
 			courseCursor.moveToPosition(position - 1);
-			short rowId = courseCursor.getShort(0);
-			return new AssignmentListFragment(context, rowId);
+			short courseId = courseCursor.getShort(0);
+			Bundle args = new Bundle();
+			args.putShort("courseId", courseId);
+			frag.setArguments(args);
 		}
+		return frag;
 	}
 	
 	public void setCurrentPosition(short pos) {

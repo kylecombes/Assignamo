@@ -44,23 +44,10 @@ public class AssignmentListFragment extends ListFragment {
 	short course = -1;
 	
 	// Needed for recreating the fragment
-	public AssignmentListFragment() {}
-	
-	/**
-	 * Create an assignment list that shows all assignments.
-	 */
-	public AssignmentListFragment(Context context) {
-		this.context = context;
-	}
-
-	/**
-	 * Create an assignment list that lists the assignments in a given course.
-	 * 
-	 * @param course the course to display assignments for
-	 */
-	public AssignmentListFragment(Context context, short course) {
-		this.context = context;
-		this.course = course;
+	public AssignmentListFragment() {
+		Bundle args = getArguments();
+		if (args != null)
+			course = args.getShort("courseId");
 	}
 	
 	@Override
@@ -76,6 +63,9 @@ public class AssignmentListFragment extends ListFragment {
 			course = savedInstanceState.getShort(Values.ASSIGNMENT_KEY_COURSE);
 		}
 		setRetainInstance(true);
+		
+		if (context == null)
+			context = getActivity();
 		
 		// Need to give assignmentsCursor a value -- null will make it not work
 		updateAdapter();
@@ -136,6 +126,7 @@ public class AssignmentListFragment extends ListFragment {
 	 * Updates the content in the adapter.
 	 */
 	public void updateAdapter() {
+		
 		SharedPreferences sharedPrefs = PreferenceManager.getDefaultSharedPreferences(context);
 		boolean showingCompleted = sharedPrefs.getBoolean(Values.ASSIGNMENT_KEY_SHOWING_COMPLETED, false);
 
