@@ -71,8 +71,7 @@ public class CourseViewFragment extends ViewFragment {
 	}
 	
 	protected void reloadData() {
-		DbAdapter dbAdapter = new DbAdapter(getBaseContext(), Values.DATABASE_NAME, Values.DATABASE_VERSION,
-				Values.COURSE_TABLE, Values.DATABASE_CREATE, Values.KEY_ROWID);
+		DbAdapter dbAdapter = new DbAdapter(getBaseContext(), null, Values.COURSE_TABLE);
 		dbAdapter.open();
 		cursor = dbAdapter.fetch(rowId,Values.COURSE_FETCH);
 		dbAdapter.close();

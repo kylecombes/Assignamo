@@ -44,7 +44,7 @@ public class MainActivity extends FragmentActivity {
     private boolean checkForExistingDatabase() {
     	java.io.File dbFile = new java.io.File("/data/data/" + getApplicationContext().getPackageName() + "/databases/" + Values.DATABASE_NAME);
     	if (!dbFile.exists()) {
-    		DbAdapter a = new DbAdapter(this, Values.DATABASE_NAME, Values.DATABASE_VERSION, "temp", Values.DATABASE_CREATE, Values.KEY_ROWID);
+    		DbAdapter a = new DbAdapter(this, null, "temp");
     		a.open();
     		a.close();
     		return false;
@@ -118,7 +118,7 @@ public class MainActivity extends FragmentActivity {
 		switch (item.getItemId()) {
 		case OPTIONS_ASSIGNMENT_ADD:
 			i = new Intent(this, AssignmentEditFragment.class);
-			i.putExtra(Values.NEW_ASSIGNMENT_COURSE_KEY, (short)(selectedPos - 1));
+			i.putExtra(Values.ASSIGNMENT_KEY_COURSE, (short)(selectedPos - 1));
 			startActivity(i);
 			return true;
 		case OPTIONS_MANAGE:

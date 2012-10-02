@@ -112,7 +112,7 @@ public class AssignmentListFragment extends ListFragment {
 
 	public void onPause() {
 		super.onPause();
-		if (assignmentsCursor != null) {
+		if (!assignmentsCursor.isClosed()) {
 			assignmentsCursor.close();
 			assignmentsCursor = null;
 		}
@@ -248,8 +248,7 @@ public class AssignmentListFragment extends ListFragment {
 	
 	public Cursor fetchAllAssignments(Short course) {
 		Cursor c;
-		DbAdapter adapter = new DbAdapter(context, Values.DATABASE_NAME, Values.DATABASE_VERSION,
-				Values.ASSIGNMENT_TABLE, Values.DATABASE_CREATE, Values.KEY_ROWID);
+		DbAdapter adapter = new DbAdapter(context, null, Values.ASSIGNMENT_TABLE);
 		adapter.open();
 		
 		if (course == null)
@@ -264,12 +263,7 @@ public class AssignmentListFragment extends ListFragment {
 	}
 	
 	public Cursor fetchIncompleteAssignments(Short course) {
-		DbAdapter adapter = new DbAdapter(context,
-				Values.DATABASE_NAME,
-				Values.DATABASE_VERSION,
-				Values.ASSIGNMENT_TABLE,
-				Values.DATABASE_CREATE,
-				Values.KEY_ROWID);
+		DbAdapter adapter = new DbAdapter(context, null, Values.ASSIGNMENT_TABLE);
 		adapter.open();
 		
 		Cursor r;
@@ -347,8 +341,7 @@ public class AssignmentListFragment extends ListFragment {
 	}
 	
 	private void updateCourseColors() {
-		DbAdapter adapter = new DbAdapter(context, Values.DATABASE_NAME, Values.DATABASE_VERSION,
-				Values.COURSE_TABLE, null, Values.KEY_ROWID);
+		DbAdapter adapter = new DbAdapter(context, null, Values.COURSE_TABLE);
 		adapter.open();
 		Cursor c = adapter.fetchAll(new String[] { Values.KEY_ROWID, Values.COURSE_KEY_COLOR } );
 		c.moveToFirst();
@@ -360,14 +353,12 @@ public class AssignmentListFragment extends ListFragment {
 			c.moveToNext();
 		}
 		c.close();
-		c = null;
 		adapter.close();
-		adapter = null;
 	}
 	
 	private final static short ALPHA = 30;
 	
-	private static int getLightColor(int regColor) {
+	public static int getLightColor(int regColor) {
 		return Color.argb(ALPHA, Color.red(regColor),
 				Color.green(regColor), Color.blue(regColor));
 	}

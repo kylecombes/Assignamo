@@ -42,8 +42,7 @@ public class BookViewFragment extends ViewFragment {
 	}
 	
 	protected void reloadData() {
-		DbAdapter dbAdapter = new DbAdapter(context, Values.DATABASE_NAME, Values.DATABASE_VERSION,
-				Values.BOOK_TABLE, Values.DATABASE_CREATE, Values.KEY_ROWID);
+		DbAdapter dbAdapter = new DbAdapter(context, null, Values.BOOK_TABLE);
 		dbAdapter.open();
 		cursor = dbAdapter.fetch(rowId,Values.BOOK_FETCH);
 		dbAdapter.close();

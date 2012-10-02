@@ -12,9 +12,8 @@ public class DbAdapter {
 	
 	private String DATABASE_NAME;
 	private String DATABASE_TABLE;
-	private short DATABASE_VERSION;
-	public String KEY_ROWID;
-	private String[] DATABASE_CREATE;
+	private short DATABASE_VERSION = Values.DATABASE_VERSION;
+	public static final String KEY_ROWID = "_id";
 	
 	protected SQLiteDatabase db;
 	private DatabaseHelper dbHelper;
@@ -24,33 +23,24 @@ public class DbAdapter {
 	/**
 	 * Creates a new database adapter.
 	 * @param context
-	 * @param databaseName the name of the database
+	 * @param databaseName the name of the database. Pass <b>null</b> to use the default database.
 	 * @param tableName the name of the table in the database
-	 * @param databaseVersion the version of the database
 	 */
-	public DbAdapter(Context context, String databaseName, short databaseVersion, String tableName, String databaseCreate[], String rowId) {
+	public DbAdapter(Context context, String databaseName, String tableName) {
 		this.context = context;
-		DATABASE_NAME = databaseName;
-		DATABASE_VERSION = databaseVersion;
+		if (databaseName != null)
+			DATABASE_NAME = databaseName;
+		else
+			DATABASE_NAME = Values.DATABASE_NAME;
 		DATABASE_TABLE = tableName;
-		DATABASE_CREATE = databaseCreate;
-		KEY_ROWID = rowId;
 	}
 	
-	/**
-	 * Opens the database.
-	 * @return
-	 * @throws SQLException if there was a problem
-	 */
 	public DbAdapter open() throws SQLException {
 		dbHelper = new DatabaseHelper(context);
 		db = dbHelper.getWritableDatabase();
 		return this;
 	}
 	
-	/**
-	 * Closes the database.
-	 */
 	public void close() {
 		if (db != null) {
 			try {
@@ -146,8 +136,8 @@ public class DbAdapter {
 		
 		@Override
 		public void onCreate(SQLiteDatabase db) {
-			if (DATABASE_CREATE != null && DATABASE_CREATE.length > 0)
-				for (String table : DATABASE_CREATE)
+			if (Values.DATABASE_CREATE != null && Values.DATABASE_CREATE.length > 0)
+				for (String table : Values.DATABASE_CREATE)
 					db.execSQL(table);
 		}
 		

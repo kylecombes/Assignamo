@@ -123,11 +123,10 @@ public class AssignmentEditFragment extends Activity {
 	private void populateFields() {
 		
 		if (rowId != null) {
-			DbAdapter dbAdapter = new DbAdapter(this, Values.DATABASE_NAME, Values.DATABASE_VERSION,
-					Values.ASSIGNMENT_TABLE, Values.DATABASE_CREATE, Values.KEY_ROWID);
+			DbAdapter dbAdapter = new DbAdapter(this, null, Values.ASSIGNMENT_TABLE);
 			dbAdapter.open();
 			Cursor data = dbAdapter.fetch(rowId, Values.ASSIGNMENT_FETCH);
-			courseSpinner.setSelection(getPositionFromRowID(courseCursor, data.getShort(data.getColumnIndexOrThrow(Values.ASSIGNMENT_KEY_COURSE))));
+			courseSpinner.setSelection(DbUtils.getPositionFromRowID(courseCursor, data.getShort(data.getColumnIndexOrThrow(Values.ASSIGNMENT_KEY_COURSE))));
 			titleField.setText(data.getString(data.getColumnIndexOrThrow(Values.KEY_TITLE)));
 			descriptionField.setText(data.getString(data.getColumnIndexOrThrow(Values.KEY_DESCRIPTION)));
 			
@@ -146,16 +145,6 @@ public class AssignmentEditFragment extends Activity {
 		}
 	}
 
-	private static short getPositionFromRowID(Cursor c, short rowId) {
-		c.moveToFirst();
-		for (short i = 0; i < c.getCount(); i++) {
-			c.moveToPosition(i);
-			if (c.getShort(0) == rowId)
-				return i;
-		}
-		return -1;
-	}
-	
 	private void setDueDateToNextClassTime() {
 		calendar = Calendar.getInstance();
 		// Set the calendar based on the next class time
@@ -182,7 +171,7 @@ public class AssignmentEditFragment extends Activity {
 	}
 	
 	private short[] getClassStartTimes(int course) {
-		DbAdapter dbAdapter = new DbAdapter(this, Values.DATABASE_NAME, Values.DATABASE_VERSION, Values.COURSE_TABLE, Values.DATABASE_CREATE, Values.KEY_ROWID);
+		DbAdapter dbAdapter = new DbAdapter(this, null, Values.COURSE_TABLE);
 		dbAdapter.open();
 		Cursor courseIds = dbAdapter.fetchAll(new String[] { Values.KEY_ROWID } );
 		courseIds.moveToPosition(course);
@@ -252,7 +241,7 @@ public class AssignmentEditFragment extends Activity {
 				// We are editing an existing assignment
 				rowId = extras.getLong(Values.KEY_ROWID);
 			}
-			short passedCourse = extras.getShort(Values.NEW_ASSIGNMENT_COURSE_KEY);
+			short passedCourse = extras.getShort(Values.ASSIGNMENT_KEY_COURSE);
 			if (passedCourse > 0)
 				// The user entered Add Assignment from viewing a course
 					// other than the first course, so we should change to
@@ -344,8 +333,7 @@ public class AssignmentEditFragment extends Activity {
     	values.put(Values.ASSIGNMENT_KEY_DUE_DATE, dueDate);
     	values.put(Values.ASSIGNMENT_KEY_POINTS, points);
 
-		DbAdapter dbAdapter = new DbAdapter(this, Values.DATABASE_NAME, Values.DATABASE_VERSION,
-				Values.ASSIGNMENT_TABLE, Values.DATABASE_CREATE, Values.KEY_ROWID);
+		DbAdapter dbAdapter = new DbAdapter(this, null, Values.ASSIGNMENT_TABLE);
 		dbAdapter.open();
 		// Check to see if we are adding or updating an assignment
     	if (rowId == null)

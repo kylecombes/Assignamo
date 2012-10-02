@@ -60,8 +60,7 @@ public class TeacherViewFragment extends ViewFragment {
 	}
 	
 	protected void reloadData() {
-		DbAdapter dbAdapter = new DbAdapter(context, Values.DATABASE_NAME, Values.DATABASE_VERSION,
-				Values.TEACHER_TABLE, Values.DATABASE_CREATE, Values.KEY_ROWID);
+		DbAdapter dbAdapter = new DbAdapter(context, null, Values.TEACHER_TABLE);
 		dbAdapter.open();
 		cursor = dbAdapter.fetch(rowId,Values.TEACHER_FETCH);
 		dbAdapter.close();

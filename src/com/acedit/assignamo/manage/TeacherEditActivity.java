@@ -37,7 +37,7 @@ public class TeacherEditActivity extends Activity {
 	public void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
 		context = getBaseContext();
-		dbAdapter = new DbAdapter(context, Values.DATABASE_NAME, Values.DATABASE_VERSION, Values.TEACHER_TABLE, Values.DATABASE_CREATE, Values.KEY_ROWID);
+		dbAdapter = new DbAdapter(context, null, Values.TEACHER_TABLE);
 		
 		setContentView(R.layout.teacher_edit);
 		

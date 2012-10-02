@@ -195,9 +195,7 @@ public class ManageListFragment extends ListFragment {
 			default:
 				table = Values.TEACHER_TABLE;	
 			}
-			DbAdapter db = new DbAdapter(context, Values.DATABASE_NAME,
-					Values.DATABASE_VERSION, table,	Values.DATABASE_CREATE,
-					Values.KEY_ROWID);
+			DbAdapter db = new DbAdapter(context, null, table);
 			db.open();
 			db.delete(rowId);
 			db.close();

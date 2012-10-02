@@ -53,12 +53,7 @@ public class BookEditActivity extends Activity {
 	
 	public void onResume() {
 		super.onResume();
-		bookDbAdapter = new DbAdapter(this,
-				Values.DATABASE_NAME,
-				Values.DATABASE_VERSION,
-				Values.BOOK_TABLE,
-				Values.DATABASE_CREATE,
-				Values.KEY_ROWID);
+		bookDbAdapter = new DbAdapter(this, null, Values.BOOK_TABLE);
 		bookDbAdapter.open();
 	}
 	
@@ -125,12 +120,7 @@ public class BookEditActivity extends Activity {
 	
 	private void populateFields() {
 		if (rowId != null) {
-			DbAdapter db = new DbAdapter(this,
-					Values.DATABASE_NAME,
-					Values.DATABASE_VERSION,
-					Values.BOOK_TABLE,
-					Values.DATABASE_CREATE,
-					Values.KEY_ROWID);
+			DbAdapter db = new DbAdapter(this, null, Values.BOOK_TABLE);
 			db.open();
 			Cursor cursor = db.fetch(rowId, Values.BOOK_FETCH);
 			titleField.setText(cursor.getString(cursor.getColumnIndexOrThrow(Values.KEY_TITLE)));

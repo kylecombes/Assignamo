@@ -38,8 +38,7 @@ public abstract class BaseListFragment extends ListFragment {
 	}
 	
 	public DbAdapter getDbAdapter(String tableName) {
-		return new DbAdapter(context, Values.DATABASE_NAME, Values.DATABASE_VERSION,
-				tableName, Values.DATABASE_CREATE, Values.KEY_ROWID);
+		return new DbAdapter(context, null, tableName);
 	}
 	
 	/** Called when the activity is first created. */

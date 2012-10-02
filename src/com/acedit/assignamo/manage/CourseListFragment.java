@@ -19,17 +19,21 @@ import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.AdapterView.AdapterContextMenuInfo;
+import android.widget.LinearLayout;
 import android.widget.ListView;
 import android.widget.SimpleCursorAdapter.ViewBinder;
 import android.widget.TextView;
 
+import com.acedit.assignamo.AssignmentListFragment;
 import com.acedit.assignamo.R;
+import com.acedit.assignamo.database.DbAdapter;
 import com.acedit.assignamo.database.Values;
 import com.acedit.assignamo.utils.DbUtils;
 
 public class CourseListFragment extends BaseListFragment {
 	
 	Map<Short,String> teachers = new HashMap<Short,String>();
+	Map<Short,Integer> colors = new HashMap<Short,Integer>(); // Colors are light
 	
 	public CourseListFragment() {}
 	
@@ -51,10 +55,16 @@ public class CourseListFragment extends BaseListFragment {
 			c.moveToNext();
 		}
 		
+		loadCourseColors();
+		
 		setViewBinder(new ViewBinder() {
 			
 			public boolean setViewValue(View view, Cursor cursor, int columnIndex) {
 				switch (view.getId()) {
+				case R.id.list_title:
+					((TextView)view).setText(cursor.getString(cursor.getColumnIndexOrThrow(Values.KEY_NAME)));
+					((LinearLayout)view.getParent()).setBackgroundColor(colors.get(cursor.getShort(cursor.getColumnIndex(Values.KEY_ROWID))));
+					return true;
 				case R.id.list_teacher:
 					((TextView)view).setText(teachers.get(cursor.getShort(cursor.getColumnIndexOrThrow(Values.COURSE_KEY_TEACHER))));
 					return true;
@@ -65,6 +75,21 @@ public class CourseListFragment extends BaseListFragment {
 				return false;
 			}
 		});
+	}
+	
+	private void loadCourseColors() {
+		DbAdapter adapter = new DbAdapter(context, null, Values.COURSE_TABLE);
+		adapter.open();
+		Cursor c = adapter.fetchAll(new String[] { Values.KEY_ROWID, Values.COURSE_KEY_COLOR } );
+		c.moveToFirst();
+		for (short i = 0; i < c.getCount(); i++) {
+			short id = c.getShort(c.getColumnIndexOrThrow(Values.KEY_ROWID));
+			int color = c.getInt(c.getColumnIndexOrThrow(Values.COURSE_KEY_COLOR));
+			colors.put(id, AssignmentListFragment.getLightColor(color));
+			c.moveToNext();
+		}
+		c.close();
+		adapter.close();
 	}
 	
 	private String getDaysOfWeek(String strArray) {

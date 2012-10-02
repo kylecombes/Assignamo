@@ -27,9 +27,7 @@ import com.acedit.assignamo.utils.DbUtils;
 
 public class CourseEditActivity extends Activity {
 	
-	private Cursor courseCursor;
 	private Long rowId;
-	private DbAdapter dbAdapter;
 	private Context context = this;
 	private static final int DAY_SELECT_RESULT_ID = 1;
 	
@@ -38,16 +36,12 @@ public class CourseEditActivity extends Activity {
 	private TextView descriptionField;
 	private TextView roomNumberField;
 	private TextView creditHoursField;
-	private Button saveButton;
-	private Button cancelButton;
 	private short[][] times;
 	
 	int courseColor;
 		
 	public void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
-		dbAdapter = new DbAdapter(this, Values.DATABASE_NAME, Values.DATABASE_VERSION,
-				Values.COURSE_TABLE, Values.DATABASE_CREATE, Values.KEY_ROWID);
 
 		if (!teacherExists()) {
 			AlertDialog.Builder d = new AlertDialog.Builder(this);
@@ -64,11 +58,9 @@ public class CourseEditActivity extends Activity {
 		
 		setContentView(R.layout.course_edit);
 		
-		initializeFields();
+		mapViews();
 		setRowIdFromIntent();
 		populateFields();
-
-		titleField.requestFocus();
 	}
 	
 	public void onResume() {
@@ -76,92 +68,77 @@ public class CourseEditActivity extends Activity {
 		context = this;
 	}
 	
-	public void onPause() {
-		super.onPause();
-		dbAdapter.close();
-	}
-	
-	private void initializeFields() {
+	private void mapViews() {
 		titleField = (TextView)findViewById(R.id.course_edit_title_field);
 		teacherSpinner = (Spinner)findViewById(R.id.course_edit_teacher_spinner);
 		descriptionField = (TextView)findViewById(R.id.course_edit_description_field);
 		roomNumberField = (TextView)findViewById(R.id.course_edit_room_field);
 		creditHoursField = (TextView) findViewById(R.id.course_edit_credit_hours_field);
-		saveButton = (Button)findViewById(R.id.course_edit_save);
-		cancelButton = (Button)findViewById(R.id.course_edit_cancel);
 		
 		((Button)findViewById(R.id.course_edit_color_select_button))
 		.setOnClickListener(new OnClickListener() {
-			
 			public void onClick(View v) {
 				showDialog(0);
 			}
 		});
-	    saveButton.setOnClickListener(new View.OnClickListener() {
-			
+	    ((Button)findViewById(R.id.course_edit_cancel)).setOnClickListener(new View.OnClickListener() {
+			public void onClick(View v) {
+				finish();
+			}
+		});
+	    ((Button)findViewById(R.id.course_edit_save)).setOnClickListener(new View.OnClickListener() {
 			public void onClick(View v) {
 				saveData();
 				finish();
 			}
 		});
-	    cancelButton.setOnClickListener(new View.OnClickListener() {
-			
-			public void onClick(View v) {
-				finish();
-			}
-		});
 	}
 	
+	// Color-picker dialog
 	protected Dialog onCreateDialog(int id) {
 		ColorPickerDialog.OnColorChangedListener listener = new ColorPickerDialog.OnColorChangedListener() {
-			
 			public void colorChanged(int color) {
 				courseColor = color;
 			}
 		};
-		return new ColorPickerDialog(context, listener, courseColor);
+		return new ColorPickerDialog(this, listener, courseColor);
 	}
 	
 	private void populateFields() {
 		
-		courseCursor = DbUtils.getTeachersAsCursor(this);
+		Cursor courseCursor = DbUtils.getTeachersAsCursor(this);
 		
-		// create an array to specify which fields we want to display
 		String[] from = new String[]{Values.KEY_NAME};
-		// create an array of the display item we want to bind our data to
 		int[] to = new int[]{android.R.id.text1};
-		// create simple cursor adapter
-		SimpleCursorAdapter adapter =
-		  new SimpleCursorAdapter(this, android.R.layout.simple_spinner_item, courseCursor, from, to, 0 );
-		adapter.setDropDownViewResource( android.R.layout.simple_spinner_dropdown_item );
-		teacherSpinner.setAdapter(adapter);
+		SimpleCursorAdapter cursorAdapter = new SimpleCursorAdapter(this, android.R.layout.simple_spinner_item,
+				courseCursor, from, to, 0 );
+		cursorAdapter.setDropDownViewResource( android.R.layout.simple_spinner_dropdown_item );
+		teacherSpinner.setAdapter(cursorAdapter);
 			    
 		if (rowId != null) {
-			dbAdapter.open();
-			Cursor data = dbAdapter.fetch(rowId, Values.COURSE_FETCH);
+			DbAdapter adapter = new DbAdapter(this, null, Values.COURSE_TABLE);
+			adapter.open();
+			Cursor data = adapter.fetch(rowId, Values.COURSE_FETCH);
 			titleField.setText(data.getString(data.getColumnIndexOrThrow(Values.KEY_NAME)));
-			teacherSpinner.setSelection(data.getShort(data.getColumnIndexOrThrow(Values.COURSE_KEY_TEACHER)));
+			teacherSpinner.setSelection(DbUtils.getPositionFromRowID(DbUtils.getTeachersAsCursor(context),
+					data.getShort(data.getColumnIndexOrThrow(Values.COURSE_KEY_TEACHER))));
 			descriptionField.setText(data.getString(data.getColumnIndexOrThrow(Values.KEY_DESCRIPTION)));
 			String room = data.getString(data.getColumnIndexOrThrow(Values.KEY_ROOM));
-			//TODO Leave field empty if nothing is selected (-1)
+			if (!room.equals("-1"))
 				roomNumberField.setText(room);
 			
-			times = new short[7][2];
 			try {
-				JSONArray array = new JSONArray(data.getString(data.getColumnIndexOrThrow(Values.COURSE_KEY_TIMES_OF_DAY)));
-				for (short x = 0; x < 14; x++)
-					if (x % 2 == 0) // Even means start time
-						times[x/2][0] = (short)array.getInt(x);
-					else
-						times[x/2][1] = (short)array.getInt(x);
-			} catch (JSONException e) {
-				e.printStackTrace();
-			}
+				times = getTimes(data.getString(data.getColumnIndexOrThrow(Values.COURSE_KEY_TIMES_OF_DAY)));
+			} catch (JSONException e) { e.printStackTrace(); }
 			
 			int creditHours = data.getInt(data.getColumnIndexOrThrow(Values.COURSE_KEY_CREDIT_HOURS));
 			if (creditHours >= 0)
 				creditHoursField.setText(creditHours + "");
+			
 			courseColor = data.getInt(data.getColumnIndexOrThrow(Values.COURSE_KEY_COLOR));
+			
+			data.close();
+			adapter.close();
 		} else
 			courseColor = Color.parseColor(getString(R.color.default_course_color));
 		
@@ -185,23 +162,50 @@ public class CourseEditActivity extends Activity {
 		
 	}
 	
+	/**
+	 * Parse a String for class start and end times.
+	 * @param timesStr a JSONArray String
+	 * @return an array holding the start times and stop times for each day of the week.
+	 * @throws JSONException
+	 */
+	private short[][] getTimes(String timesStr) throws JSONException {
+		short[][] times = new short[7][2];
+		JSONArray array = new JSONArray(timesStr);
+		for (short x = 0; x < 14; x++)
+			if (x % 2 == 0) // Evens are start times
+				times[x/2][0] = (short)array.getInt(x);
+			else			// Odds are stop times
+				times[x/2][1] = (short)array.getInt(x);
+		return times;
+	}
+	
 	private void saveData() {
 		
 		// Get room number
 		short roomNum;
-		try {
-			roomNum = Short.parseShort(roomNumberField.getText().toString());
-		} catch (NumberFormatException e) {
+		String room = roomNumberField.getText().toString();
+		if (room.length() > 0)
+			try {
+				roomNum = Short.parseShort(room);
+			} catch (NumberFormatException e) {
+				roomNum = -1;
+			}
+		else
 			roomNum = -1;
-		}
+		room = null;
 		
 		// Get the number of credit hours
 		short creditHours;
-		try {
-			creditHours = Short.parseShort(creditHoursField.getText().toString());
-		} catch (NumberFormatException e) {
+		String credit = creditHoursField.getText().toString();
+		if (credit.length() > 0)
+			try {
+				creditHours = Short.parseShort(credit);
+			} catch (NumberFormatException e) {
+				creditHours = -1;
+			}
+		else
 			creditHours = -1;
-		}
+		credit = null;
 		
 		addCourse(titleField.getText().toString(),
 				(short)teacherSpinner.getSelectedItemId(),
@@ -256,13 +260,14 @@ public class CourseEditActivity extends Activity {
     	values.put(Values.COURSE_KEY_CREDIT_HOURS, creditHours);
     	values.put(Values.COURSE_KEY_COLOR, courseColor);
     	
-    	dbAdapter.open();
+    	DbAdapter adapter = new DbAdapter(this, null, Values.COURSE_TABLE);
+    	adapter.open();
     	
     	if (rowId == null)
-    		dbAdapter.add(values);
+    		adapter.add(values);
     	else
-    		dbAdapter.update(rowId, values);
-    	dbAdapter.close();
+    		adapter.update(rowId, values);
+    	adapter.close();
     }
 	
 }

@@ -9,10 +9,23 @@ import android.database.Cursor;
 
 public class DbUtils {
 	
+	/*---------- Shared ----------*/
+
+	public static short getPositionFromRowID(Cursor c, short rowId) {
+		c.moveToFirst();
+		for (short i = 0; i < c.getCount(); i++) {
+			c.moveToPosition(i);
+			if (c.getShort(0) == rowId)
+				return i;
+		}
+		return -1;
+	}
+	
+	
 	/*---------- Assignments ----------*/
 	
 	public static boolean deleteAssignment(Context context, long rowId) {
-		DbAdapter db = new DbAdapter(context, Values.DATABASE_NAME, Values.DATABASE_VERSION, Values.ASSIGNMENT_TABLE, Values.DATABASE_CREATE, Values.KEY_ROWID);
+		DbAdapter db = new DbAdapter(context, null, Values.ASSIGNMENT_TABLE);
 		db.open();
 		boolean b = db.delete(rowId);
 		db.close();
@@ -20,12 +33,7 @@ public class DbUtils {
 	}
 	
 	public static boolean isAssignmentCompleted(Context context, long id) {
-		DbAdapter adapter = new DbAdapter(context,
-				Values.DATABASE_NAME,
-				Values.DATABASE_VERSION,
-				Values.ASSIGNMENT_TABLE,
-				Values.DATABASE_CREATE,
-				Values.KEY_ROWID);
+		DbAdapter adapter = new DbAdapter(context, null, Values.ASSIGNMENT_TABLE);
 		adapter.open();
 		Cursor c = adapter.fetch(id, new String[] {Values.ASSIGNMENT_KEY_STATUS});
 		adapter.close();
@@ -35,12 +43,7 @@ public class DbUtils {
 	}
 	
 	public static void setAssignmentState(Context context, long id, boolean completed) {
-		DbAdapter adapter = new DbAdapter(context,
-				Values.DATABASE_NAME,
-				Values.DATABASE_VERSION,
-				Values.ASSIGNMENT_TABLE,
-				Values.DATABASE_CREATE,
-				Values.KEY_ROWID);
+		DbAdapter adapter = new DbAdapter(context, null, Values.ASSIGNMENT_TABLE);
 		adapter.open();
 		ContentValues newValue = new ContentValues();
 		newValue.put(Values.ASSIGNMENT_KEY_STATUS, completed);
@@ -108,12 +111,7 @@ public class DbUtils {
 	}
 	
 	private static Cursor queryTable(Context context, String table, String[] query) {
-		DbAdapter adapter = new DbAdapter(context,
-				Values.DATABASE_NAME,
-				Values.DATABASE_VERSION,
-				table,
-				Values.DATABASE_CREATE,
-				Values.KEY_ROWID);
+		DbAdapter adapter = new DbAdapter(context, null, table);
 		adapter.open();
 		Cursor c = adapter.fetchAll(query);
 		adapter.close();
