@@ -35,7 +35,6 @@ public class CourseEditActivity extends Activity {
 	private Spinner teacherSpinner;
 	private TextView descriptionField;
 	private TextView roomNumberField;
-	private TextView creditHoursField;
 	private short[][] times;
 	
 	int courseColor;
@@ -73,7 +72,6 @@ public class CourseEditActivity extends Activity {
 		teacherSpinner = (Spinner)findViewById(R.id.course_edit_teacher_spinner);
 		descriptionField = (TextView)findViewById(R.id.course_edit_description_field);
 		roomNumberField = (TextView)findViewById(R.id.course_edit_room_field);
-		creditHoursField = (TextView) findViewById(R.id.course_edit_credit_hours_field);
 		
 		((Button)findViewById(R.id.course_edit_color_select_button))
 		.setOnClickListener(new OnClickListener() {
@@ -130,10 +128,6 @@ public class CourseEditActivity extends Activity {
 			try {
 				times = getTimes(data.getString(data.getColumnIndexOrThrow(Values.COURSE_KEY_TIMES_OF_DAY)));
 			} catch (JSONException e) { e.printStackTrace(); }
-			
-			int creditHours = data.getInt(data.getColumnIndexOrThrow(Values.COURSE_KEY_CREDIT_HOURS));
-			if (creditHours >= 0)
-				creditHoursField.setText(creditHours + "");
 			
 			courseColor = data.getInt(data.getColumnIndexOrThrow(Values.COURSE_KEY_COLOR));
 			
@@ -194,25 +188,11 @@ public class CourseEditActivity extends Activity {
 			roomNum = -1;
 		room = null;
 		
-		// Get the number of credit hours
-		short creditHours;
-		String credit = creditHoursField.getText().toString();
-		if (credit.length() > 0)
-			try {
-				creditHours = Short.parseShort(credit);
-			} catch (NumberFormatException e) {
-				creditHours = -1;
-			}
-		else
-			creditHours = -1;
-		credit = null;
-		
 		addCourse(titleField.getText().toString(),
 				(short)teacherSpinner.getSelectedItemId(),
 				descriptionField.getText().toString(),
 				roomNum,
 				times,
-				creditHours,
 				rowId);
 		
 	}
@@ -244,7 +224,7 @@ public class CourseEditActivity extends Activity {
 		return DbUtils.getTeachersAsCursor(getBaseContext()).getCount() > 0;
 	}
 	
-	private void addCourse(String name, short teacherId, String description, long roomNum, short[][] timesOfDay, short creditHours, Long rowId) {
+	private void addCourse(String name, short teacherId, String description, long roomNum, short[][] timesOfDay, Long rowId) {
     	ContentValues values = new ContentValues();
     	values.put(Values.KEY_NAME, name);
     	values.put(Values.COURSE_KEY_TEACHER, teacherId);
@@ -261,7 +241,6 @@ public class CourseEditActivity extends Activity {
     	
     	values.put(Values.COURSE_KEY_TIMES_OF_DAY, timesAsArray.toString());
     	
-    	values.put(Values.COURSE_KEY_CREDIT_HOURS, creditHours);
     	values.put(Values.COURSE_KEY_COLOR, courseColor);
     	
     	DbAdapter adapter = new DbAdapter(this, null, Values.COURSE_TABLE);

@@ -5,7 +5,7 @@ package com.acedit.assignamo.database;
 public final class Values {
 	
 	public static final String DATABASE_NAME = "data.db";
-	public static final short DATABASE_VERSION = 2;
+	public static final short DATABASE_VERSION = 3;
 	public static final String[] DATABASE_CREATE = {Values.ASSIGNMENT_DATABASE_CREATE,
 		Values.COURSE_DATABASE_CREATE, Values.BOOK_DATABASE_CREATE, Values.TEACHER_DATABASE_CREATE };
 	public static final String INTENT_REFRESH_KEY = "refresh_id";
@@ -46,20 +46,18 @@ public final class Values {
 	public static final String COURSE_TABLE = "courses";
 	public static final String COURSE_KEY_TEACHER = "teacher";
 	public static final String COURSE_KEY_TIMES_OF_DAY = "times_of_day";
-	public static final String COURSE_KEY_CREDIT_HOURS = "credit_hours";
 	public static final String COURSE_EDIT_DAYS_SELECT_START_TIMES_KEY= "start_times";
 	public static final String COURSE_EDIT_DAYS_SELECT_STOP_TIMES_KEY= "stop_times";
 	public static final String COURSE_KEY_COLOR = "color";
 	public static final String[] COURSE_FETCH = { KEY_ROWID, KEY_NAME, COURSE_KEY_TEACHER, KEY_DESCRIPTION,
-		KEY_ROOM, COURSE_KEY_TIMES_OF_DAY, COURSE_KEY_CREDIT_HOURS, COURSE_KEY_COLOR };
+		KEY_ROOM, COURSE_KEY_TIMES_OF_DAY, COURSE_KEY_COLOR };
 	public static final String COURSE_DATABASE_CREATE = "create table " + COURSE_TABLE + " ( "
 			+ KEY_ROWID + " integer primary key autoincrement, "
 			+ KEY_NAME + " text not null, "
 			+ COURSE_KEY_TEACHER + " text not null, "
 			+ KEY_DESCRIPTION + " text, "
 			+ KEY_ROOM + " int, "
-			+ COURSE_KEY_TIMES_OF_DAY + " text, "
-			+ COURSE_KEY_CREDIT_HOURS + " int);";
+			+ COURSE_KEY_TIMES_OF_DAY + " text);";
 	
 	/*--------- Books ---------- */
 	public static final String BOOK_TABLE = "books";

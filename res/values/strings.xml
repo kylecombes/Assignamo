@@ -90,7 +90,6 @@
     
     <!-- Courses -->
     <string name="course_view_title">Course Details</string>
-    <string name="course_credit_hours">Credit Hours</string>
     <string name="menu_manage_courses">Manage Courses</string>
     <string name="course_days_of_week">Days of Week</string>
     <string name="course_times">Times</string>
