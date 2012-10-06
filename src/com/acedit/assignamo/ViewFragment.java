@@ -107,15 +107,21 @@ public abstract class ViewFragment extends FragmentActivity {
 	public SpannableString getDateString(long minutes, boolean withTime) {
 		
 		final float RELATIVE_SIZE = 1.0f;
-		final String DATE_FORMAT = "c, MMMMM dd, yyyy";
-		final String TIME_FORMAT = "hh:mm a";
+		final String DATE_FORMAT_WITH_YEAR = "c, MMMMM dd, yyyy";
+		final String DATE_FORMAT_WITHOUT_YEAR = "c, MMMMM dd";
+		final String TIME_FORMAT = "h:mm a";
 		
 		
 		Calendar calendar = Calendar.getInstance();
+		int curYear = calendar.get(Calendar.YEAR);
 		//if (rowId != null)
 		calendar.setTimeInMillis(DateUtils.convertMinutesToMills(minutes));
 		
-		SimpleDateFormat dateFormat = new SimpleDateFormat(DATE_FORMAT);
+		SimpleDateFormat dateFormat;
+		if (calendar.get(Calendar.YEAR) == curYear)
+			dateFormat = new SimpleDateFormat(DATE_FORMAT_WITHOUT_YEAR);
+		else
+			dateFormat = new SimpleDateFormat(DATE_FORMAT_WITH_YEAR);
 		SimpleDateFormat timeFormat = new SimpleDateFormat(TIME_FORMAT);
 		
 		SpannableString returnString;

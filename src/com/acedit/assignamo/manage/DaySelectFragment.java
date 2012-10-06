@@ -22,7 +22,7 @@ import com.acedit.assignamo.utils.DateUtils;
 
 public class DaySelectFragment extends FragmentActivity {
 	
-	private static final short DEFAULT_TIME = 0;
+	private static final short DEFAULT_TIME = 720;
 	
 	private static short[][] times;
 	private short day;

@@ -99,17 +99,20 @@ public class CourseListFragment extends BaseListFragment {
 			for (short x = 0; x < 14; x += 2)
 				days[x/2] = (short)array.getInt(x) > 0;
 		} catch (JSONException e) { e.printStackTrace(); }
-		if (days.length == 0)
-			return getString(R.string.course_no_days_set);
-		else {
-			String[] daysOfWeek = getResources().getStringArray(R.array.days_of_week_short);
-			String rStr = "";
-			for (short i = 0; i < 7; i++) {
-				if (days[i])
-					rStr += daysOfWeek[i] + ", ";
-			}
-			return rStr.substring(0, rStr.length() - 2);
+		
+		for (short i = 0; i < 7; i++)
+			if (days[i] == true)
+				break;
+			else if (i == 6) // We have reached the end of the list and all are false
+				return getString(R.string.course_no_days_set);
+		
+		String[] daysOfWeek = getResources().getStringArray(R.array.days_of_week_short);
+		String rStr = "";
+		for (short i = 0; i < 7; i++) {
+			if (days[i])
+				rStr += daysOfWeek[i] + ", ";
 		}
+		return rStr.substring(0, rStr.length() - 2);
 	}
 	
 	public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {

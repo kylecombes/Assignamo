@@ -2,7 +2,6 @@ package com.acedit.assignamo;
 
 import android.content.Intent;
 import android.content.SharedPreferences;
-import android.database.Cursor;
 import android.os.Bundle;
 import android.preference.PreferenceManager;
 import android.view.Menu;
@@ -52,15 +51,9 @@ public class AssignmentViewFragment extends ViewFragment {
 	protected void populateFields() {
 		
 		// Set course label
-		short courseId = (short)cursor.getInt(cursor.getColumnIndexOrThrow(Values.ASSIGNMENT_KEY_COURSE));
-		Cursor c = DbUtils.getCoursesAsCursor(getApplicationContext());
-		for (short i = 0; i < c.getCount(); i++) {
-			c.moveToPosition(i);
-			if (c.getInt(0) == courseId) {
-				courseLabel.setText(c.getString(1));
-				break;
-			}
-		}
+		String courseText = DbUtils.getCourseNameFromId(context,
+				cursor.getShort(cursor.getColumnIndexOrThrow(Values.ASSIGNMENT_KEY_COURSE)));
+		courseLabel.setText(courseText);
 		
 		// Set title label
 		titleLabel.setText(cursor.getString(cursor.getColumnIndexOrThrow(Values.KEY_TITLE)));

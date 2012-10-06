@@ -35,7 +35,8 @@ import com.acedit.assignamo.utils.DbUtils;
 
 public class AssignmentListFragment extends ListFragment {
 	
-	CustomCursorAdapter adapter;
+	CustomCursorAdapter cursorAdapter;
+	DbAdapter dbAdapter;
 	Cursor assignmentsCursor;
 	private Context context;
 	
@@ -44,14 +45,7 @@ public class AssignmentListFragment extends ListFragment {
 	// The course we are displaying assignments for. If all, -1.
 	short course = -1;
 	
-	// Needed for recreating the fragment
 	public AssignmentListFragment() {}
-	
-	@Override
-	public void onSaveInstanceState(Bundle outState) {
-		super.onSaveInstanceState(outState);
-		outState.putShort(Values.ASSIGNMENT_KEY_COURSE, course);
-	}
 	
 	@Override
 	public void onCreate(Bundle savedInstanceState) {
@@ -66,14 +60,20 @@ public class AssignmentListFragment extends ListFragment {
 		}
 		setRetainInstance(true);
 		
-		if (context == null)
-			context = getActivity();
+		if (context == null) context = getActivity();
 		
 		// Need to give assignmentsCursor a value -- null will make it not work
 		updateAdapter();
 		
-		adapter = new CustomCursorAdapter(context, assignmentsCursor, 0);
-		setListAdapter(adapter);
+		cursorAdapter = new CustomCursorAdapter(context, assignmentsCursor, 0);
+		setListAdapter(cursorAdapter);
+	}
+
+	public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
+		View v = inflater.inflate(R.layout.assignment_list, container, false);
+		setHasOptionsMenu(true);
+		
+		return v;
 	}
 
 	/** Called when the activity becomes visible. */
@@ -82,13 +82,29 @@ public class AssignmentListFragment extends ListFragment {
 		registerForContextMenu(getListView());
 	}
 
+	public void onPause() {
+		super.onPause();
+		if (!assignmentsCursor.isClosed())
+			assignmentsCursor.close();
+	}
+
+	@Override
+	public void onSaveInstanceState(Bundle outState) {
+		super.onSaveInstanceState(outState);
+		outState.putShort(Values.ASSIGNMENT_KEY_COURSE, course);
+	}
+	
 	public void onResume() {
 		super.onResume();
 		
-		if (context == null)
-			context = getActivity();
+		if (context == null) context = getActivity();
 		updateCourseColors();
 		refresh();
+		
+		registerIntentListener();
+	}
+	
+	public void registerIntentListener() {
 		
 		// Register refresh Intent listener
 		IntentFilter filter = new IntentFilter();
@@ -108,21 +124,6 @@ public class AssignmentListFragment extends ListFragment {
 					refresh();
 			}
 		}, filter);
-	}
-
-	public void onPause() {
-		super.onPause();
-		if (!assignmentsCursor.isClosed()) {
-			assignmentsCursor.close();
-			assignmentsCursor = null;
-		}
-	}
-
-	public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
-		View v = inflater.inflate(R.layout.assignment_list, container, false);
-		setHasOptionsMenu(true);
-		
-		return v;
 	}
 
 	/**
@@ -145,13 +146,13 @@ public class AssignmentListFragment extends ListFragment {
 				assignmentsCursor = fetchIncompleteAssignments(course);
 		
 		// adapter is null when updateAdapter() is called in onCreate()
-		if (adapter != null)
-			adapter.changeCursor(assignmentsCursor);
+		if (cursorAdapter != null)
+			cursorAdapter.changeCursor(assignmentsCursor);
 	}
 
 	private void refresh() {
 		updateAdapter();
-		adapter.notifyDataSetChanged();
+		cursorAdapter.notifyDataSetChanged();
 	}
 	
 	private void broadcastRefresh() {
@@ -165,9 +166,7 @@ public class AssignmentListFragment extends ListFragment {
 	@Override
 	public void onListItemClick(ListView l, View v, int position, long id) {
 		super.onListItemClick(l, v, position, id);
-		Intent i = new Intent(context, AssignmentViewFragment.class);
-		i.putExtra(Values.KEY_ROWID, id);
-		startActivity(i);
+		startActivity( new Intent(context, AssignmentViewFragment.class).putExtra(Values.KEY_ROWID, id) );
 	}
 
 	public void onCreateContextMenu(ContextMenu menu, View v, ContextMenuInfo menuInfo) {
@@ -182,24 +181,22 @@ public class AssignmentListFragment extends ListFragment {
 
 	@Override
 	public boolean onContextItemSelected(MenuItem item) {
-		AdapterContextMenuInfo info = (AdapterContextMenuInfo) item.getMenuInfo();
+		long id = ((AdapterContextMenuInfo)item.getMenuInfo()).id;
 		
 		switch (item.getItemId()) {
 		case 0:
-			if (DbUtils.isAssignmentCompleted(context, info.id))
-				DbUtils.setAssignmentState(context, info.id, false);
+			if (DbUtils.isAssignmentCompleted(context, id))
+				DbUtils.setAssignmentState(context, id, false);
 			else
-				DbUtils.setAssignmentState(context, info.id, true);
+				DbUtils.setAssignmentState(context, id, true);
 			broadcastRefresh();
 			return true;
 		case 1: // Edit the assignment
-			Intent i = new Intent(context, AssignmentEditFragment.class);
-			i.putExtra(Values.KEY_ROWID, info.id);
-			startActivity(i);
+			startActivity( new Intent(context, AssignmentEditFragment.class).putExtra(Values.KEY_ROWID, id));
 			return true;
 		case 2:
 			// Delete the assignment
-			DbUtils.deleteAssignment(context, info.id);
+			DbUtils.deleteAssignment(context, id);
 			broadcastRefresh();
 			return true;
 		}
@@ -248,31 +245,26 @@ public class AssignmentListFragment extends ListFragment {
 	
 	public Cursor fetchAllAssignments(Short course) {
 		Cursor c;
-		DbAdapter adapter = new DbAdapter(context, null, Values.ASSIGNMENT_TABLE);
-		adapter.open();
+		dbAdapter = new DbAdapter(context, null, Values.ASSIGNMENT_TABLE).open();
 		
 		if (course == null)
-			c = adapter.fetchAllOrdered(Values.ASSIGNMENT_LIST_FETCH, null, Values.ASSIGNMENT_KEY_DUE_DATE);
+			c = dbAdapter.fetchAllOrdered(Values.ASSIGNMENT_LIST_FETCH, null, Values.ASSIGNMENT_KEY_DUE_DATE);
 		else
-			c = adapter.fetchAllOrdered(Values.ASSIGNMENT_LIST_FETCH, Values.ASSIGNMENT_KEY_COURSE + "=" + course, Values.ASSIGNMENT_KEY_DUE_DATE);
-		
-		adapter.close();
-		if (c != null)
-			c.moveToFirst();
+			c = dbAdapter.fetchAllOrdered(Values.ASSIGNMENT_LIST_FETCH, Values.ASSIGNMENT_KEY_COURSE + "=" + course, Values.ASSIGNMENT_KEY_DUE_DATE);
+		dbAdapter.close();
 		return c;
 	}
 	
 	public Cursor fetchIncompleteAssignments(Short course) {
-		DbAdapter adapter = new DbAdapter(context, null, Values.ASSIGNMENT_TABLE);
-		adapter.open();
+		dbAdapter = new DbAdapter(context, null, Values.ASSIGNMENT_TABLE).open();
 		
 		Cursor r;
 		if (course == null) // Fetching from all courses
-			r = adapter.fetchAllWhere(Values.ASSIGNMENT_LIST_FETCH, Values.ASSIGNMENT_KEY_STATUS + "=" + 0, Values.ASSIGNMENT_KEY_DUE_DATE);
+			r = dbAdapter.fetchAllWhere(Values.ASSIGNMENT_LIST_FETCH, Values.ASSIGNMENT_KEY_STATUS + "=" + 0, Values.ASSIGNMENT_KEY_DUE_DATE);
 		else
-			r = adapter.fetchAllWhere(Values.ASSIGNMENT_LIST_FETCH, Values.ASSIGNMENT_KEY_COURSE + "=" + course
+			r = dbAdapter.fetchAllWhere(Values.ASSIGNMENT_LIST_FETCH, Values.ASSIGNMENT_KEY_COURSE + "=" + course
 				+ " AND " + Values.ASSIGNMENT_KEY_STATUS + "=" + 0, Values.ASSIGNMENT_KEY_DUE_DATE);
-		adapter.close();
+		dbAdapter.close();
 		return r;
 	}
 	
@@ -359,8 +351,7 @@ public class AssignmentListFragment extends ListFragment {
 	private final static short ALPHA = 30;
 	
 	public static int getLightColor(int regColor) {
-		return Color.argb(ALPHA, Color.red(regColor),
-				Color.green(regColor), Color.blue(regColor));
+		return Color.argb(ALPHA, Color.red(regColor), Color.green(regColor), Color.blue(regColor));
 	}
 
 	private static class ViewHolder {

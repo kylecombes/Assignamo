@@ -252,9 +252,13 @@ public class CourseEditActivity extends Activity {
     	values.put(Values.KEY_ROOM, roomNum);
     	
     	JSONArray timesAsArray = new JSONArray();
-    	for (short x = 0; x < 7; x++)
-    		for (short y = 0; y < 2; y++)
-    			timesAsArray.put(timesOfDay[x][y]);
+    	if (timesOfDay != null) {
+	    	for (short x = 0; x < 7; x++)
+	    		for (short y = 0; y < 2; y++)
+	    			timesAsArray.put(timesOfDay[x][y]);
+    	} else for (short i = 0; i < 14; i++)
+    		timesAsArray.put(0);
+    	
     	values.put(Values.COURSE_KEY_TIMES_OF_DAY, timesAsArray.toString());
     	
     	values.put(Values.COURSE_KEY_CREDIT_HOURS, creditHours);

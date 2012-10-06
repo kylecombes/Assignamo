@@ -1,11 +1,14 @@
 package com.acedit.assignamo.utils;
 
-import com.acedit.assignamo.database.DbAdapter;
-import com.acedit.assignamo.database.Values;
+import java.util.HashMap;
+import java.util.Map;
 
 import android.content.ContentValues;
 import android.content.Context;
 import android.database.Cursor;
+
+import com.acedit.assignamo.database.DbAdapter;
+import com.acedit.assignamo.database.Values;
 
 public class DbUtils {
 	
@@ -18,6 +21,7 @@ public class DbUtils {
 			if (c.getShort(0) == rowId)
 				return i;
 		}
+		c.close();
 		return -1;
 	}
 	
@@ -25,26 +29,23 @@ public class DbUtils {
 	/*---------- Assignments ----------*/
 	
 	public static boolean deleteAssignment(Context context, long rowId) {
-		DbAdapter db = new DbAdapter(context, null, Values.ASSIGNMENT_TABLE);
-		db.open();
-		boolean b = db.delete(rowId);
-		db.close();
+		DbAdapter adapter = new DbAdapter(context, null, Values.ASSIGNMENT_TABLE).open();
+		boolean b = adapter.delete(rowId);
+		adapter.close();
 		return b;
 	}
 	
 	public static boolean isAssignmentCompleted(Context context, long id) {
-		DbAdapter adapter = new DbAdapter(context, null, Values.ASSIGNMENT_TABLE);
-		adapter.open();
+		DbAdapter adapter = new DbAdapter(context, null, Values.ASSIGNMENT_TABLE).open();
 		Cursor c = adapter.fetch(id, new String[] {Values.ASSIGNMENT_KEY_STATUS});
-		adapter.close();
 		boolean b = c.getShort(0) == Values.ASSIGNMENT_STATUS_COMPLETED;
 		c.close();
+		adapter.close();
 		return b;
 	}
 	
 	public static void setAssignmentState(Context context, long id, boolean completed) {
-		DbAdapter adapter = new DbAdapter(context, null, Values.ASSIGNMENT_TABLE);
-		adapter.open();
+		DbAdapter adapter = new DbAdapter(context, null, Values.ASSIGNMENT_TABLE).open();
 		ContentValues newValue = new ContentValues();
 		newValue.put(Values.ASSIGNMENT_KEY_STATUS, completed);
 		adapter.update(id, newValue);
@@ -67,14 +68,17 @@ public class DbUtils {
 		return count;
 	}
 	
+	public static Cursor getCoursesAsCursor(Context context) {
+		return queryTable(context, Values.COURSE_TABLE,	new String[] {Values.KEY_ROWID, Values.KEY_NAME});
+	}
+	
 	/**
 	 * Get the courses in the database.
 	 * @param context the application context (needed to query the database)
 	 * @return contains the courses
 	 */
 	public static String[] getCoursesAsArray(Context context) {
-		Cursor c = queryTable(context, Values.COURSE_TABLE,
-				new String[] {Values.KEY_ROWID, Values.KEY_NAME});
+		Cursor c = getCoursesAsCursor(context);
     	short courseNum = (short)c.getCount();
     	String [] courseArray = new String[courseNum];
     	for (short i = 0; i < courseNum; i++) {
@@ -85,21 +89,45 @@ public class DbUtils {
     	return courseArray;
 	}
 	
-	public static Cursor getCoursesAsCursor(Context context) {
-		return queryTable(context, Values.COURSE_TABLE,
+	public static short[] getCourseIds(Context context) {
+		Cursor c = queryTable(context, Values.COURSE_TABLE,	new String[] {Values.KEY_ROWID});
+		short[] ids = new short[c.getCount()];
+		c.moveToFirst();
+		for (short i = 0; i < c.getCount(); i++) {
+			ids[i] = c.getShort(0);
+			c.moveToNext();
+		}
+		c.close();
+		return ids;
+	}
+	
+	public static String getCourseNameFromId(Context context, long courseId) {
+		Map<Short,String> map = getCourseNames(context);
+		String str = (String)map.get(courseId);
+		return str;
+	}
+	
+	public static Map<Short,String> getCourseNames(Context context) {
+		Cursor c = queryTable(context, Values.COURSE_TABLE,
 				new String[] {Values.KEY_ROWID, Values.KEY_NAME});
+		Map<Short,String> map = new HashMap<Short,String>();
+		c.moveToFirst();
+		for (short i = 0; i < c.getCount(); i++) {
+			map.put(c.getShort(0), c.getString(1));
+			c.moveToNext();
+		}
+		c.close();
+		return map;
 	}
 	
 	/* ---------- Teachers ----------*/
 	
 	public static Cursor getTeachersAsCursor(Context context) {
-		return queryTable(context, Values.TEACHER_TABLE,
-				new String[] {Values.KEY_ROWID, Values.KEY_NAME});
+		return queryTable(context, Values.TEACHER_TABLE, new String[] {Values.KEY_ROWID, Values.KEY_NAME});
 	}
-
+	
 	public static String[] getTeachersAsArray(Context context) {
-		Cursor c = queryTable(context, Values.TEACHER_TABLE,
-				new String[] {Values.KEY_ROWID, Values.KEY_NAME});
+		Cursor c = getTeachersAsCursor(context);
 		short teacherNum = (short)c.getCount();
     	String [] teacherArray = new String[teacherNum+1];
     	for (short i = 0; i < teacherNum; i++) {
@@ -110,6 +138,23 @@ public class DbUtils {
     	return teacherArray;
 	}
 	
+	/**
+	 * Get a list of the teachers names and their corresponding IDs.
+	 * @param context
+	 * @return A list of the teachers: <b>key</b> is the ID, <b>value</b> is their name.
+	 */
+	public static Map<Short,String> getTeacherNames(Context context) {
+		Cursor c = getTeachersAsCursor(context);
+		Map<Short,String> map = new HashMap<Short,String>();
+		c.moveToFirst();
+		for (short i = 0; i < c.getCount(); i++) {
+			map.put(c.getShort(0), c.getString(1));
+			c.moveToNext();
+		}
+		c.close();
+		return map;
+	}
+
 	private static Cursor queryTable(Context context, String table, String[] query) {
 		DbAdapter adapter = new DbAdapter(context, null, table);
 		adapter.open();

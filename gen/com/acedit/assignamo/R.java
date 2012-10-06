@@ -439,7 +439,7 @@ or to a theme attribute in the form "<code>?[<i>package</i>:][<i>type</i>:]<i>na
         public static final int manage_context_menu_edit=0x7f05007c;
         public static final int none=0x7f050002;
         public static final int room_label=0x7f05006c;
-        public static final int teacher_edit_cancel=0x7f050073;
+        public static final int teacher_edit_cancel=0x7f050072;
         public static final int teacher_edit_email_field=0x7f05006f;
         public static final int teacher_edit_email_label=0x7f05006e;
         public static final int teacher_edit_name_field=0x7f050067;
@@ -449,7 +449,7 @@ or to a theme attribute in the form "<code>?[<i>package</i>:][<i>type</i>:]<i>na
         public static final int teacher_edit_phone_field=0x7f050071;
         public static final int teacher_edit_phone_label=0x7f050070;
         public static final int teacher_edit_room_field=0x7f05006d;
-        public static final int teacher_edit_save=0x7f050072;
+        public static final int teacher_edit_save=0x7f050073;
         public static final int teacher_edit_subject_field=0x7f050069;
         public static final int teacher_edit_subject_label=0x7f050068;
         public static final int teacher_view_email=0x7f050079;
@@ -648,11 +648,12 @@ or to a theme attribute in the form "<code>?[<i>package</i>:][<i>type</i>:]<i>na
          */
         public static final int Button=0x7f0a0019;
         public static final int Button_ButtonBar=0x7f0a001a;
+        public static final int CourseDaysSelect=0x7f0a0020;
+        public static final int CourseDaysSelect_Buttons=0x7f0a001c;
+        public static final int CourseDaysSelect_CheckBoxes=0x7f0a001d;
         /**  Course Days Select 
          */
-        public static final int CourseDaysSelect=0x7f0a001b;
-        public static final int CourseDaysSelect_Buttons=0x7f0a001d;
-        public static final int CourseDaysSelect_Text=0x7f0a001c;
+        public static final int CourseDaysSelect_Text=0x7f0a001b;
         /**      Tabs     
          */
         public static final int CustomTabPageIndicator=0x7f0a0007;

@@ -30,6 +30,9 @@ Change Subject label on Add Teacher to something more like "Department".
 Make sure content is saved on Edit pages when rotating and pausing activity.
 ListView flashes empty message after selecting an item.
 Day select buttons extend past edge of screen.
+Delete assignments when deleting course.
+Remove books from release version.
+Color strip on top of Assignment View?
 
 "invalid statement in fillWindow()"
 

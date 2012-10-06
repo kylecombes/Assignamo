@@ -61,35 +61,15 @@ public class AssignmentEditFragment extends Activity {
 		else
 			setTitle(R.string.assignment_edit);
 		
-		initializeViews();
+		mapViews();
 		loadDataFromIntent();
 		populateFields();
 		
 		updateButtons(0);
 	}
 	
-	private void initializeViews() {
-		// Initialize the Spinner
+	private void mapViews() {
 		courseSpinner = (Spinner)findViewById(R.id.assignment_add_course_select);
-		courseCursor = DbUtils.getCoursesAsCursor(this);
-		String[] from = new String[]{Values.KEY_NAME};
-		int[] to = new int[]{android.R.id.text1};
-		SimpleCursorAdapter adapter = new SimpleCursorAdapter(this, android.R.layout.simple_spinner_item,
-				courseCursor, from, to, 0);
-		adapter.setDropDownViewResource( android.R.layout.simple_spinner_dropdown_item );
-		courseSpinner.setAdapter(adapter);
-		courseSpinner.setOnItemSelectedListener(new OnItemSelectedListener() {
-			public void onItemSelected(AdapterView<?> arg0, View arg1, int arg2, long arg3) {
-				if (!justRestoredState)
-					if (!userSetDateTime) {
-						setDueDateToNextClassTime();
-						updateButtons(0);
-					}
-				else
-					justRestoredState = false;
-			}
-			public void onNothingSelected(AdapterView<?> arg0) {}
-		});
 		
 		titleField = (TextView)findViewById(R.id.assignment_add_title_field);
 		descriptionField = (TextView)findViewById(R.id.assignment_add_description_field);
@@ -121,6 +101,26 @@ public class AssignmentEditFragment extends Activity {
 	}
 	
 	private void populateFields() {
+		// Initialize the Spinner
+		courseCursor = DbUtils.getCoursesAsCursor(this);
+		String[] from = new String[]{Values.KEY_NAME};
+		int[] to = new int[]{android.R.id.text1};
+		SimpleCursorAdapter adapter = new SimpleCursorAdapter(this, android.R.layout.simple_spinner_item,
+				courseCursor, from, to, 0);
+		adapter.setDropDownViewResource( android.R.layout.simple_spinner_dropdown_item );
+		courseSpinner.setAdapter(adapter);
+		courseSpinner.setOnItemSelectedListener(new OnItemSelectedListener() {
+			public void onItemSelected(AdapterView<?> arg0, View arg1, int arg2, long arg3) {
+				if (!justRestoredState)
+					if (!userSetDateTime) {
+						setDueDateToNextClassTime();
+						updateButtons(0);
+					}
+				else
+					justRestoredState = false;
+			}
+			public void onNothingSelected(AdapterView<?> arg0) {}
+		});
 		
 		if (rowId != null) {
 			DbAdapter dbAdapter = new DbAdapter(this, null, Values.ASSIGNMENT_TABLE);

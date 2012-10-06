@@ -2,17 +2,14 @@ package com.acedit.assignamo.database;
 
 import android.content.ContentValues;
 import android.content.Context;
-import android.database.sqlite.SQLiteDatabase;
-import android.database.sqlite.SQLiteOpenHelper;
 import android.database.Cursor;
 import android.database.SQLException;
+import android.database.sqlite.SQLiteDatabase;
 import android.util.Log;
 
 public class DbAdapter {
 	
-	private String DATABASE_NAME;
 	private String DATABASE_TABLE;
-	private short DATABASE_VERSION = Values.DATABASE_VERSION;
 	public static final String KEY_ROWID = "_id";
 	
 	protected SQLiteDatabase db;
@@ -28,29 +25,23 @@ public class DbAdapter {
 	 */
 	public DbAdapter(Context context, String databaseName, String tableName) {
 		this.context = context;
-		if (databaseName != null)
-			DATABASE_NAME = databaseName;
-		else
-			DATABASE_NAME = Values.DATABASE_NAME;
 		DATABASE_TABLE = tableName;
 	}
 	
 	public DbAdapter open() throws SQLException {
-		dbHelper = new DatabaseHelper(context);
+		dbHelper = DatabaseHelper.getInstance(context);
 		db = dbHelper.getWritableDatabase();
 		return this;
 	}
 	
 	public void close() {
-		if (db != null) {
+		if (db != null && db.isOpen()) {
 			try {
 				db.close();
-				dbHelper.close();
 			} catch (NullPointerException e) {
 				Log.e("Close", "Error: " + e + " " + e.getMessage());
 			}
-		} else
-			Log.e("Close", "Error! db \"" + DATABASE_TABLE + "\" is null.");
+		}
 	}
 	
 	public long add(ContentValues values) {
@@ -120,30 +111,4 @@ public class DbAdapter {
 		return cursor;
 	}
 	
-	public class DatabaseHelper extends SQLiteOpenHelper {
-		
-		String[] tables;
-		
-		/**
-		 * Creates a new DatabaseHelper
-		 * @param context
-		 * @param databaseVersion The version of the database
-		 * @param databaseCreateString The SQL CREATE argument.
-		 */
-		public DatabaseHelper(Context context) {
-			super(context, DATABASE_NAME, null, DATABASE_VERSION);
-		}
-		
-		@Override
-		public void onCreate(SQLiteDatabase db) {
-			if (Values.DATABASE_CREATE != null && Values.DATABASE_CREATE.length > 0)
-				for (String table : Values.DATABASE_CREATE)
-					db.execSQL(table);
-		}
-		
-		@Override
-		public void onUpgrade(SQLiteDatabase db, int oldVersion, int newVersion) {
-			
-		}
-	}
 }
