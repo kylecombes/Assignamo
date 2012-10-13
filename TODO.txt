@@ -20,6 +20,7 @@ Required
 * Color-code courses in course list
 * Change Subject label on Add Teacher to something more like "Department".
 * Day select buttons extend past edge of screen.
+* Description overlapping due date again in Assignment List.
 
 Loading spinner
 First-time setup wizard

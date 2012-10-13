@@ -2,11 +2,12 @@
 <resources>
     <dimen name="list_item_font_size">20sp</dimen>
     <dimen name="list_item_subfont_size">15sp</dimen>
-    <dimen name="list_item_edge_padding">10dip</dimen>
-    <dimen name="list_item_vertical_spacing">2dip</dimen>
+    <dimen name="list_item_side_padding">10dip</dimen>
+    <dimen name="list_item_top_bottom_padding">8dip</dimen>
+    <dimen name="list_item_vertical_spacing">8dip</dimen>
     <dimen name="list_item_horizontal_spacing">5dip</dimen>
     
-    <dimen name="color_strip_height">70dip</dimen>
+    <dimen name="color_strip_height">60dip</dimen>
     <dimen name="color_strip_width">5dip</dimen>
     
     <!-- Course Days Select -->

@@ -18,11 +18,12 @@
 	    <RelativeLayout android:layout_width="fill_parent"
 	        android:layout_height="fill_parent">
         	<TextView
-			    android:id="@+id/list_description"
-			    style="@style/ListText.Secondary.Left" />
-			<TextView
 			    android:id="@+id/list_due"
 			    style="@style/ListText.Secondary.Right" />
+        	<TextView
+			    android:id="@+id/list_description"
+			    style="@style/ListText.Secondary.Left"
+			    android:layout_toLeftOf="@id/list_due" />
 		</RelativeLayout>
 	</LinearLayout>
 </LinearLayout>
