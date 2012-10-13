@@ -1,4 +1,4 @@
-<resources>
+<resources xmlns:android="http://schemas.android.com/apk/res/android">
 
     <!--     Tabs     -->
     <style name="CustomTabPageIndicator" parent="Widget.TabPageIndicator">
@@ -28,9 +28,8 @@
         <item name="android:layout_height">wrap_content</item>
         <item name="android:layout_width">fill_parent</item>
         <item name="android:textColor">@color/list_text</item>
-        <item name="android:paddingTop">@dimen/list_item_edge_padding</item>
-        <item name="android:paddingLeft">@dimen/list_item_edge_padding</item>
-        <item name="android:paddingRight">@dimen/list_item_edge_padding</item>
+        <item name="android:paddingTop">@dimen/list_item_top_bottom_padding</item>
+        <item name="android:paddingRight">@dimen/list_item_side_padding</item>
     </style>
     
     <style name="ListEmptyTitle" parent="ListEmpty">
@@ -48,22 +47,25 @@
         <item name="android:singleLine">true</item>
         <item name="android:layout_width">fill_parent</item>
         <item name="android:layout_height">wrap_content</item>
-        <item name="android:padding">@dimen/list_item_edge_padding</item>
+        <item name="android:paddingLeft">@dimen/list_item_side_padding</item>
+        <item name="android:paddingRight">@dimen/list_item_side_padding</item>
     </style>
     
     <style name="ListText.Primary">
         <item name="android:textSize">20sp</item>
-        <item name="android:paddingBottom">@dimen/list_item_vertical_spacing</item>
+        <item name="android:paddingTop">@dimen/list_item_top_bottom_padding</item>
     </style>
     
     <style name="ListText.Secondary">
         <item name="android:textSize">12sp</item>
         <item name="android:layout_width">wrap_content</item>
         <item name="android:paddingTop">@dimen/list_item_vertical_spacing</item>
+        <item name="android:paddingBottom">@dimen/list_item_top_bottom_padding</item>
     </style>
     
     <style name="ListText.Secondary.Left">
         <item name="android:paddingRight">@dimen/list_item_horizontal_spacing</item>
+        <item name="android:layout_width">0dp</item>
         <item name="android:layout_alignParentLeft">true</item>
     </style>
     
@@ -72,7 +74,7 @@
     </style>
     
     <style name="ListText.Secondary.Right">
-        <item name="android:paddingLeft">@dimen/list_item_horizontal_spacing</item>
+        <item name="android:paddingLeft">0dp</item>
         <item name="android:layout_alignParentRight">true</item>
     </style>
     
@@ -102,8 +104,12 @@
     
     <style name="TextBox.Description">
         <item name="android:inputType">textMultiLine|textCapSentences|textAutoCorrect</item>
-	    <item name="android:minLines">3</item>
+	    <item name="android:minLines">5</item>
 	    <item name="android:gravity">top</item>
+    </style>
+    
+    <style name="TextBox.Email">
+        <item name="android:inputType">textEmailAddress</item>
     </style>
     
     <!-- Button Styling -->
@@ -118,21 +124,43 @@
         <item name="android:layout_weight">1</item>
     </style>
     
-    <!-- Course Days Select -->
-    
-    <style name="CourseDaysSelect" parent="android:Theme">
-        <item name="android:buttonStyle">@style/CourseDaysSelect.Buttons</item>
+    <style name="ButtonBar" parent="@android:style/ButtonBar">
+        
     </style>
     
+    <!-- Course Days Select -->
+    
     <style name="CourseDaysSelect.Text" parent="@android:style/Widget.TextView">
-        <item name="android:paddingLeft">@dimen/course_edit_days_select_text_padding</item>
-        <item name="android:paddingRight">@dimen/course_edit_days_select_text_padding</item>
-        <!-- <item name="android:textSize">@dimen/course_edit_days_select_text_size</item> -->
+        <item name="android:layout_width">wrap_content</item>
+		<item name="android:layout_height">wrap_content</item>
         <item name="android:textAppearance">@android:style/TextAppearance.Medium</item>
     </style>
     
+    <style name="CourseDaysSelect.Text.Title">
+        <item name="android:paddingLeft">@dimen/course_edit_days_select_text_padding</item>
+        <item name="android:paddingBottom">@dimen/course_edit_days_select_text_padding</item>
+    </style>
+    
+    <style name="CourseDaysSelect.Text.Divider">
+        <item name="android:paddingLeft">@dimen/course_edit_days_select_text_padding</item>
+        <item name="android:paddingRight">@dimen/course_edit_days_select_text_padding</item>
+    </style>
+    
     <style name="CourseDaysSelect.Buttons" parent="android:style/Widget.Button">
-        
+        <item name="android:layout_width">wrap_content</item>
+		<item name="android:layout_height">wrap_content</item>
+    </style>
+    
+    <style name="CourseDaysSelect.CheckBoxes">
+        <item name="android:layout_width">wrap_content</item>
+		<item name="android:layout_height">wrap_content</item>
+		<item name="android:layout_alignParentLeft">true</item>
+		<item name="android:layout_centerVertical">true</item>
+    </style>
+    
+    <style name="CourseDaysSelect.Row">
+        <item name="android:paddingTop">@dimen/course_edit_days_select_row_padding</item>
+        <item name="android:paddingBottom">@dimen/course_edit_days_select_row_padding</item>
     </style>
     
 </resources>

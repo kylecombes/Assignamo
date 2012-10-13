@@ -6,8 +6,8 @@ import java.util.Date;
 
 public class DateUtils {
 	
-	public static final String TWENTY_FOUR_HOUR_FORMAT = "HH:mm";
-	public static final String TWELVE_HOUR_FORMAT = "hh:mm a";
+	public static final String TWENTY_FOUR_HOUR_FORMAT = "H:mm";
+	public static final String TWELVE_HOUR_FORMAT = "h:mm a";
 	
 	/**
 	 * Format a Calendar object as a string.

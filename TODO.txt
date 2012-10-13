@@ -18,6 +18,8 @@ Required
 * Doesn't like blank ISBNs.
 * Get New Assignment due date/time from next class time.
 * Color-code courses in course list
+* Change Subject label on Add Teacher to something more like "Department".
+* Day select buttons extend past edge of screen.
 
 Loading spinner
 First-time setup wizard
@@ -26,10 +28,8 @@ Better teacher view
 Add support for teacher phone number extensions.
 Add ability to call/email teacher directly from app.
 Visual indicator signifying completed assignments when showing completed assignments.
-Change Subject label on Add Teacher to something more like "Department".
 Make sure content is saved on Edit pages when rotating and pausing activity.
 ListView flashes empty message after selecting an item.
-Day select buttons extend past edge of screen.
 Delete assignments when deleting course.
 Remove books from release version.
 Color strip on top of Assignment View?
@@ -50,6 +50,7 @@ Casual dates (I.e. "This Wednesday")
 Overdue message: "Due X days ago" in red
 Add ability to archive assignments when deleting a course.
 ActionBar Save/Cancel in Edit Activities. Confirm cancel.
+Parse URLs in description and notes.
 
 Ideas
 --------------

@@ -1,13 +1,11 @@
 package com.acedit.assignamo.manage;
 
-import java.util.HashMap;
-import java.util.Map;
-
 import android.app.Dialog;
 import android.app.TimePickerDialog;
 import android.content.Intent;
 import android.os.Bundle;
 import android.support.v4.app.FragmentActivity;
+import android.util.SparseArray;
 import android.view.View;
 import android.view.View.OnClickListener;
 import android.widget.Button;
@@ -24,13 +22,14 @@ public class DaySelectFragment extends FragmentActivity {
 	
 	private static final short DEFAULT_TIME = 720;
 	
-	private static short[][] times;
+	private static short[] startTimes;
+	private static short[] stopTimes;
 	private short day;
 	private short button;
 	private CheckBox[] checkboxes = new CheckBox[7];
 	private Button[][] buttons = new Button[7][2];
-	private Map<Integer,Short> checkboxMap = new HashMap<Integer,Short>();
-	private Map<Integer,Short> buttonIdMap = new HashMap<Integer,Short>();
+	private SparseArray<Short> checkboxMap = new SparseArray<Short>();
+	private SparseArray<Short> buttonIdMap = new SparseArray<Short>();
 	
 	@Override
 	public void onCreate(Bundle savedInstanceState) {
@@ -38,7 +37,7 @@ public class DaySelectFragment extends FragmentActivity {
 		
 		setContentView(R.layout.course_days_select);
 		
-		initializeTimes();
+		initializeTimes(savedInstanceState);
 		
 		int[] checkboxIds = { R.id.course_edit_days_select_day1_checkbox, R.id.course_edit_days_select_day2_checkbox,
 				R.id.course_edit_days_select_day3_checkbox, R.id.course_edit_days_select_day4_checkbox,
@@ -102,19 +101,13 @@ public class DaySelectFragment extends FragmentActivity {
 				for (short i = 0; i < 7; i++) {
 					// For each checkbox that is not checked, set the corresponding times to zero
 					if (!checkboxes[i].isChecked()) {
-						times[i][0] = 0;
-						times[i][1] = 0;
+						startTimes[i] = 0;
+						stopTimes[i] = 0;
 					}
 				}
-				Intent data = new Intent();
-				short[] startTimes = new short[7];
-				short[] stopTimes = new short[7];
-				for (short i = 0; i < 7; i++) {
-					startTimes[i] = times[i][0];
-					stopTimes[i] = times[i][1];
-				}
-				data.putExtra(Values.COURSE_EDIT_DAYS_SELECT_START_TIMES_KEY, startTimes);
-				data.putExtra(Values.COURSE_EDIT_DAYS_SELECT_STOP_TIMES_KEY, stopTimes);
+				Intent data = new Intent()
+				.putExtra(Values.COURSE_EDIT_DAYS_SELECT_START_TIMES_KEY, startTimes)
+				.putExtra(Values.COURSE_EDIT_DAYS_SELECT_STOP_TIMES_KEY, stopTimes);
 				setResult(RESULT_OK, data);
 				finish();
 			}
@@ -124,66 +117,52 @@ public class DaySelectFragment extends FragmentActivity {
 		refreshButtonText();
 	}
 	
-	private void initializeTimes() {
-				
-		Bundle extras = getIntent().getExtras();
-		times = new short[7][2];
-		if (extras != null) {
-			short[] startTimes = extras.getShortArray(Values.COURSE_EDIT_DAYS_SELECT_START_TIMES_KEY);
-			short[] stopTimes = extras.getShortArray(Values.COURSE_EDIT_DAYS_SELECT_STOP_TIMES_KEY);
-			for (short i = 0; i < 7; i++) {
-				times[i][0] = startTimes[i];
-				times[i][1] = stopTimes[i];
-			}
+	private void initializeTimes(Bundle savedState) {
+		
+		if (savedState != null) {
+			startTimes = savedState.getShortArray(START_TIMES);
+			stopTimes = savedState.getShortArray(STOP_TIMES);
 		} else {
-			for (short i = 0; i < 7; i++)
-				for (short x = 0; x < 2; x++)
-					times[i][x] = DEFAULT_TIME;
+			Bundle extras = getIntent().getExtras();
+			if (extras != null) {
+				startTimes = extras.getShortArray(Values.COURSE_EDIT_DAYS_SELECT_START_TIMES_KEY);
+				stopTimes = extras.getShortArray(Values.COURSE_EDIT_DAYS_SELECT_STOP_TIMES_KEY);
+			} else {
+				for (short i = 0; i < 7; i++) {
+					startTimes[i] = DEFAULT_TIME;
+					stopTimes[i] = DEFAULT_TIME;
+				}
+			}
 		}
 	}
-
+	
+	private static final String START_TIMES = "start_times";
+	private static final String STOP_TIMES = "stop_times";
 	@Override
-	protected Dialog onCreateDialog(int id) {
-		return new TimePickerDialog(this, new TimePickerDialog.OnTimeSetListener() {
-			public void onTimeSet(TimePicker view, int hourOfDay, int minute) {
-				times[day][button] = (short)(hourOfDay * 60 + minute);
-				// If the ending time is not yet set, set it to an hour later
-				if (button == 0 && times[day][1] == 0) {
-					times[day][(short)1] = (short)( (hourOfDay + 1) * 60 + minute);
-					updateButtonText(day, (short)1);
-				}
-				updateButtonText(day, button);
+	public void onSaveInstanceState(Bundle outState) {
+		for (short i = 0; i < 7; i++)
+			// Necessary to restore checkbox states correctly
+			if (!checkboxes[i].isChecked() && startTimes[i] != 0) {
+				startTimes[i] = 0;
+				stopTimes[i] = 0;
 			}
-		}, times[day][button] / 60, times[day][button] % 60, false);
+		outState.putShortArray(START_TIMES, startTimes);
+		outState.putShortArray(STOP_TIMES, stopTimes);
 	}
-	
-	@Override
-	protected void onPrepareDialog(int id, Dialog dialog, Bundle args) {
-		((TimePickerDialog)dialog).updateTime(times[day][button] / 60, times[day][button] % 60);
-	}
-	
+
 	private void updateButtonText(short day, short button) {
-		buttons[day][button].setText(DateUtils.formatAsString( times[day][button] / 60,
-				times[day][button] % 60,
-				false));
+		if (button == 0)
+			buttons[day][button].setText(DateUtils.formatAsString( startTimes[day] / 60,
+				startTimes[day] % 60, false));
+		else
+			buttons[day][button].setText(DateUtils.formatAsString( stopTimes[day] / 60,
+				stopTimes[day] % 60, false));
 	}
 	
 	private void checkBoxToggled(int id, boolean checked) {
 		short day = checkboxMap.get(id);
-		if (checked)
-			enableRow(day);
-		else
-			disableRow(day);
-	}
-	
-	private void enableRow(short day) {
-		buttons[day][0].setEnabled(true);
-		buttons[day][1].setEnabled(true);
-	}
-	
-	private void disableRow(short day) {
-		buttons[day][0].setEnabled(false);
-		buttons[day][1].setEnabled(false);
+		buttons[day][0].setEnabled(checked);
+		buttons[day][1].setEnabled(checked);
 	}
 	
 	private void buttonPressed(int id) {
@@ -197,26 +176,75 @@ public class DaySelectFragment extends FragmentActivity {
 		showDialog(0);
 	}
 	
+	@Override
+	protected Dialog onCreateDialog(int id) {
+		TimePickerDialog.OnTimeSetListener listener = new TimePickerDialog.OnTimeSetListener() {
+			public void onTimeSet(TimePicker view, int hourOfDay, int minute) {
+				if (button == 0)
+					startTimes[day] = (short)(hourOfDay * 60 + minute);
+				else
+					stopTimes[day] = (short)(hourOfDay * 60 + minute);
+				// If the ending time is not yet set, set it to an hour later
+				if (button == 0 && stopTimes[day] == 0) {
+					stopTimes[day] = (short)( (hourOfDay + 1) * 60 + minute);
+					updateButtonText(day, (short)1);
+				}
+				updateButtonText(day, button);
+			}
+		};
+		
+		
+		return new TimePickerDialog(this, listener, DEFAULT_TIME / 60, DEFAULT_TIME % 60, false);
+	}
+	
+	@Override
+	protected void onPrepareDialog(int id, Dialog dialog, Bundle args) {
+		// If the time is not set (0), set it to the default time
+		int time;
+		if (startTimes[day] == 0)
+			time = DEFAULT_TIME;
+		else if (button == 0)
+			time = startTimes[day];
+		else
+			time = stopTimes[day];
+		
+		int hr = time / 60;
+		int min = time % 60;
+		((TimePickerDialog)dialog).updateTime(hr, min);
+	}
+	
 	private void setCheckboxStatuses() {
 		for (short i = 0; i < 7; i++)
-			if (times[i][0] == 0)
-				disableRow(i);
-			else
+			if (startTimes[i] == 0) {
+				buttons[i][0].setEnabled(false);
+				buttons[i][1].setEnabled(false);
+			} else
 				checkboxes[i].setChecked(true);
 	}
 	
 	private void refreshButtonText() {
-		for (short d = 0; d < 7; d++)
-			for (short i = 0; i < 2; i++) {
-				short hrs = (short)(times[d][i] / 60);
-				short mins = (short)(times[d][i] % 60);
-				String text;
-				if (hrs == 0 && mins == 0)
-					text = getString(R.string.course_edit_days_select_not_set);
-				else
-					text = DateUtils.formatAsString(hrs, mins, false);
-				buttons[d][i].setText(text);
-			}
+		// Set start time buttons
+		for (short d = 0; d < 7; d++) {
+			short hrs = (short)(startTimes[d] / 60);
+			short mins = (short)(startTimes[d] % 60);
+			String text;
+			if (hrs == 0 && mins == 0)
+				text = getString(R.string.course_edit_days_select_not_set);
+			else
+				text = DateUtils.formatAsString(hrs, mins, false);
+			buttons[d][0].setText(text);
+		}
+		// Set stop time buttons
+		for (short d = 0; d < 7; d++) {
+			short hrs = (short)(stopTimes[d] / 60);
+			short mins = (short)(stopTimes[d] % 60);
+			String text;
+			if (hrs == 0 && mins == 0)
+				text = getString(R.string.course_edit_days_select_not_set);
+			else
+				text = DateUtils.formatAsString(hrs, mins, false);
+			buttons[d][1].setText(text);
+		}
 	}
 
 }

@@ -30,12 +30,15 @@ public class CourseEditActivity extends Activity {
 	private Long rowId;
 	private Context context = this;
 	private static final int DAY_SELECT_RESULT_ID = 1;
+	private static final String START_TIMES = "start_times";
+	private static final String STOP_TIMES = "stop_times";
 	
 	private TextView titleField;
 	private Spinner teacherSpinner;
 	private TextView descriptionField;
 	private TextView roomNumberField;
-	private short[][] times;
+	private short[] startTimes = new short[7];
+	private short[] stopTimes = new short[7];
 	
 	int courseColor;
 		
@@ -60,6 +63,17 @@ public class CourseEditActivity extends Activity {
 		mapViews();
 		setRowIdFromIntent();
 		populateFields();
+		
+		if (savedInstanceState != null) {
+			startTimes = savedInstanceState.getShortArray(START_TIMES);
+			stopTimes = savedInstanceState.getShortArray(STOP_TIMES);
+		}
+	}
+	
+	@Override
+	public void onSaveInstanceState(Bundle outState) {
+		outState.putShortArray(START_TIMES, startTimes);
+		outState.putShortArray(STOP_TIMES, stopTimes);
 	}
 	
 	public void onResume() {
@@ -125,9 +139,7 @@ public class CourseEditActivity extends Activity {
 			if (!room.equals("-1"))
 				roomNumberField.setText(room);
 			
-			try {
-				times = getTimes(data.getString(data.getColumnIndexOrThrow(Values.COURSE_KEY_TIMES_OF_DAY)));
-			} catch (JSONException e) { e.printStackTrace(); }
+			loadTimes(data.getString(data.getColumnIndexOrThrow(Values.COURSE_KEY_TIMES_OF_DAY)));
 			
 			courseColor = data.getInt(data.getColumnIndexOrThrow(Values.COURSE_KEY_COLOR));
 			
@@ -139,38 +151,23 @@ public class CourseEditActivity extends Activity {
 		((Button)findViewById(R.id.course_edit_days_button)).setOnClickListener(new OnClickListener() {
 			
 			public void onClick(View v) {
-				Intent intent = new Intent(context, DaySelectFragment.class);
-				if (times != null) {
-					short[] startTimes = new short[7];
-					short[] stopTimes = new short[7];
-					for (short i = 0; i < 7; i++) {
-						startTimes[i] = times[i][0];
-						stopTimes[i] = times[i][1];
-					}
-					intent.putExtra(Values.COURSE_EDIT_DAYS_SELECT_START_TIMES_KEY, startTimes);
-					intent.putExtra(Values.COURSE_EDIT_DAYS_SELECT_STOP_TIMES_KEY, stopTimes);
-				}
+				Intent intent = new Intent(context, DaySelectFragment.class)
+				.putExtra(Values.COURSE_EDIT_DAYS_SELECT_START_TIMES_KEY, startTimes)
+				.putExtra(Values.COURSE_EDIT_DAYS_SELECT_STOP_TIMES_KEY, stopTimes);
 				startActivityForResult(intent, DAY_SELECT_RESULT_ID);
 			}
 		});
 		
 	}
 	
-	/**
-	 * Parse a String for class start and end times.
-	 * @param timesStr a JSONArray String
-	 * @return an array holding the start times and stop times for each day of the week.
-	 * @throws JSONException
-	 */
-	private short[][] getTimes(String timesStr) throws JSONException {
-		short[][] times = new short[7][2];
-		JSONArray array = new JSONArray(timesStr);
-		for (short x = 0; x < 14; x++)
-			if (x % 2 == 0) // Evens are start times
-				times[x/2][0] = (short)array.getInt(x);
-			else			// Odds are stop times
-				times[x/2][1] = (short)array.getInt(x);
-		return times;
+	private void loadTimes(String timesStr) {
+		try {
+			JSONArray array = new JSONArray(timesStr);
+			for (short x = 0, y = 0; x < 7; x++, y += 2) {
+				startTimes[x] = (short)array.getInt(y);
+				stopTimes[x] = (short)array.getInt(y+1);
+			}
+		} catch (JSONException e ) { e.printStackTrace(); }
 	}
 	
 	private void saveData() {
@@ -192,7 +189,8 @@ public class CourseEditActivity extends Activity {
 				(short)teacherSpinner.getSelectedItemId(),
 				descriptionField.getText().toString(),
 				roomNum,
-				times,
+				startTimes,
+				stopTimes,
 				rowId);
 		
 	}
@@ -210,13 +208,8 @@ public class CourseEditActivity extends Activity {
 	protected void onActivityResult(int requestCode, int resultCode, Intent data) {
 		switch (resultCode) {
 		case RESULT_OK:
-			short[] startTimes = data.getShortArrayExtra(Values.COURSE_EDIT_DAYS_SELECT_START_TIMES_KEY);
-			short[] stopTimes = data.getShortArrayExtra(Values.COURSE_EDIT_DAYS_SELECT_STOP_TIMES_KEY);
-			times = new short[7][2];
-			for (short i = 0; i < 7; i++) {
-				times[i][0] = startTimes[i];
-				times[i][1] = stopTimes[i];
-			}
+			startTimes = data.getShortArrayExtra(Values.COURSE_EDIT_DAYS_SELECT_START_TIMES_KEY);
+			stopTimes = data.getShortArrayExtra(Values.COURSE_EDIT_DAYS_SELECT_STOP_TIMES_KEY);
 		}
 	}
 	
@@ -224,7 +217,7 @@ public class CourseEditActivity extends Activity {
 		return DbUtils.getTeachersAsCursor(getBaseContext()).getCount() > 0;
 	}
 	
-	private void addCourse(String name, short teacherId, String description, long roomNum, short[][] timesOfDay, Long rowId) {
+	private void addCourse(String name, short teacherId, String description, long roomNum, short[] startTimes, short[] stopTimes, Long rowId) {
     	ContentValues values = new ContentValues();
     	values.put(Values.KEY_NAME, name);
     	values.put(Values.COURSE_KEY_TEACHER, teacherId);
@@ -232,10 +225,11 @@ public class CourseEditActivity extends Activity {
     	values.put(Values.KEY_ROOM, roomNum);
     	
     	JSONArray timesAsArray = new JSONArray();
-    	if (timesOfDay != null) {
-	    	for (short x = 0; x < 7; x++)
-	    		for (short y = 0; y < 2; y++)
-	    			timesAsArray.put(timesOfDay[x][y]);
+    	if (startTimes != null && stopTimes != null) {
+	    	for (short x = 0; x < 7; x++) {
+	    			timesAsArray.put(startTimes[x]);
+	    			timesAsArray.put(stopTimes[x]);
+	    	}
     	} else for (short i = 0; i < 14; i++)
     		timesAsArray.put(0);
     	
