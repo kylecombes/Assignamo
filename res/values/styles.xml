@@ -28,16 +28,18 @@
         <item name="android:layout_height">wrap_content</item>
         <item name="android:layout_width">fill_parent</item>
         <item name="android:textColor">@color/list_text</item>
-        <item name="android:paddingTop">@dimen/list_item_top_bottom_padding</item>
-        <item name="android:paddingRight">@dimen/list_item_side_padding</item>
+        <item name="android:paddingLeft">@dimen/activity_edge_padding</item>
+        <item name="android:paddingRight">@dimen/activity_edge_padding</item>
     </style>
     
     <style name="ListEmptyTitle" parent="ListEmpty">
         <item name="android:textSize">23sp</item>
+        <item name="android:paddingTop">@dimen/activity_edge_padding</item>
     </style>
     
     <style name="ListEmptyDescription" parent="ListEmpty">
         <item name="android:textSize">16sp</item>
+        <item name="android:paddingTop">@dimen/activity_edge_padding</item>
     </style>
     
     <!--    List Items    -->
@@ -82,13 +84,31 @@
         <item name="android:textSize">15sp</item>
     </style>
     
-    <!-- Label Styling -->
+    <!-- TextView Styling -->
     
-    <style name="Label">
-        <item name="android:layout_width">match_parent</item>
+    <style name="TextView">
+        <item name="android:layout_width">wrap_content</item>
         <item name="android:layout_height">wrap_content</item>
-        <item name="android:padding">2dip</item>
-        
+    </style>
+    
+    <style name="TextView.ViewActivity">
+        <item name="android:textAppearance">?android:attr/textAppearanceMedium</item>
+    </style>
+    
+    <style name="TextView.ViewActivity.Title">
+        <item name="android:textAppearance">?android:attr/textAppearanceLarge</item>
+    </style>
+    
+    <style name="TextView.ViewActivity.Notes">
+        <item name="android:textAppearance">?android:attr/textAppearanceMedium</item>
+    </style>
+    
+    <style name="TextView.ViewActivity.Label">
+        <item name="android:textAppearance">?android:attr/textAppearanceSmall</item>
+        <item name="android:paddingTop">@dimen/view_activity_label_above_padding</item>
+    </style>
+    
+    <style name="TextView.EditActivity.Label" parent="TextView">
     </style>
     
     <!-- Text Box Styling -->

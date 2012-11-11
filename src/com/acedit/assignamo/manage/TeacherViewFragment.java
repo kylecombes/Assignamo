@@ -15,58 +15,27 @@ import com.acedit.assignamo.utils.DbUtils;
 
 public class TeacherViewFragment extends ViewFragment {
 	
-	private TextView nameLabel;
-	private TextView subjectLabel;
-	private TextView roomLabel;
-	private TextView emailLabel;
-	private TextView phoneLabel;
-	private TextView notesLabel;
+	private TextView nameLabel, subjectLabel, roomLabel, emailLabel, phoneLabel, notesLabel;
 	
 	public void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
-		
 		setContentView(R.layout.teacher_view);
+	}
+	
+	protected void mapViews() {
 		nameLabel = (TextView)findViewById(R.id.teacher_view_name);
 		subjectLabel = (TextView)findViewById(R.id.teacher_view_subject);
 		roomLabel = (TextView)findViewById(R.id.teacher_view_room);
 		emailLabel = (TextView)findViewById(R.id.teacher_view_email);
 		phoneLabel = (TextView)findViewById(R.id.teacher_view_phone_number);
 		notesLabel = (TextView)findViewById(R.id.teacher_view_notes);
-		
-		
-		if (savedInstanceState != null)
-			rowId = savedInstanceState.getLong(Values.KEY_ROWID);
 	}
-	
-	@Override
-	public void onResume() {
-		super.onResume();
-		populateFields();
-	}
-	
-	@Override
-	public boolean onOptionsItemSelected(MenuItem item) {
-		switch (item.getItemId()) {
-		case R.id.view_edit:
-			Intent i = new Intent(context, TeacherEditActivity.class);
-			i.putExtra(Values.KEY_ROWID, rowId);
-			startActivity(i);
-			break;
-		case R.id.view_delete:
-			DbUtils.deleteAssignment(context,rowId);
-			finish();
-		}
-		return true;
-	}
-	
-	protected void reloadData() {
+
+	protected void populateViews() {
 		DbAdapter dbAdapter = new DbAdapter(context, null, Values.TEACHER_TABLE);
 		dbAdapter.open();
 		cursor = dbAdapter.fetch(rowId,Values.TEACHER_FETCH);
 		dbAdapter.close();
-	}
-	
-	protected void populateFields() {
 		
 		nameLabel.setText(cursor.getString(cursor.getColumnIndexOrThrow(Values.KEY_NAME)));
 		subjectLabel.setText(cursor.getString(cursor.getColumnIndexOrThrow(Values.TEACHER_KEY_SUBJECT)));
@@ -88,6 +57,23 @@ public class TeacherViewFragment extends ViewFragment {
 			notesLabel.setText(notes);
 		else
 			notesLabel.setText(getItalicizedString(R.string.no_notes), BufferType.SPANNABLE);
+		
+		cursor.close();
+	}
+	
+	@Override
+	public boolean onOptionsItemSelected(MenuItem item) {
+		switch (item.getItemId()) {
+		case R.id.view_edit:
+			Intent i = new Intent(context, TeacherEditActivity.class);
+			i.putExtra(Values.KEY_ROWID, rowId);
+			startActivity(i);
+			break;
+		case R.id.view_delete:
+			DbUtils.deleteAssignment(context,rowId);
+			finish();
+		}
+		return true;
 	}
 	
 	/**

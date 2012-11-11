@@ -4,8 +4,6 @@ import android.content.Intent;
 import android.os.Bundle;
 import android.text.SpannableString;
 import android.text.style.RelativeSizeSpan;
-import android.view.Menu;
-import android.view.MenuInflater;
 import android.view.MenuItem;
 import android.widget.TextView;
 import android.widget.TextView.BufferType;
@@ -18,35 +16,34 @@ import com.acedit.assignamo.utils.DbUtils;
 
 public class CourseViewFragment extends ViewFragment {
 	
-	private TextView nameLabel;
-	private TextView teacherLabel;
-	private TextView descriptionLabel;
-	private TextView roomLabel;
+	private TextView nameLabel, teacherLabel, descriptionLabel, roomLabel;
 	
 	public void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
-		
 		setContentView(R.layout.course_view);
+	}
+	
+	protected void mapViews() {
 		nameLabel = (TextView)findViewById(R.id.course_view_name);
 		teacherLabel = (TextView)findViewById(R.id.course_view_teacher);
 		descriptionLabel = (TextView)findViewById(R.id.course_view_description);
 		roomLabel = (TextView)findViewById(R.id.course_view_room);
+	}
+
+	protected void populateViews() {
+		DbAdapter dbAdapter = new DbAdapter(getBaseContext(), null, Values.COURSE_TABLE)
+		.open();
+		cursor = dbAdapter.fetch(rowId,Values.COURSE_FETCH);
+		dbAdapter.close();
 		
-		if (savedInstanceState != null)
-			rowId = savedInstanceState.getLong(Values.KEY_ROWID);
-	}
-	
-	@Override
-	public void onResume() {
-		super.onResume();
-		populateFields();
-	}
-	
-	@Override
-	public boolean onCreateOptionsMenu(Menu menu) {
-		MenuInflater inflater = getMenuInflater();
-		inflater.inflate(R.menu.view_menu, menu);
-		return true;
+		nameLabel.setText(cursor.getString(cursor.getColumnIndexOrThrow(Values.KEY_NAME)));
+		teacherLabel.setText(getTeacher(cursor.getShort(cursor.getColumnIndexOrThrow(Values.COURSE_KEY_TEACHER))));
+		descriptionLabel.setText(getDescription(cursor.getString(cursor.getColumnIndexOrThrow(Values.KEY_DESCRIPTION))),
+				BufferType.SPANNABLE);
+		roomLabel.setText(getRoom(cursor.getShort(cursor.getColumnIndexOrThrow(Values.KEY_ROOM))),
+				BufferType.SPANNABLE);
+		
+		cursor.close();
 	}
 	
 	@Override
@@ -63,31 +60,7 @@ public class CourseViewFragment extends ViewFragment {
 		}
 		return true;
 	}
-	
-	@Override
-	public void onSaveInstanceState(Bundle outState) {
-		super.onSaveInstanceState(outState);
-		outState.putLong(Values.KEY_ROWID, rowId);
-	}
-	
-	protected void reloadData() {
-		DbAdapter dbAdapter = new DbAdapter(getBaseContext(), null, Values.COURSE_TABLE);
-		dbAdapter.open();
-		cursor = dbAdapter.fetch(rowId,Values.COURSE_FETCH);
-		dbAdapter.close();
-	}
-	
-	protected void populateFields() {
-		
-		nameLabel.setText(cursor.getString(cursor.getColumnIndexOrThrow(Values.KEY_NAME)));
-		teacherLabel.setText(getTeacher(cursor.getShort(cursor.getColumnIndexOrThrow(Values.COURSE_KEY_TEACHER))));
-		descriptionLabel.setText(getDescription(cursor.getString(cursor.getColumnIndexOrThrow(Values.KEY_DESCRIPTION))),
-				BufferType.SPANNABLE);
-		roomLabel.setText(getRoom(cursor.getShort(cursor.getColumnIndexOrThrow(Values.KEY_ROOM))),
-				BufferType.SPANNABLE);
-		
-	}
-	
+
 	private SpannableString getRoom(short id) {
 		if (id >= 0)
 			return new SpannableString(id + "");

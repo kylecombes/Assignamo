@@ -1,112 +1,48 @@
 <?xml version="1.0" encoding="utf-8"?>
-<ScrollView xmlns:android="http://schemas.android.com/apk/res/android"
-    android:layout_width="fill_parent"
-    android:layout_height="wrap_content" >
-    <LinearLayout android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-    	android:orientation="vertical" >
-
-        <TextView
-            android:id="@+id/teacher_edit_name_label"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:text="@string/name"
-            android:textAppearance="?android:attr/textAppearanceSmall" />
-
-        <EditText
-            android:id="@+id/teacher_edit_name_field"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:inputType="textAutoCorrect|textCapWords" >
-
-            <requestFocus />
-        </EditText>
-
-        <TextView
-            android:id="@+id/teacher_edit_subject_label"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:text="@string/teacher_department"
-            android:textAppearance="?android:attr/textAppearanceSmall" />
-
-        <EditText
-            android:id="@+id/teacher_edit_subject_field"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:inputType="textAutoCorrect|textCapWords" />
-
-        <TextView
-            android:id="@+id/teacher_edit_notes_label"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:text="@string/notes"
-            android:textAppearance="?android:attr/textAppearanceSmall" />
-
-        <EditText
-            android:id="@+id/teacher_edit_notes_field"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:inputType="textMultiLine|textAutoCorrect|textCapSentences"
-            android:minLines="3"
-            android:gravity="top" />
-
-        <TextView
-            android:id="@+id/room_label"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:text="@string/room"
-            android:textAppearance="?android:attr/textAppearanceSmall" />
-
-        <EditText
-            android:id="@+id/teacher_edit_room_field"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:inputType="number" />
-  
-        <TextView
-            android:id="@+id/teacher_edit_email_label"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:text="@string/teacher_email"
-            android:textAppearance="?android:attr/textAppearanceSmall" />
-
-        <EditText
-            android:id="@+id/teacher_edit_email_field"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:inputType="textEmailAddress" />
-	
-        <TextView
-            android:id="@+id/teacher_edit_phone_label"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:text="@string/teacher_phone"
-            android:textAppearance="?android:attr/textAppearanceSmall" />
-
-        <EditText
-            android:id="@+id/teacher_edit_phone_field"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:inputType="phone" />
-
-        <LinearLayout
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:orientation="horizontal" >
-
-            <Button
-                android:id="@+id/teacher_edit_cancel"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:text="@android:string/cancel" />
-            
-            <Button
-                android:id="@+id/teacher_edit_save"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:text="@string/save" />
-
-        </LinearLayout>
-
-	</LinearLayout>
-</ScrollView>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:orientation="vertical">
+	<ScrollView android:layout_width="fill_parent"
+	    android:layout_height="0dp"
+	    android:layout_weight="1">
+	    <LinearLayout android:layout_width="match_parent"
+	        android:layout_height="wrap_content"
+	    	android:orientation="vertical" >
+	        <EditText android:id="@+id/teacher_edit_name_field"
+	            style="@style/TextBox.Title"
+	            android:hint="@string/name" >
+	        </EditText>
+	        <EditText android:id="@+id/teacher_edit_subject_field"
+	            style="@style/TextBox.Title"
+	            android:hint="@string/teacher_department" />
+	        <EditText android:id="@+id/teacher_edit_notes_field"
+	            style="@style/TextBox.Description"
+	            android:hint="@string/notes"
+	            android:layout_height="0dp"
+	            android:layout_weight="1"/>
+	        <EditText android:id="@+id/teacher_edit_room_field"
+	            style="@style/TextBox"
+	            android:inputType="number"
+	            android:hint="@string/teacher_room" />
+	        <EditText android:id="@+id/teacher_edit_email_field"
+	            style="@style/TextBox.Email"
+	            android:hint="@string/teacher_email" />
+	        <EditText android:id="@+id/teacher_edit_phone_field"
+	            style="@style/TextBox"
+	            android:inputType="phone"
+	            android:hint="@string/teacher_phone" />
+		</LinearLayout>
+	</ScrollView>
+	<LinearLayout android:orientation="horizontal"
+	    android:layout_height="wrap_content"
+	    android:layout_width="fill_parent"
+	    style="@style/ButtonBar" >
+	    <Button android:id="@+id/teacher_edit_cancel"
+	   	    android:text="@android:string/cancel"
+	   	    style="@style/Button.ButtonBar" />
+	    <Button android:id="@+id/teacher_edit_save"
+	   	    android:text="@string/save"
+	   	    style="@style/Button.ButtonBar" />
+    </LinearLayout>
+</LinearLayout>

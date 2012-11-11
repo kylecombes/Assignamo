@@ -29,6 +29,7 @@ import com.acedit.assignamo.R;
 import com.acedit.assignamo.database.DbAdapter;
 import com.acedit.assignamo.database.Values;
 import com.acedit.assignamo.utils.DbUtils;
+import com.acedit.assignamo.utils.UiUtils;
 
 public class CourseListFragment extends BaseListFragment {
 	
@@ -55,15 +56,13 @@ public class CourseListFragment extends BaseListFragment {
 			c.moveToNext();
 		}
 		
-		loadCourseColors();
-		
 		setViewBinder(new ViewBinder() {
 			
 			public boolean setViewValue(View view, Cursor cursor, int columnIndex) {
 				switch (view.getId()) {
 				case R.id.list_title:
 					((TextView)view).setText(cursor.getString(cursor.getColumnIndexOrThrow(Values.KEY_NAME)));
-					((LinearLayout)view.getParent()).setBackgroundColor(colors.get(cursor.getShort(cursor.getColumnIndex(Values.KEY_ROWID))));
+					((LinearLayout)view.getParent()).setBackgroundColor(colors.get(cursor.getShort(0)));
 					return true;
 				case R.id.list_teacher:
 					((TextView)view).setText(teachers.get(cursor.getShort(cursor.getColumnIndexOrThrow(Values.COURSE_KEY_TEACHER))));
@@ -77,6 +76,14 @@ public class CourseListFragment extends BaseListFragment {
 		});
 	}
 	
+	@Override
+	public void onResume() {
+		super.onResume();
+		// Has to be done every time activity is resumed because a course could have
+			// been added/edited, and we have to (re)load the color for that course. 
+		loadCourseColors();
+	}
+	
 	private void loadCourseColors() {
 		DbAdapter adapter = new DbAdapter(context, null, Values.COURSE_TABLE);
 		adapter.open();
@@ -85,7 +92,7 @@ public class CourseListFragment extends BaseListFragment {
 		for (short i = 0; i < c.getCount(); i++) {
 			short id = c.getShort(c.getColumnIndexOrThrow(Values.KEY_ROWID));
 			int color = c.getInt(c.getColumnIndexOrThrow(Values.COURSE_KEY_COLOR));
-			colors.put(id, AssignmentListFragment.getLightColor(color));
+			colors.put(id, UiUtils.changeAlpha(color,AssignmentListFragment.ALPHA));
 			c.moveToNext();
 		}
 		c.close();
@@ -151,9 +158,8 @@ public class CourseListFragment extends BaseListFragment {
 		AdapterContextMenuInfo info = (AdapterContextMenuInfo)item.getMenuInfo();
     	switch (item.getItemId()) {
     	case CONTEXT_EDIT:
-    		Intent i = new Intent(context, CourseEditActivity.class);
-    		i.putExtra(Values.KEY_ROWID, info.id);
-    		startActivity(i);
+    		startActivity( new Intent(context, CourseEditActivity.class)
+    			.putExtra(Values.KEY_ROWID, info.id) );
     		return true;
     	case CONTEXT_DELETE:
 			delete(info.id);

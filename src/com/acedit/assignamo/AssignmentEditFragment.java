@@ -62,6 +62,7 @@ public class AssignmentEditFragment extends Activity {
 			setTitle(R.string.assignment_edit);
 		
 		mapViews();
+		populateSpinner();
 		loadDataFromIntent();
 		populateFields();
 		
@@ -99,9 +100,8 @@ public class AssignmentEditFragment extends Activity {
 			}
 		});
 	}
-	
-	private void populateFields() {
-		// Initialize the Spinner
+
+	private void populateSpinner() {
 		courseCursor = DbUtils.getCoursesAsCursor(this);
 		String[] from = new String[]{Values.KEY_NAME};
 		int[] to = new int[]{android.R.id.text1};
@@ -121,6 +121,9 @@ public class AssignmentEditFragment extends Activity {
 			}
 			public void onNothingSelected(AdapterView<?> arg0) {}
 		});
+	}
+	
+	private void populateFields() {
 		
 		if (rowId != null) {
 			DbAdapter dbAdapter = new DbAdapter(this, null, Values.ASSIGNMENT_TABLE);
@@ -135,11 +138,12 @@ public class AssignmentEditFragment extends Activity {
 				pointsField.setText("" + points);
 			
 			long time = data.getLong(data.getColumnIndexOrThrow(Values.ASSIGNMENT_KEY_DUE_DATE));
-			dbAdapter.close();
 			data.close();
+			dbAdapter.close();
 			time = DateUtils.convertMinutesToMills(time);
 			calendar = Calendar.getInstance();
 			calendar.setTimeInMillis(time);
+			userSetDateTime = true;
 		} else {
 			setDueDateToNextClassTime();
 		}
@@ -156,14 +160,17 @@ public class AssignmentEditFragment extends Activity {
 		short dayDiff = 1;
 		// Used to keep track of the class start time. Defaults to noon.
 		short startTime = 720;
-		for (int i = curDayOfWeek + 1; i != curDayOfWeek; i++, dayDiff++) {
-			if (i == 7)
-				i = 0;
-			if (days[i] == true) {
-				startTime = courseStartTimes[i];
+		for (int day = curDayOfWeek + 1; dayDiff < 8; day++, dayDiff++) {
+			if (day == 7)
+				day = 0;
+			if (days[day] == true) {
+				startTime = courseStartTimes[day];
 				break;
 			}
 		}
+		// dayDiff is only 8 if there are no days entered for the course,
+			// so reset it to one day from now.
+		if (dayDiff > 7) dayDiff = 1;
 		calendar.add(Calendar.DATE, dayDiff);
 		// Set the calendar time to the class start time
 		calendar.set(Calendar.HOUR_OF_DAY, startTime / 60);

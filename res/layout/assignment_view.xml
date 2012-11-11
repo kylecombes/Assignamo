@@ -1,86 +1,52 @@
 <?xml version="1.0" encoding="utf-8"?>
-<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<ScrollView xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:ColorStrip="http://schemas.android.com/apk/res/com.acedit.assignamo"
     android:layout_width="match_parent"
-    android:layout_height="match_parent"
-    android:orientation="vertical" >
-
-    <TextView
-        android:id="@+id/assignment_view_course"
-        android:layout_gravity="right"
-        android:layout_width="wrap_content"
+    android:layout_height="match_parent">
+    <LinearLayout android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:text="@string/course"
-        android:textAppearance="?android:attr/textAppearanceMedium"
-        android:paddingTop="10dip"
-        android:paddingLeft="10dip"
-        android:paddingRight="10dip" />
-
-    <TextView
-        android:id="@+id/assignment_view_title"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:text="@string/title"
-        android:textAppearance="?android:attr/textAppearanceLarge"
-        android:paddingTop="5dip"
-        android:paddingBottom="5dip"
-        android:paddingLeft="10dip"
-        android:paddingRight="10dip" />
-    <TextView
-        android:id="@+id/assignment_view_date_label"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:text="@string/assignment_due_date"
-        android:textAppearance="?android:attr/textAppearanceSmall"
-        android:paddingTop="5dip"
-        android:paddingLeft="10dip"
-        android:paddingRight="10dip" />
-
-    <TextView
-        android:id="@+id/assignment_view_date"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:textAppearance="?android:attr/textAppearanceMedium"
-        android:paddingBottom="5dip"
-        android:paddingLeft="10dip"
-        android:paddingRight="10dip" />
-
-    <TextView
-        android:id="@+id/assignment_view_description_label"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:text="@string/description"
-        android:paddingTop="5dip"
-        android:paddingLeft="10dip"
-        android:paddingRight="10dip" />
-
-    <TextView
-        android:id="@+id/assignment_view_description"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:textAppearance="?android:attr/textAppearanceMedium"
-        android:paddingBottom="5dip"
-        android:paddingLeft="10dip"
-        android:paddingRight="10dip" />
-
-    <TextView
-        android:id="@+id/assignment_view_points_label"
-        android:layout_width="fill_parent"
-        android:layout_height="wrap_content"
-        android:layout_gravity="right"
-        android:paddingLeft="10dip"
-        android:paddingRight="10dip"
-        android:paddingTop="5dip"
-        android:text="@string/points"
-        android:textAppearance="?android:attr/textAppearanceSmall" />
-
-    <TextView
-        android:id="@+id/assignment_view_points"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:text="@string/assignment_points"
-        android:textAppearance="?android:attr/textAppearanceMedium"
-        android:paddingBottom="5dip"
-        android:paddingLeft="10dip"
-        android:paddingRight="10dip" />
-    
-</LinearLayout>
+        android:orientation="vertical">
+        
+	    <com.acedit.assignamo.ui.ColorStrip
+	        android:id="@+id/assignment_view_color_strip"
+	        android:layout_width="match_parent"
+	        android:layout_height="@dimen/assignment_view_color_strip_height" />
+	    <com.acedit.assignamo.ui.ColorStrip
+	        android:layout_width="match_parent"
+	        android:layout_height="@dimen/assignment_view_color_strip_shadow_height"
+	        ColorStrip:color="@color/assignment_view_color_strip_shadow" />
+	    
+		<LinearLayout android:layout_width="match_parent"
+		    android:layout_height="wrap_content"
+		    android:orientation="vertical"
+		    android:paddingLeft="@dimen/view_activity_padding"
+		    android:paddingRight="@dimen/view_activity_padding">
+		    
+		    <TextView android:id="@+id/assignment_view_course"
+		        android:layout_gravity="right"
+		        style="@style/TextView.ViewActivity"/>
+		
+		    <TextView android:id="@+id/assignment_view_title"
+		        style="@style/TextView.ViewActivity.Title"/>
+		    
+		    <TextView android:text="@string/assignment_due_date"
+		        style="@style/TextView.ViewActivity.Label"/>
+		
+		    <TextView android:id="@+id/assignment_view_date"
+		        style="@style/TextView.ViewActivity"/>
+		
+		    <TextView android:text="@string/description"
+		        style="@style/TextView.ViewActivity.Label"/>
+		
+		    <TextView android:id="@+id/assignment_view_description"
+		        style="@style/TextView.ViewActivity.Notes"/>
+		
+		    <TextView android:text="@string/points"
+		        style="@style/TextView.ViewActivity.Label"/>
+		
+		    <TextView android:id="@+id/assignment_view_points"
+		        style="@style/TextView.ViewActivity" />
+		    
+		</LinearLayout>
+	</LinearLayout>
+</ScrollView>

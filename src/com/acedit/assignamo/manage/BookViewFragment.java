@@ -16,18 +16,15 @@ import com.acedit.assignamo.utils.DbUtils;
 
 public class BookViewFragment extends ViewFragment {
 		
-	private TextView typeLabel;
-	private TextView titleLabel;
-	private TextView authorLabel;
-	private TextView descriptionLabel;
-	private TextView pagesLabel;
-	private TextView chaptersLabel;
-	private TextView ISBNLabel;
+	private TextView typeLabel, titleLabel, authorLabel, descriptionLabel,
+		pagesLabel, chaptersLabel, ISBNLabel;
 	
 	public void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
-		
 		setContentView(R.layout.book_view);
+	}
+	
+	protected void mapViews() {
 		typeLabel = (TextView)findViewById(R.id.book_view_type);
 		titleLabel = (TextView)findViewById(R.id.book_view_title);
 		authorLabel = (TextView)findViewById(R.id.book_view_author);
@@ -35,24 +32,28 @@ public class BookViewFragment extends ViewFragment {
 		pagesLabel = (TextView)findViewById(R.id.book_view_pages);
 		chaptersLabel = (TextView)findViewById(R.id.book_view_chapters);
 		ISBNLabel = (TextView)findViewById(R.id.book_view_ISBN);
-		
-		
-		if (savedInstanceState != null)
-			rowId = savedInstanceState.getLong(Values.KEY_ROWID);
 	}
 	
-	protected void reloadData() {
-		DbAdapter dbAdapter = new DbAdapter(context, null, Values.BOOK_TABLE);
-		dbAdapter.open();
+	protected void populateViews() {
+		DbAdapter dbAdapter = new DbAdapter(context, null, Values.BOOK_TABLE)
+		.open();
 		cursor = dbAdapter.fetch(rowId,Values.BOOK_FETCH);
 		dbAdapter.close();
-	}
-	
-	@Override
-	public void onResume() {
-		super.onResume();
-		setRowIdFromIntent();
-		populateFields();
+		
+		String[] types = getResources().getStringArray(R.array.book_types);
+		titleLabel.setText(cursor.getString(cursor.getColumnIndexOrThrow(Values.KEY_TITLE)));
+		typeLabel.setText(types[cursor.getShort(cursor.getColumnIndexOrThrow(Values.BOOK_KEY_TYPE))]);
+		authorLabel.setText(cursor.getString(cursor.getColumnIndexOrThrow(Values.BOOK_KEY_AUTHOR)));
+		descriptionLabel.setText(cursor.getString(cursor.getColumnIndexOrThrow(Values.KEY_DESCRIPTION)));
+		chaptersLabel.setText(cursor.getString(cursor.getColumnIndexOrThrow(Values.BOOK_KEY_CHAPTERS))
+				+ " " + getString(R.string.add_book_chapters).toLowerCase());
+		pagesLabel.setText(cursor.getString(cursor.getColumnIndexOrThrow(Values.BOOK_KEY_PAGES))
+				+ " " + getString(R.string.add_book_pages).toLowerCase());
+		String ISBN = parseISBN(cursor.getLong(cursor.getColumnIndexOrThrow(Values.BOOK_KEY_ISBN)));
+		if (ISBN != null)
+			ISBNLabel.setText(getString(R.string.add_book_ISBN) + ": " + ISBN);
+		
+		cursor.close();
 	}
 	
 	@Override
@@ -75,30 +76,6 @@ public class BookViewFragment extends ViewFragment {
 			finish();
 		}
 		return true;
-	}
-	
-	@Override
-	public void onSaveInstanceState(Bundle outState) {
-		super.onSaveInstanceState(outState);
-		outState.putLong(Values.KEY_ROWID, rowId);
-	}
-	
-	
-	protected void populateFields() {
-		
-		String[] types = getResources().getStringArray(R.array.book_types);
-		titleLabel.setText(cursor.getString(cursor.getColumnIndexOrThrow(Values.KEY_TITLE)));
-		typeLabel.setText(types[cursor.getShort(cursor.getColumnIndexOrThrow(Values.BOOK_KEY_TYPE))]);
-		authorLabel.setText(cursor.getString(cursor.getColumnIndexOrThrow(Values.BOOK_KEY_AUTHOR)));
-		descriptionLabel.setText(cursor.getString(cursor.getColumnIndexOrThrow(Values.KEY_DESCRIPTION)));
-		chaptersLabel.setText(cursor.getString(cursor.getColumnIndexOrThrow(Values.BOOK_KEY_CHAPTERS))
-				+ " " + getString(R.string.add_book_chapters).toLowerCase());
-		pagesLabel.setText(cursor.getString(cursor.getColumnIndexOrThrow(Values.BOOK_KEY_PAGES))
-				+ " " + getString(R.string.add_book_pages).toLowerCase());
-		String ISBN = parseISBN(cursor.getLong(cursor.getColumnIndexOrThrow(Values.BOOK_KEY_ISBN)));
-		if (ISBN != null)
-			ISBNLabel.setText(getString(R.string.add_book_ISBN) + ": " + ISBN);
-		
 	}
 	
 	private String parseISBN(long in) {

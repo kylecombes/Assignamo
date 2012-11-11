@@ -2,6 +2,7 @@ package com.acedit.assignamo;
 
 import java.text.SimpleDateFormat;
 import java.util.Calendar;
+import java.util.Map;
 
 import android.content.Context;
 import android.database.Cursor;
@@ -25,31 +26,26 @@ public abstract class ViewFragment extends FragmentActivity {
 	protected long rowId;
 	protected Cursor cursor;
 	protected Context context;
-	
-	protected abstract void populateFields();
-	
+		
 	@Override
 	public void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
 		context = getBaseContext();
-		setRowIdFromIntent();
+		if (savedInstanceState != null)
+			rowId = savedInstanceState.getLong(Values.KEY_ROWID);
+		else
+			setRowIdFromIntent();
 	}
 	
-	@Override
-	public void onPause() {
-		super.onPause();
-		cursor.close();
+	public void onStart() {
+		super.onStart();
+		mapViews();
+		populateViews();
 	}
 	
-	@Override
-	public void onResume() {
-		super.onResume();
-		if (context == null)
-			context = getBaseContext();
-		reloadData();
-	}
+	protected abstract void mapViews();
 	
-	protected abstract void reloadData();
+	protected abstract void populateViews();
 	
 	@Override
 	public void onSaveInstanceState(Bundle outState) {
@@ -70,8 +66,8 @@ public abstract class ViewFragment extends FragmentActivity {
 	 * @return the name of the teacher
 	 */
 	protected String getTeacher(short id) {
-		String[] teachers = DbUtils.getTeachersAsArray(getApplicationContext());
-		return teachers[id];
+		Map<Short, String> teachers = DbUtils.getTeacherNames(getApplicationContext());
+		return teachers.get(id);
 	}
 
 	protected SpannableString getDescription(String desc) {
@@ -107,8 +103,8 @@ public abstract class ViewFragment extends FragmentActivity {
 	public SpannableString getDateString(long minutes, boolean withTime) {
 		
 		final float RELATIVE_SIZE = 1.0f;
-		final String DATE_FORMAT_WITH_YEAR = "c, MMMMM dd, yyyy";
-		final String DATE_FORMAT_WITHOUT_YEAR = "c, MMMMM dd";
+		final String DATE_FORMAT_WITH_YEAR = "c, MMMMM d, yyyy";
+		final String DATE_FORMAT_WITHOUT_YEAR = "c, MMMMM d";
 		final String TIME_FORMAT = "h:mm a";
 		
 		

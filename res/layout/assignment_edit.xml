@@ -1,16 +1,18 @@
 <?xml version="1.0" encoding="utf-8"?>
-<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="fill_parent"
-    android:layout_height="fill_parent">
-	<ScrollView android:layout_width="fill_parent"
-	    android:layout_height="wrap_content"
+    android:layout_height="fill_parent"
+    android:orientation="vertical">
+	<ScrollView android:layout_width="match_parent"
+	    android:layout_height="0dp"
+	    android:layout_weight="1"
 	    android:scrollbarStyle="insideOverlay" >
 	<LinearLayout android:layout_width="match_parent"
 	    android:layout_height="wrap_content"
 	    android:orientation="vertical" >
 		
 	    <TextView android:text="@string/course"
-	        style="@style/Label" />
+	        style="@style/TextView.EditActivity.Label" />
 	    <Spinner
 	        android:id="@+id/assignment_add_course_select"
 	        android:layout_width="match_parent"
@@ -19,7 +21,6 @@
 	    <EditText android:id="@+id/assignment_add_title_field"
 	        style="@style/TextBox.Title"
 	        android:hint="@string/title" >
-			<requestFocus />
 	    </EditText>
 	    
 	    <EditText android:id="@+id/assignment_add_description_field"
@@ -34,7 +35,7 @@
 	           	    android:layout_width="fill_parent"
 	           	    android:layout_height="wrap_content">
 	           	    <TextView android:text="@string/assignment_due_date"
-			            style="@style/Label" />
+			            style="@style/TextView.EditActivity.Label" />
 			        <Button android:id="@+id/assignment_add_date_due"
 			            android:text="@string/assignment_due_date"
 			            style="@style/Button" />
@@ -44,7 +45,7 @@
 	           	    android:layout_width="wrap_content"
 	           	    android:layout_height="wrap_content">
 			        <TextView android:text="@string/assignment_time_due"
-			            style="@style/Label" />
+			            style="@style/TextView.EditActivity.Label" />
 			        <Button android:id="@+id/assignment_add_time_due"
 			            android:text="@string/assignment_time_due"
 			            style="@style/Button" />
@@ -54,7 +55,7 @@
 			        android:layout_width="wrap_content"
 			        android:layout_height="wrap_content">
 			        <TextView android:text="@string/points"
-			            style="@style/Label" />
+			            style="@style/TextView.EditActivity.Label" />
 					<EditText android:id="@+id/assignment_add_points"
 				       android:layout_width="50dip"
 				       android:layout_height="wrap_content"
@@ -67,8 +68,7 @@
 	<LinearLayout android:orientation="horizontal"
 	    android:layout_height="wrap_content"
 	    android:layout_width="fill_parent"
-	    android:layout_alignParentBottom="true"
-	    style="@android:style/ButtonBar" >
+	    style="@style/ButtonBar" >
 	    <Button android:id="@+id/assignment_add_cancel"
 	   	    android:text="@android:string/cancel"
 	   	    style="@style/Button.ButtonBar" />
@@ -76,4 +76,4 @@
 	   	    android:text="@string/save"
 	   	    style="@style/Button.ButtonBar" />
     </LinearLayout>
-</RelativeLayout>
+</LinearLayout>

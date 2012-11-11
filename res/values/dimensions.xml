@@ -1,7 +1,9 @@
 <?xml version="1.0" encoding="utf-8"?>
-<resources>
+<resources xmlns:android="http://schemas.android.com/apk/res/android">
     <dimen name="list_item_font_size">20sp</dimen>
     <dimen name="list_item_subfont_size">15sp</dimen>
+    
+    <dimen name="activity_edge_padding">10dip</dimen>
     <dimen name="list_item_side_padding">10dip</dimen>
     <dimen name="list_item_top_bottom_padding">8dip</dimen>
     <dimen name="list_item_vertical_spacing">8dip</dimen>
@@ -9,6 +11,14 @@
     
     <dimen name="color_strip_height">60dip</dimen>
     <dimen name="color_strip_width">5dip</dimen>
+    
+    <!-- View Activities -->
+    <dimen name="view_activity_padding">10dp</dimen>
+    <dimen name="view_activity_label_item_padding">3dp</dimen>
+    <dimen name="view_activity_label_above_padding">8dp</dimen>
+    
+    <dimen name="assignment_view_color_strip_height">5dip</dimen>
+    <dimen name="assignment_view_color_strip_shadow_height">2dip</dimen>
     
     <!-- Course Days Select -->
     <dimen name="course_edit_days_select_row_padding">5dip</dimen>

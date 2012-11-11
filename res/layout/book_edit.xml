@@ -137,12 +137,12 @@
 	    android:layout_height="wrap_content"
 	    android:layout_width="fill_parent"
 	    android:layout_alignParentBottom="true"
-	    style="@android:style/ButtonBar" >
-	    <Button android:id="@+id/book_edit_save_button"
-	   	    android:text="@string/save"
-	   	    style="@style/Button.ButtonBar" />
+	    style="@style/ButtonBar" >
 	    <Button android:id="@+id/book_edit_cancel_button"
 	   	    android:text="@android:string/cancel"
+	   	    style="@style/Button.ButtonBar" />
+	    <Button android:id="@+id/book_edit_save_button"
+	   	    android:text="@string/save"
 	   	    style="@style/Button.ButtonBar" />
     </LinearLayout>
 </RelativeLayout>

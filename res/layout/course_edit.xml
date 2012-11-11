@@ -1,99 +1,71 @@
 <?xml version="1.0" encoding="utf-8"?>
-<ScrollView  xmlns:android="http://schemas.android.com/apk/res/android"
-	android:layout_width="fill_parent"
-	android:layout_height="wrap_content">
-<LinearLayout android:layout_width="match_parent"
-    android:layout_height="wrap_content"
-    android:orientation="vertical" >
-
-    <TextView
-        android:id="@+id/course_edit_title_label"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:text="@string/title"
-        android:textAppearance="?android:attr/textAppearanceSmall" />
-
-    <EditText
-        android:id="@+id/course_edit_title_field"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:inputType="textCapWords|textAutoCorrect" />
-
-    <TextView
-        android:id="@+id/course_edit_teacher_label"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:text="@string/teacher"
-        android:textAppearance="?android:attr/textAppearanceSmall" />
-
-    <Spinner
-        android:id="@+id/course_edit_teacher_spinner"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content" />
-
-    <TextView
-        android:id="@+id/course_edit_description_label"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:text="@string/description"
-        android:textAppearance="?android:attr/textAppearanceSmall" />
-
-    <EditText
-        android:id="@+id/course_edit_description_field"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:inputType="textCapSentences|textAutoCorrect|textMultiLine"
-        android:minLines="3"
-        android:gravity="top" />
-	
-    <TextView
-        android:id="@+id/course_edit_days_title_label"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:text="@string/course_days_of_week"
-        android:textAppearance="?android:attr/textAppearanceSmall"/>
-    
-    <Button
-        android:id="@+id/course_edit_days_button"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:text="@string/configure"/>
-    
-    <Button
-        android:id="@+id/course_edit_color_select_button"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:text="@string/select_color"/>
-    
-    <TextView
-        android:id="@+id/course_edit_room_label"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:text="@string/room"
-        android:textAppearance="?android:attr/textAppearanceSmall" />
-
-    <EditText
-        android:id="@+id/course_edit_room_field"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:inputType="number" />
-
-	<LinearLayout android:layout_width="fill_parent"
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:orientation="vertical">
+	<ScrollView android:layout_width="fill_parent"
+		android:layout_height="0dp"
+		android:layout_weight="1">
+		<LinearLayout android:layout_width="match_parent"
+		    android:layout_height="wrap_content"
+		    android:orientation="vertical" >
+		
+		    <EditText android:id="@+id/course_edit_title_field"
+		        style="@style/TextBox.Title"
+		        android:hint="@string/title"/>
+		    <TextView android:id="@+id/course_edit_teacher_label"
+		        style="@style/TextView.EditActivity.Label"
+		        android:text="@string/teacher"/>
+		    <Spinner android:id="@+id/course_edit_teacher_spinner"
+		        android:layout_width="match_parent"
+		        android:layout_height="wrap_content" />
+		    <EditText android:id="@+id/course_edit_description_field"
+		        style="@style/TextBox.Description"
+		        android:hint="@string/description" />
+			
+		    <TextView
+		        android:id="@+id/course_edit_days_title_label"
+		        android:layout_width="wrap_content"
+		        android:layout_height="wrap_content"
+		        android:text="@string/course_days_of_week"
+		        android:textAppearance="?android:attr/textAppearanceSmall"/>
+		    
+		    <Button
+		        android:id="@+id/course_edit_days_button"
+		        android:layout_width="wrap_content"
+		        android:layout_height="wrap_content"
+		        android:text="@string/configure"/>
+		    
+		    <Button
+		        android:id="@+id/course_edit_color_select_button"
+		        android:layout_width="wrap_content"
+		        android:layout_height="wrap_content"
+		        android:text="@string/select_color"/>
+		    
+		    <TextView
+		        android:id="@+id/course_edit_room_label"
+		        android:layout_width="wrap_content"
+		        android:layout_height="wrap_content"
+		        android:text="@string/room"
+		        android:textAppearance="?android:attr/textAppearanceSmall" />
+		
+		    <EditText
+		        android:id="@+id/course_edit_room_field"
+		        android:layout_width="match_parent"
+		        android:layout_height="wrap_content"
+		        android:inputType="number" />
+		
+		</LinearLayout>
+	</ScrollView>
+	<LinearLayout android:orientation="horizontal"
 	    android:layout_height="wrap_content"
-	    android:orientation="horizontal">
-
-    <Button
-        android:id="@+id/course_edit_cancel"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:text="@android:string/cancel" />
-
-    <Button
-        android:id="@+id/course_edit_save"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:text="@string/save" />
-
-	</LinearLayout>
+	    android:layout_width="fill_parent"
+	    style="@style/ButtonBar" >
+	    <Button android:id="@+id/course_edit_cancel"
+	   	    android:text="@android:string/cancel"
+	   	    style="@style/Button.ButtonBar" />
+	    <Button android:id="@+id/course_edit_save"
+	   	    android:text="@string/save"
+	   	    style="@style/Button.ButtonBar" />
+    </LinearLayout>
 </LinearLayout>
-</ScrollView>

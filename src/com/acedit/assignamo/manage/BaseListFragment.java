@@ -17,7 +17,6 @@ import android.widget.SimpleCursorAdapter;
 import android.widget.SimpleCursorAdapter.ViewBinder;
 
 import com.acedit.assignamo.database.DbAdapter;
-import com.acedit.assignamo.database.Values;
 
 public abstract class BaseListFragment extends ListFragment {
 
@@ -106,8 +105,7 @@ public abstract class BaseListFragment extends ListFragment {
     	dbAdapter.open();
     	cursor = dbAdapter.fetchAll(fetchSQL);
     	dbAdapter.close();
-    	SimpleCursorAdapter cursorAdapter = new SimpleCursorAdapter(context,
-    			listItem, cursor, from, to);
+    	SimpleCursorAdapter cursorAdapter = new SimpleCursorAdapter(context, listItem, cursor, from, to, 0);
     	if (viewBinder != null)
     		cursorAdapter.setViewBinder(viewBinder);
     	setListAdapter(cursorAdapter);

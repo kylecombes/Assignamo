@@ -11,12 +11,12 @@ import android.content.Intent;
 import android.content.IntentFilter;
 import android.content.SharedPreferences;
 import android.database.Cursor;
-import android.graphics.Color;
 import android.os.Bundle;
 import android.preference.PreferenceManager;
 import android.support.v4.app.ListFragment;
 import android.support.v4.content.LocalBroadcastManager;
 import android.support.v4.widget.CursorAdapter;
+import android.util.Log;
 import android.view.ContextMenu;
 import android.view.ContextMenu.ContextMenuInfo;
 import android.view.LayoutInflater;
@@ -32,6 +32,7 @@ import com.acedit.assignamo.database.Values;
 import com.acedit.assignamo.ui.ColorStrip;
 import com.acedit.assignamo.utils.DateUtils;
 import com.acedit.assignamo.utils.DbUtils;
+import com.acedit.assignamo.utils.UiUtils;
 
 public class AssignmentListFragment extends ListFragment {
 	
@@ -70,10 +71,7 @@ public class AssignmentListFragment extends ListFragment {
 	}
 
 	public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
-		View v = inflater.inflate(R.layout.assignment_list, container, false);
-		setHasOptionsMenu(true);
-		
-		return v;
+		return inflater.inflate(R.layout.assignment_list, container, false);
 	}
 
 	/** Called when the activity becomes visible. */
@@ -81,13 +79,13 @@ public class AssignmentListFragment extends ListFragment {
 		super.onStart();
 		registerForContextMenu(getListView());
 	}
-
+/*
 	public void onPause() {
 		super.onPause();
 		if (!assignmentsCursor.isClosed())
 			assignmentsCursor.close();
 	}
-
+*/
 	@Override
 	public void onSaveInstanceState(Bundle outState) {
 		super.onSaveInstanceState(outState);
@@ -131,6 +129,8 @@ public class AssignmentListFragment extends ListFragment {
 	 */
 	public void updateAdapter() {
 		
+		long startTime = System.currentTimeMillis();
+		
 		SharedPreferences sharedPrefs = PreferenceManager.getDefaultSharedPreferences(context);
 		boolean showingCompleted = sharedPrefs.getBoolean(Values.ASSIGNMENT_KEY_SHOWING_COMPLETED, false);
 
@@ -148,6 +148,8 @@ public class AssignmentListFragment extends ListFragment {
 		// adapter is null when updateAdapter() is called in onCreate()
 		if (cursorAdapter != null)
 			cursorAdapter.changeCursor(assignmentsCursor);
+		
+		Log.d("updateAdapter", "Time to fetch data: " + (System.currentTimeMillis() - startTime) + " milliseconds");
 	}
 
 	private void refresh() {
@@ -276,7 +278,6 @@ public class AssignmentListFragment extends ListFragment {
 	private class CustomCursorAdapter extends CursorAdapter {
 		
 		LayoutInflater mInflater;
-		ViewHolder holder;
 		
 		public CustomCursorAdapter(Context context, Cursor c, int flags) {
 			super(context, c, flags);
@@ -285,21 +286,24 @@ public class AssignmentListFragment extends ListFragment {
 			mInflater = (LayoutInflater) context.getSystemService(Context.LAYOUT_INFLATER_SERVICE);
 		}
 
-		@SuppressWarnings("static-access")
+		//@SuppressWarnings("static-access")
 		@Override
 		public View getView(int position, View convertView, ViewGroup parent) {
 			
-			if (convertView == null) {
+			//long startTime = System.currentTimeMillis();
+			//ViewHolder holder;
+			
+			//if (convertView == null) {
 				convertView = mInflater.inflate(R.layout.assignment_list_item, parent, false);
-				holder = new ViewHolder();
-				holder.colorStrip = (ColorStrip) convertView.findViewById(R.id.assignment_list_color_strip);
-				holder.titleLabel = (TextView) convertView.findViewById(R.id.list_title);
-				holder.descriptionLabel = (TextView) convertView.findViewById(R.id.list_description);
-				holder.dueLabel = (TextView) convertView.findViewById(R.id.list_due);
+				//holder = new ViewHolder();
+				ColorStrip colorStrip = (ColorStrip) convertView.findViewById(R.id.assignment_list_color_strip);
+				TextView titleLabel = (TextView) convertView.findViewById(R.id.list_title);
+				TextView descriptionLabel = (TextView) convertView.findViewById(R.id.list_description);
+				TextView dueLabel = (TextView) convertView.findViewById(R.id.list_due);
 				
-				convertView.setTag(holder);
-			} else
-				holder = (ViewHolder) convertView.getTag();
+				//convertView.setTag(holder);
+			//} else
+				//holder = (ViewHolder) convertView.getTag();
 			
 			assignmentsCursor.moveToPosition(position);
 			String title = assignmentsCursor.getString(1);
@@ -307,13 +311,16 @@ public class AssignmentListFragment extends ListFragment {
 			String desc = assignmentsCursor.getString(3);
 			long due = assignmentsCursor.getLong(4);
 			
-			holder.titleLabel.setText(title);
-			holder.colorStrip.setColor(colors.get(course));
+			titleLabel.setText(/*"Pos: " + position + " | " + */title);
+			colorStrip.setColor(colors.get(course));
 			convertView.setBackgroundColor(colorsLight.get(course));
 			String dueString = getDateString(due);
-			holder.dueLabel.setText(dueString);
-			holder.descriptionLabel.setText(desc);
+			dueLabel.setText(dueString);
+			descriptionLabel.setText(desc);
 			
+			//Log.d("getView", "Position: " + position + ". RowID: " + assignmentsCursor.getLong(0));
+			//Log.d("getView", "Time to populate list item: " + (System.currentTimeMillis() - startTime) + " milliseconds");
+			//Log.d("getView", "Title: \"" + title + "\" label value: \"" + holder.titleLabel.getText() + "\"");
 			return convertView;
 		}
 
@@ -321,8 +328,13 @@ public class AssignmentListFragment extends ListFragment {
 		public void bindView(View arg0, Context arg1, Cursor arg2) {}
 
 		@Override
-		public View newView(Context arg0, Cursor arg1, ViewGroup arg2) { return null; }
+		public View newView(Context context, Cursor cursor, ViewGroup parent) { return null; }
 		
+		@Override
+		public boolean hasStableIds() {	return true; }
+		
+		@Override
+		public int getViewTypeCount() { return 2; }
 	}
 	
 	private String getDateString(long minutes) {
@@ -332,6 +344,8 @@ public class AssignmentListFragment extends ListFragment {
 		return (new SimpleDateFormat(DATE_FORMAT)).format(calendar.getTime());
 	}
 	
+	public final static short ALPHA = 30;
+
 	private void updateCourseColors() {
 		DbAdapter adapter = new DbAdapter(context, null, Values.COURSE_TABLE);
 		adapter.open();
@@ -341,19 +355,13 @@ public class AssignmentListFragment extends ListFragment {
 			short id = c.getShort(c.getColumnIndexOrThrow(Values.KEY_ROWID));
 			int color = c.getInt(c.getColumnIndexOrThrow(Values.COURSE_KEY_COLOR));
 			colors.put(id, color);
-			colorsLight.put(id,getLightColor(color));
+			colorsLight.put(id,UiUtils.changeAlpha(color, ALPHA));
 			c.moveToNext();
 		}
 		c.close();
 		adapter.close();
 	}
-	
-	private final static short ALPHA = 30;
-	
-	public static int getLightColor(int regColor) {
-		return Color.argb(ALPHA, Color.red(regColor), Color.green(regColor), Color.blue(regColor));
-	}
-
+	/*
 	private static class ViewHolder {
 		private static ColorStrip colorStrip;
 		private static TextView titleLabel;
@@ -362,5 +370,5 @@ public class AssignmentListFragment extends ListFragment {
 		
 		public ViewHolder() {}
 	}
-	
+	*/
 }

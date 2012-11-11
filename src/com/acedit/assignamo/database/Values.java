@@ -57,7 +57,8 @@ public final class Values {
 			+ COURSE_KEY_TEACHER + " text not null, "
 			+ KEY_DESCRIPTION + " text, "
 			+ KEY_ROOM + " int, "
-			+ COURSE_KEY_TIMES_OF_DAY + " text);";
+			+ COURSE_KEY_TIMES_OF_DAY + " text, "
+			+ COURSE_KEY_COLOR + " int not null);";
 	
 	/*--------- Books ---------- */
 	public static final String BOOK_TABLE = "books";

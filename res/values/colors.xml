@@ -9,4 +9,6 @@
     
     <!-- ListView Strip Colors -->
     <color name="default_course_color">#ff0000ff</color>
+    
+    <color name="assignment_view_color_strip_shadow">#b1b1b1</color>
 </resources>

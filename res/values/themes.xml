@@ -9,5 +9,10 @@
     <style name="MainStyle" parent="@android:style/Theme.Light">
         
     </style>
+    
+    <style name="CourseDaysSelect" parent="android:Theme.Holo.Light">
+        <item name="android:buttonStyle">@style/CourseDaysSelect.Buttons</item>
+    </style>
+    
 	
 </resources>

@@ -25,7 +25,6 @@ public class DaySelectFragment extends FragmentActivity {
 	private static short[] startTimes;
 	private static short[] stopTimes;
 	private short day;
-	private short button;
 	private CheckBox[] checkboxes = new CheckBox[7];
 	private Button[][] buttons = new Button[7][2];
 	private SparseArray<Short> checkboxMap = new SparseArray<Short>();
@@ -117,134 +116,127 @@ public class DaySelectFragment extends FragmentActivity {
 		refreshButtonText();
 	}
 	
-	private void initializeTimes(Bundle savedState) {
+	@Override
+	public void onSaveInstanceState(Bundle outState) {
+		super.onSaveInstanceState(outState);
+		outState.putShortArray(Values.COURSE_EDIT_DAYS_SELECT_START_TIMES_KEY, startTimes);
+		outState.putShortArray(Values.COURSE_EDIT_DAYS_SELECT_STOP_TIMES_KEY, stopTimes);
+	}
+	
+	private void initializeTimes(Bundle savedInstanceState) {
 		
-		if (savedState != null) {
-			startTimes = savedState.getShortArray(START_TIMES);
-			stopTimes = savedState.getShortArray(STOP_TIMES);
+		if (savedInstanceState != null) {
+			startTimes = savedInstanceState.getShortArray(Values.COURSE_EDIT_DAYS_SELECT_START_TIMES_KEY);
+			stopTimes = savedInstanceState.getShortArray(Values.COURSE_EDIT_DAYS_SELECT_STOP_TIMES_KEY);
 		} else {
 			Bundle extras = getIntent().getExtras();
 			if (extras != null) {
 				startTimes = extras.getShortArray(Values.COURSE_EDIT_DAYS_SELECT_START_TIMES_KEY);
 				stopTimes = extras.getShortArray(Values.COURSE_EDIT_DAYS_SELECT_STOP_TIMES_KEY);
 			} else {
-				for (short i = 0; i < 7; i++) {
-					startTimes[i] = DEFAULT_TIME;
-					stopTimes[i] = DEFAULT_TIME;
-				}
+				startTimes = new short[7];
+				stopTimes = new short[7];
 			}
 		}
-	}
-	
-	private static final String START_TIMES = "start_times";
-	private static final String STOP_TIMES = "stop_times";
-	@Override
-	public void onSaveInstanceState(Bundle outState) {
-		for (short i = 0; i < 7; i++)
-			// Necessary to restore checkbox states correctly
-			if (!checkboxes[i].isChecked() && startTimes[i] != 0) {
-				startTimes[i] = 0;
-				stopTimes[i] = 0;
-			}
-		outState.putShortArray(START_TIMES, startTimes);
-		outState.putShortArray(STOP_TIMES, stopTimes);
 	}
 
-	private void updateButtonText(short day, short button) {
-		if (button == 0)
-			buttons[day][button].setText(DateUtils.formatAsString( startTimes[day] / 60,
-				startTimes[day] % 60, false));
-		else
-			buttons[day][button].setText(DateUtils.formatAsString( stopTimes[day] / 60,
-				stopTimes[day] % 60, false));
-	}
-	
-	private void checkBoxToggled(int id, boolean checked) {
-		short day = checkboxMap.get(id);
-		buttons[day][0].setEnabled(checked);
-		buttons[day][1].setEnabled(checked);
-	}
-	
-	private void buttonPressed(int id) {
-		day = buttonIdMap.get(id);
-		if (day >= 7) {
-			day -= 7;
-			button = 1;
-		}
-		else
-			button = 0;
-		showDialog(0);
-	}
+	private static final int START_BUTTON = 0;
+	private static final int STOP_BUTTON = 1;
 	
 	@Override
 	protected Dialog onCreateDialog(int id) {
-		TimePickerDialog.OnTimeSetListener listener = new TimePickerDialog.OnTimeSetListener() {
-			public void onTimeSet(TimePicker view, int hourOfDay, int minute) {
-				if (button == 0)
+		TimePickerDialog.OnTimeSetListener listener;
+		int hour, minute;
+		if (id == START_BUTTON) {
+			listener = new TimePickerDialog.OnTimeSetListener() {
+				public void onTimeSet(TimePicker view, int hourOfDay, int minute) {
 					startTimes[day] = (short)(hourOfDay * 60 + minute);
-				else
-					stopTimes[day] = (short)(hourOfDay * 60 + minute);
-				// If the ending time is not yet set, set it to an hour later
-				if (button == 0 && stopTimes[day] == 0) {
-					stopTimes[day] = (short)( (hourOfDay + 1) * 60 + minute);
-					updateButtonText(day, (short)1);
+					// If the ending time is not yet set, set it to an hour later
+					if (stopTimes[day] == 0) {
+						stopTimes[day] = (short)( (hourOfDay + 1) * 60 + minute);
+						updateButtonText(day, (short)1);
+					}
+					updateButtonText(day, START_BUTTON);
 				}
-				updateButtonText(day, button);
-			}
-		};
-		
-		
-		return new TimePickerDialog(this, listener, DEFAULT_TIME / 60, DEFAULT_TIME % 60, false);
+			};
+			hour = startTimes[day] / 60;
+			minute = startTimes[day] % 60;
+		} else {
+			listener = new TimePickerDialog.OnTimeSetListener() {
+				public void onTimeSet(TimePicker view, int hourOfDay, int minute) {
+					stopTimes[day] = (short)(hourOfDay * 60 + minute);
+					updateButtonText(day, STOP_BUTTON);
+				}
+			};
+			hour = stopTimes[day] / 60;
+			minute = stopTimes[day] % 60;
+		}
+		return new TimePickerDialog(this, listener, hour, minute, false);
 	}
 	
 	@Override
 	protected void onPrepareDialog(int id, Dialog dialog, Bundle args) {
-		// If the time is not set (0), set it to the default time
-		int time;
-		if (startTimes[day] == 0)
+		short time = id == START_BUTTON ? startTimes[day] : stopTimes[day];
+		if (time == 0)
 			time = DEFAULT_TIME;
-		else if (button == 0)
-			time = startTimes[day];
+		((TimePickerDialog)dialog).updateTime(time / 60, time % 60);
+	}
+	
+	private void updateButtonText(short day, int button) {
+		buttons[day][button].setText( button == START_BUTTON ?
+			DateUtils.formatAsString( startTimes[day] / 60, startTimes[day] % 60, false)
+			: DateUtils.formatAsString( stopTimes[day] / 60, stopTimes[day] % 60, false)
+		);
+	}
+	
+	private void checkBoxToggled(int id, boolean checked) {
+		short day = checkboxMap.get(id);
+		if (checked)
+			enableRow(day);
 		else
-			time = stopTimes[day];
-		
-		int hr = time / 60;
-		int min = time % 60;
-		((TimePickerDialog)dialog).updateTime(hr, min);
+			disableRow(day);
+	}
+	
+	private void enableRow(short day) {
+		buttons[day][0].setEnabled(true);
+		buttons[day][1].setEnabled(true);
+	}
+	
+	private void disableRow(short day) {
+		buttons[day][0].setEnabled(false);
+		buttons[day][1].setEnabled(false);
+	}
+	
+	private void buttonPressed(int id) {
+		day = buttonIdMap.get(id);
+		int button = START_BUTTON;
+		if (day >= 7) {
+			day -= 7;
+			button = STOP_BUTTON;
+		}
+		showDialog(button);
 	}
 	
 	private void setCheckboxStatuses() {
 		for (short i = 0; i < 7; i++)
-			if (startTimes[i] == 0) {
-				buttons[i][0].setEnabled(false);
-				buttons[i][1].setEnabled(false);
-			} else
+			if (startTimes[i] == 0)
+				disableRow(i);
+			else
 				checkboxes[i].setChecked(true);
 	}
 	
 	private void refreshButtonText() {
-		// Set start time buttons
-		for (short d = 0; d < 7; d++) {
-			short hrs = (short)(startTimes[d] / 60);
-			short mins = (short)(startTimes[d] % 60);
-			String text;
-			if (hrs == 0 && mins == 0)
-				text = getString(R.string.course_edit_days_select_not_set);
-			else
-				text = DateUtils.formatAsString(hrs, mins, false);
-			buttons[d][0].setText(text);
-		}
-		// Set stop time buttons
-		for (short d = 0; d < 7; d++) {
-			short hrs = (short)(stopTimes[d] / 60);
-			short mins = (short)(stopTimes[d] % 60);
-			String text;
-			if (hrs == 0 && mins == 0)
-				text = getString(R.string.course_edit_days_select_not_set);
-			else
-				text = DateUtils.formatAsString(hrs, mins, false);
-			buttons[d][1].setText(text);
-		}
+		for (short d = 0; d < 7; d++)
+			for (short i = 0; i < 2; i++) {
+				short hrs = (short)( (i == START_BUTTON ? startTimes[d] : stopTimes[d]) / 60);
+				short mins = (short)( (i == START_BUTTON ? startTimes[d] : stopTimes[d]) % 60);
+				String text;
+				if (hrs == 0 && mins == 0)
+					text = getString(R.string.course_edit_days_select_not_set);
+				else
+					text = DateUtils.formatAsString(hrs, mins, false);
+				buttons[d][i].setText(text);
+			}
 	}
 
 }

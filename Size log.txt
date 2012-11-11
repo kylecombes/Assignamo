@@ -1,3 +1,6 @@
 Before cleaning up code and removing unused Fragment activities: 596KB
 After: 592KB
 Before cleaning up XML layout and using more styles and removing ids for labels: 632KB
+Before cleaning up XML layout and using styles and remove ids foir labels in AssignmentView, : 772KB
+
+3.276KB >> 1.337 KB
