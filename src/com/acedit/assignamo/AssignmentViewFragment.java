@@ -2,11 +2,15 @@ package com.acedit.assignamo;
 
 import java.util.HashMap;
 
+import android.app.AlertDialog;
+import android.app.Dialog;
+import android.content.DialogInterface;
 import android.content.Intent;
 import android.content.SharedPreferences;
 import android.database.Cursor;
 import android.os.Bundle;
 import android.preference.PreferenceManager;
+import android.support.v4.app.DialogFragment;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.widget.TextView;
@@ -19,7 +23,7 @@ import com.acedit.assignamo.utils.DbUtils;
 
 public class AssignmentViewFragment extends ViewFragment {
 	
-	private TextView courseLabel, titleLabel, dueDateLabel, pointsLabel, descriptionLabel;
+	private TextView courseLabel, titleLabel, dueDateLabel, descriptionLabel;
 	
 	public void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
@@ -30,7 +34,6 @@ public class AssignmentViewFragment extends ViewFragment {
 		courseLabel = (TextView)findViewById(R.id.assignment_view_course);
 		titleLabel = (TextView)findViewById(R.id.assignment_view_title);
 		dueDateLabel = (TextView)findViewById(R.id.assignment_view_date);
-		pointsLabel = (TextView)findViewById(R.id.assignment_view_points);
 		descriptionLabel = (TextView)findViewById(R.id.assignment_view_description);
 	}
 	
@@ -58,16 +61,6 @@ public class AssignmentViewFragment extends ViewFragment {
 		boolean withTime = prefs.getBoolean("pref_appearance_show_time", true);
 		dueDateLabel.setText(getDateString(	cursor.getLong(cursor.getColumnIndexOrThrow(Values.ASSIGNMENT_KEY_DUE_DATE)),
 				withTime), BufferType.SPANNABLE);
-		
-		// Set points label
-		long points = Long.parseLong(cursor.getString(cursor.getColumnIndexOrThrow(Values.ASSIGNMENT_KEY_POINTS)));
-		if (points > 0)
-			if (points == 1)
-				pointsLabel.setText(points + " " + getString(R.string.assignment_point));
-			else
-				pointsLabel.setText(points + " " + getString(R.string.assignment_points));
-		else
-			pointsLabel.setText(getItalicizedString(R.string.assignment_no_points));
 		
 		// Set description label
 		descriptionLabel.setText(getDescription(cursor.getString(cursor.getColumnIndexOrThrow(Values.KEY_DESCRIPTION))));
@@ -122,10 +115,36 @@ public class AssignmentViewFragment extends ViewFragment {
 			startActivity(i);
 			break;
 		case 2:
-			DbUtils.deleteAssignment(context,rowId);
-			finish();
+			DeleteDialogFragment frag = new DeleteDialogFragment();
+			frag.show(getSupportFragmentManager(), "confirmDelete");
 		}
 		return true;
 	}
+
+	public static class DeleteDialogFragment extends DialogFragment {
+		
+		static DeleteDialogFragment newInstance(int arg) {
+			return new DeleteDialogFragment();
+		}
+		
+		@Override
+		public Dialog onCreateDialog(Bundle savedInstanceState) {
+			return new AlertDialog.Builder(getActivity())
+				.setTitle(R.string.confirm_delete)
+				.setMessage(R.string.assignment_confirm_delete_message)
+				.setPositiveButton(R.string.yes, new DialogInterface.OnClickListener() {
+					public void onClick(DialogInterface dialog, int which) {
+						((AssignmentViewFragment)((ViewFragment)getActivity())).deleteAssignment();
+					}
+				})
+				.setNegativeButton(R.string.no, null)
+				.create();
+		}
+	}
 	
+	public void deleteAssignment() {
+		// Delete the assignment
+		DbUtils.deleteAssignment(context, rowId);
+		finish();
+	}
 }

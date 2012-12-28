@@ -6,13 +6,11 @@
 	<ScrollView android:layout_width="match_parent"
 	    android:layout_height="0dp"
 	    android:layout_weight="1"
-	    android:scrollbarStyle="insideOverlay" >
+	    android:scrollbarStyle="insideOverlay">
 	<LinearLayout android:layout_width="match_parent"
 	    android:layout_height="wrap_content"
-	    android:orientation="vertical" >
-		
-	    <TextView android:text="@string/course"
-	        style="@style/TextView.EditActivity.Label" />
+	    android:orientation="vertical"
+	    android:padding="@dimen/edit_activity_edge_padding">
 	    <Spinner
 	        android:id="@+id/assignment_add_course_select"
 	        android:layout_width="match_parent"
@@ -38,7 +36,8 @@
 			            style="@style/TextView.EditActivity.Label" />
 			        <Button android:id="@+id/assignment_add_date_due"
 			            android:text="@string/assignment_due_date"
-			            style="@style/Button" />
+			            style="@style/Button"
+			            android:onClick="showDatePickerDialog"/>
 	           	</LinearLayout>
 	           	<!-- Due time -->
 		        <LinearLayout android:orientation="vertical"
@@ -48,19 +47,8 @@
 			            style="@style/TextView.EditActivity.Label" />
 			        <Button android:id="@+id/assignment_add_time_due"
 			            android:text="@string/assignment_time_due"
-			            style="@style/Button" />
-			    </LinearLayout>
-			    <!-- Points -->
-			    <LinearLayout android:orientation="vertical"
-			        android:layout_width="wrap_content"
-			        android:layout_height="wrap_content">
-			        <TextView android:text="@string/points"
-			            style="@style/TextView.EditActivity.Label" />
-					<EditText android:id="@+id/assignment_add_points"
-				       android:layout_width="50dip"
-				       android:layout_height="wrap_content"
-				       android:minEms="10"
-				       android:inputType="number" />
+			            style="@style/Button"
+			            android:onClick="showTimePickerDialog"/>
 			    </LinearLayout>
 			</LinearLayout>
 		</LinearLayout>
@@ -71,9 +59,9 @@
 	    style="@style/ButtonBar" >
 	    <Button android:id="@+id/assignment_add_cancel"
 	   	    android:text="@android:string/cancel"
-	   	    style="@style/Button.ButtonBar" />
+	   	    style="@style/Button.ButtonBar.Cancel" />
 	    <Button android:id="@+id/assignment_add_save"
 	   	    android:text="@string/save"
-	   	    style="@style/Button.ButtonBar" />
+	   	    style="@style/Button.ButtonBar.Save" />
     </LinearLayout>
 </LinearLayout>

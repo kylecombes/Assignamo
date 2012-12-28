@@ -144,6 +144,14 @@
         <item name="android:layout_weight">1</item>
     </style>
     
+    <style name="Button.ButtonBar.Cancel">
+        <item name="android:onClick">cancelPressed</item>
+    </style>
+    
+    <style name="Button.ButtonBar.Save">
+        <item name="android:onClick">savePressed</item>
+    </style>
+    
     <style name="ButtonBar" parent="@android:style/ButtonBar">
         
     </style>

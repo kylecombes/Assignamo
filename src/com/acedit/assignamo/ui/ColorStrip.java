@@ -13,8 +13,6 @@ import com.acedit.assignamo.R;
 public class ColorStrip extends View {
 	
 	public ShapeDrawable mDrawable;
-	private short hPx = 0;
-	private short wPx = 0;
 	
 	public ColorStrip(Context context, AttributeSet attrs) {
 		super(context, attrs);
@@ -33,25 +31,16 @@ public class ColorStrip extends View {
 		
 	}
 	
+	protected void onSizeChanged(int w, int h, int oldw, int oldh) {
+		mDrawable.setBounds(0, 0, w, h);
+	}
+	
 	protected void onDraw(Canvas canvas) {
-		if (wPx == 0)
-			wPx = (short) getWidth();
-		if (hPx == 0)
-			hPx = (short) getHeight();
-		mDrawable.setBounds(0, 0, wPx, hPx);
 		mDrawable.draw(canvas);
 	}
 	
 	public void setColor(int color) {
 		mDrawable.getPaint().setColor(color);
-	}
-	
-	public void setHeight(short pixels) {
-		hPx = pixels;
-	}
-	
-	public void setWidth(short pixels) {
-		wPx = pixels;
 	}
 	
 	public int getColor() {

@@ -40,7 +40,7 @@ public class CourseViewFragment extends ViewFragment {
 		teacherLabel.setText(getTeacher(cursor.getShort(cursor.getColumnIndexOrThrow(Values.COURSE_KEY_TEACHER))));
 		descriptionLabel.setText(getDescription(cursor.getString(cursor.getColumnIndexOrThrow(Values.KEY_DESCRIPTION))),
 				BufferType.SPANNABLE);
-		roomLabel.setText(getRoom(cursor.getShort(cursor.getColumnIndexOrThrow(Values.KEY_ROOM))),
+		roomLabel.setText(getRoom(cursor.getString(cursor.getColumnIndexOrThrow(Values.KEY_ROOM))),
 				BufferType.SPANNABLE);
 		
 		cursor.close();
@@ -61,8 +61,8 @@ public class CourseViewFragment extends ViewFragment {
 		return true;
 	}
 
-	private SpannableString getRoom(short id) {
-		if (id >= 0)
+	private SpannableString getRoom(String id) {
+		if (id != "-1")
 			return new SpannableString(id + "");
 		else {
 			String str = getString(R.string.course_view_no_room);

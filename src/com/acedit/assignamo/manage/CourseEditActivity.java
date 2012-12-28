@@ -175,23 +175,10 @@ public class CourseEditActivity extends Activity {
 	
 	private void saveData() {
 		
-		// Get room number
-		short roomNum;
-		String room = roomNumberField.getText().toString();
-		if (room.length() > 0)
-			try {
-				roomNum = Short.parseShort(room);
-			} catch (NumberFormatException e) {
-				roomNum = -1;
-			}
-		else
-			roomNum = -1;
-		room = null;
-		
 		addCourse(titleField.getText().toString(),
 				(short)teacherSpinner.getSelectedItemId(),
 				descriptionField.getText().toString(),
-				roomNum,
+				roomNumberField.getText().toString(),
 				times,
 				rowId);
 		
@@ -224,12 +211,12 @@ public class CourseEditActivity extends Activity {
 		return DbUtils.getTeachersAsCursor(getBaseContext()).getCount() > 0;
 	}
 	
-	private void addCourse(String name, short teacherId, String description, long roomNum, short[][] timesOfDay, Long rowId) {
+	private void addCourse(String name, short teacherId, String description, String room, short[][] timesOfDay, Long rowId) {
     	ContentValues values = new ContentValues();
     	values.put(Values.KEY_NAME, name);
     	values.put(Values.COURSE_KEY_TEACHER, teacherId);
     	values.put(Values.KEY_DESCRIPTION, description);
-    	values.put(Values.KEY_ROOM, roomNum);
+    	values.put(Values.KEY_ROOM, room == "" ? "-1" : room);
     	
     	JSONArray timesAsArray = new JSONArray();
     	if (timesOfDay != null) {

@@ -5,16 +5,18 @@ import java.util.Calendar;
 import org.json.JSONArray;
 import org.json.JSONException;
 
-import android.app.Activity;
 import android.app.DatePickerDialog;
 import android.app.Dialog;
 import android.app.TimePickerDialog;
 import android.content.ContentValues;
+import android.content.Context;
 import android.database.Cursor;
 import android.os.Bundle;
+import android.support.v4.app.DialogFragment;
+import android.support.v4.app.FragmentActivity;
 import android.support.v4.widget.SimpleCursorAdapter;
+import android.text.format.DateFormat;
 import android.view.View;
-import android.view.View.OnClickListener;
 import android.widget.AdapterView;
 import android.widget.AdapterView.OnItemSelectedListener;
 import android.widget.Button;
@@ -28,13 +30,11 @@ import com.acedit.assignamo.database.Values;
 import com.acedit.assignamo.utils.DateUtils;
 import com.acedit.assignamo.utils.DbUtils;
 
-public class AssignmentEditFragment extends Activity {
+public class AssignmentEditFragment extends FragmentActivity {
 	
 	private Calendar calendar;
-	static final String DATE_FORMAT = "MM/dd/yyyy";
+	static final String DATE_FORMAT = "E, MM/dd/yyyy";
 	static final String TIME_FORMAT = "hh:mm a";
-	private static final short DATE_PICKER_DIALOG = 0;
-	private static final short TIME_PICKER_DIALOG = 1;
 	private Long rowId;
 	private boolean userSetDateTime;
 	private Cursor courseCursor;
@@ -45,7 +45,6 @@ public class AssignmentEditFragment extends Activity {
 	private TextView titleField;
 	private Button dueDateButton;
 	private Button timeDueButton;
-	private TextView pointsField;
 	private TextView descriptionField;
 	
 	@Override
@@ -74,31 +73,9 @@ public class AssignmentEditFragment extends Activity {
 		
 		titleField = (TextView)findViewById(R.id.assignment_add_title_field);
 		descriptionField = (TextView)findViewById(R.id.assignment_add_description_field);
-		pointsField = (TextView)findViewById(R.id.assignment_add_points);
 		
 		dueDateButton = (Button)findViewById(R.id.assignment_add_date_due);
-		dueDateButton.setOnClickListener(new View.OnClickListener() {
-			public void onClick(View v) {
-				showDialog(DATE_PICKER_DIALOG);
-			}
-		});
 		timeDueButton = (Button)findViewById(R.id.assignment_add_time_due);
-		timeDueButton.setOnClickListener(new OnClickListener() {
-			public void onClick(View v) {
-				showDialog(TIME_PICKER_DIALOG);
-			}
-		});
-		((Button)findViewById(R.id.assignment_add_save)).setOnClickListener(new View.OnClickListener() {
-			public void onClick(View v) {
-				saveData();
-				finish();
-			}
-		});
-		((Button)findViewById(R.id.assignment_add_cancel)).setOnClickListener(new View.OnClickListener() {
-			public void onClick(View v) {
-				finish();
-			}
-		});
 	}
 
 	private void populateSpinner() {
@@ -132,10 +109,6 @@ public class AssignmentEditFragment extends Activity {
 			courseSpinner.setSelection(DbUtils.getPositionFromRowID(courseCursor, data.getShort(data.getColumnIndexOrThrow(Values.ASSIGNMENT_KEY_COURSE))));
 			titleField.setText(data.getString(data.getColumnIndexOrThrow(Values.KEY_TITLE)));
 			descriptionField.setText(data.getString(data.getColumnIndexOrThrow(Values.KEY_DESCRIPTION)));
-			
-			long points = data.getLong(data.getColumnIndexOrThrow(Values.ASSIGNMENT_KEY_POINTS));
-			if (points >= 0)
-				pointsField.setText("" + points);
 			
 			long time = data.getLong(data.getColumnIndexOrThrow(Values.ASSIGNMENT_KEY_DUE_DATE));
 			data.close();
@@ -212,13 +185,6 @@ public class AssignmentEditFragment extends Activity {
 		state.putString(Values.KEY_TITLE, titleField.getText().toString());
 		state.putString(Values.KEY_DESCRIPTION, descriptionField.getText().toString());
 		state.putBoolean(USER_SET_DUE_DATE, userSetDateTime);
-		short pointsEntered = -1;
-		String pointsTxt = pointsField.getText().toString();
-		if (pointsTxt.length() > 0)
-			try {
-				pointsEntered = Short.parseShort(pointsTxt);
-			} catch (NumberFormatException e) {}
-		state.putShort(Values.ASSIGNMENT_KEY_POINTS, pointsEntered);
 		long time = calendar.getTimeInMillis();
 		state.putLong(CALENDAR_TIME_KEY, time);
 	}
@@ -232,9 +198,6 @@ public class AssignmentEditFragment extends Activity {
 				long time = oldState.getLong(CALENDAR_TIME_KEY);
 				calendar.setTimeInMillis(time);
 				updateButtons(0);
-				short points = oldState.getShort(Values.ASSIGNMENT_KEY_POINTS);
-				if (points >= 0)
-					pointsField.setText(points + "");
 				userSetDateTime = oldState.getBoolean(USER_SET_DUE_DATE);
 			} catch (NullPointerException e) {}
 			justRestoredState = true;
@@ -257,42 +220,79 @@ public class AssignmentEditFragment extends Activity {
 		}
 	}
 	
-	@Override
-	protected Dialog onCreateDialog(int id) {
-		switch (id) {
-		case DATE_PICKER_DIALOG:
-			return showDatePicker();
-		case TIME_PICKER_DIALOG:
-			return showTimePicker();
+	private static final String CALENDAR_KEY = "calendar";
+	
+	public static class TimePickerFragment extends DialogFragment implements TimePickerDialog.OnTimeSetListener {
+		
+		private Calendar mCalendar;
+		
+		@Override
+		public void setArguments(Bundle args) {
+			mCalendar = (Calendar)args.getSerializable(CALENDAR_KEY);
 		}
-		return super.onCreateDialog(id);
+		
+		@Override
+		public Dialog onCreateDialog(Bundle savedInstanceState) {
+			Context context = getActivity();
+			return new TimePickerDialog(context, this, mCalendar.get(Calendar.HOUR_OF_DAY),
+					mCalendar.get(Calendar.MINUTE), DateFormat.is24HourFormat(context));
+		}
+		
+		public void onTimeSet(TimePicker view, int hourOfDay, int minute) {
+			((AssignmentEditFragment)getActivity()).setTime(hourOfDay, minute);
+		}
 	}
 	
-	private DatePickerDialog showDatePicker() {
-		DatePickerDialog datePicker = new DatePickerDialog(this, new DatePickerDialog.OnDateSetListener() {
-			public void onDateSet(DatePicker view, int year, int monthOfYear, int dayOfMonth) {
-				calendar.set(Calendar.YEAR, year);
-				calendar.set(Calendar.MONTH, monthOfYear);
-				calendar.set(Calendar.DAY_OF_MONTH, dayOfMonth);
-				updateButtons(1);
-				if (!userSetDateTime)
-					userSetDateTime = true;
-			}
-			
-		}, calendar.get(Calendar.YEAR), calendar.get(Calendar.MONTH), calendar.get(Calendar.DAY_OF_MONTH));
-		return datePicker;
+	protected void setTime(int hourOfDay, int minute) {
+		calendar.set(Calendar.HOUR_OF_DAY, hourOfDay);
+		calendar.set(Calendar.MINUTE, minute);
+		updateButtons(2);
 	}
-
-	private TimePickerDialog showTimePicker() {
-		return new TimePickerDialog(this, new TimePickerDialog.OnTimeSetListener() {
-			public void onTimeSet(TimePicker view, int hourOfDay, int minute) {
-				calendar.set(Calendar.HOUR_OF_DAY, hourOfDay);
-				calendar.set(Calendar.MINUTE, minute);
-				updateButtons(2);
-				if (!userSetDateTime)
-					userSetDateTime = true;
-			}
-		}, calendar.get(Calendar.HOUR_OF_DAY), calendar.get(Calendar.MINUTE), false);
+	
+	public void showTimePickerDialog(View v) {
+		Bundle args = new Bundle();
+		args.putSerializable("calendar", calendar);
+		
+		TimePickerFragment frag = new TimePickerFragment();
+		frag.setArguments(args);
+		frag.show(getSupportFragmentManager(), "timePicker");
+	}
+	
+	
+	public static class DatePickerFragment extends DialogFragment implements DatePickerDialog.OnDateSetListener {
+		
+		private Calendar mCalendar;
+		
+		@Override
+		public void setArguments(Bundle args) {
+			mCalendar = (Calendar)args.getSerializable(CALENDAR_KEY);
+		}
+		
+		@Override
+		public Dialog onCreateDialog(Bundle savedInstanceState) {
+			return new DatePickerDialog(getActivity(), this, mCalendar.get(Calendar.YEAR),
+					mCalendar.get(Calendar.MONTH), mCalendar.get(Calendar.DATE));
+		}
+		
+		public void onDateSet(DatePicker view, int year, int month, int day) {
+			//TODO Not sure I'm doing this right...
+			((AssignmentEditFragment)getActivity()).setDate(year, month, day);
+		}
+	}
+	
+	protected void setDate(int year, int month, int day) {
+		calendar.set(Calendar.YEAR, year);
+		calendar.set(Calendar.MONTH, month);
+		calendar.set(Calendar.DAY_OF_MONTH, day);
+		updateButtons(1);
+	}
+	
+	public void showDatePickerDialog(View v) {
+		Bundle args = new Bundle();
+		args.putSerializable(CALENDAR_KEY, calendar);
+		DatePickerFragment frag = new DatePickerFragment();
+		frag.setArguments(args);
+		frag.show(getSupportFragmentManager(), "timePicker");
 	}
 	
 	/**
@@ -306,21 +306,22 @@ public class AssignmentEditFragment extends Activity {
 			timeDueButton.setText(DateUtils.formatAsString(calendar, TIME_FORMAT));
 	}
 	
+	public void cancelPressed(View v) {
+		finish();
+	}
+	
+	public void savePressed(View v) {
+		saveData();
+		finish();
+	}
+	
 	private void saveData() {
-		
-		// Get the assignment's point value
-		long points = -1;
-		if (pointsField.getText().length() > 0) {
-			try {
-				points = Long.parseLong(pointsField.getText().toString());
-			} catch (NumberFormatException e) {}
-		}
 		
 		addAssignment(titleField.getText().toString(),
 				(short) courseSpinner.getSelectedItemId(),
 				descriptionField.getText().toString(),
 				DateUtils.convertMillsToMinutes(calendar.getTimeInMillis()),
-				points, rowId);
+				rowId);
 	}
 	
 	/**
@@ -332,13 +333,12 @@ public class AssignmentEditFragment extends Activity {
 	 * @param points the amount of points the assignment is worth
 	 * @param rowId the position in the database to update, or <b>null</b> to add a new assignment
 	 */
-    private void addAssignment(String title, short course, String description, long dueDate, long points, Long rowId) {
+    private void addAssignment(String title, short course, String description, long dueDate, Long rowId) {
     	ContentValues values = new ContentValues();
     	values.put(Values.KEY_TITLE, title);
     	values.put(Values.ASSIGNMENT_KEY_COURSE, course);
     	values.put(Values.KEY_DESCRIPTION, description);
     	values.put(Values.ASSIGNMENT_KEY_DUE_DATE, dueDate);
-    	values.put(Values.ASSIGNMENT_KEY_POINTS, points);
 
 		DbAdapter dbAdapter = new DbAdapter(this, null, Values.ASSIGNMENT_TABLE);
 		dbAdapter.open();

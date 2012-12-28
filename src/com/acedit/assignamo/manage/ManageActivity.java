@@ -26,8 +26,7 @@ public class ManageActivity extends FragmentActivity {
     private String[] titles;
     private static final String KEY_POSITION = "pos";
     
-    private static final short BOOKS = 0;
-    private static final short COURSES = 1;
+    private static final short COURSES = 0;
     
     /** Called when the activity is first created. */
     @Override
@@ -37,7 +36,7 @@ public class ManageActivity extends FragmentActivity {
     		selectedPos = savedInstanceState.getShort(KEY_POSITION);
         setContentView(R.layout.tab_pager);
         
-        titles = new String[] { getString(R.string.manage_books), getString(R.string.manage_courses),
+        titles = new String[] { getString(R.string.manage_courses),
         		getString(R.string.manage_teachers) };
         titleCount = (short)titles.length;
     	adapter = new TitlePageAdapter(getSupportFragmentManager(),titles,this);
@@ -81,9 +80,6 @@ public class ManageActivity extends FragmentActivity {
     public boolean onPrepareOptionsMenu(Menu menu) {
     	menu.clear();
     	switch (selectedPos) {
-    	case BOOKS:
-    		menu.add(R.string.book_add).setIcon(android.R.drawable.ic_menu_add);
-    		return true;
     	case COURSES:
     		menu.add(R.string.course_add).setIcon(android.R.drawable.ic_menu_add);
     		return true;
@@ -98,9 +94,6 @@ public class ManageActivity extends FragmentActivity {
     	Intent i;
     	// (There is only one option, so there is no need to check the MenuItem id)
     	switch (selectedPos) {
-    	case BOOKS:
-    		i = new Intent(getBaseContext(), BookEditActivity.class);
-    		break;
     	case COURSES:
     		i = new Intent(getBaseContext(), CourseEditActivity.class);
     		break;
@@ -125,8 +118,6 @@ public class ManageActivity extends FragmentActivity {
 		public Fragment getItem(int position) {
 			setCurrentPosition(position);
 			switch (position) {
-			case BOOKS:
-				return new BookListFragment();
 			case COURSES:
 				return new CourseListFragment();
 			default:

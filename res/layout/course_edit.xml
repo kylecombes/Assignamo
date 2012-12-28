@@ -41,19 +41,11 @@
 		        android:layout_width="wrap_content"
 		        android:layout_height="wrap_content"
 		        android:text="@string/select_color"/>
-		    
-		    <TextView
-		        android:id="@+id/course_edit_room_label"
-		        android:layout_width="wrap_content"
-		        android:layout_height="wrap_content"
-		        android:text="@string/room"
-		        android:textAppearance="?android:attr/textAppearanceSmall" />
 		
 		    <EditText
 		        android:id="@+id/course_edit_room_field"
-		        android:layout_width="match_parent"
-		        android:layout_height="wrap_content"
-		        android:inputType="number" />
+		        android:hint="@string/room"
+		        style="@style/TextBox.Title" />
 		
 		</LinearLayout>
 	</ScrollView>

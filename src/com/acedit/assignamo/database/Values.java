@@ -5,7 +5,7 @@ package com.acedit.assignamo.database;
 public final class Values {
 	
 	public static final String DATABASE_NAME = "data.db";
-	public static final short DATABASE_VERSION = 3;
+	public static final short DATABASE_VERSION = 6;
 	public static final String[] DATABASE_CREATE = {Values.ASSIGNMENT_DATABASE_CREATE,
 		Values.COURSE_DATABASE_CREATE, Values.BOOK_DATABASE_CREATE, Values.TEACHER_DATABASE_CREATE };
 	public static final String INTENT_REFRESH_KEY = "refresh_id";
@@ -24,12 +24,11 @@ public final class Values {
 	public static final String ASSIGNMENT_TABLE = "assignments";
 	public static final String ASSIGNMENT_KEY_COURSE = "course";
 	public static final String ASSIGNMENT_KEY_DUE_DATE = "due_date";
-	public static final String ASSIGNMENT_KEY_POINTS = "points";
 	public static final String ASSIGNMENT_KEY_STATUS = "status";
 	public static final short ASSIGNMENT_STATUS_INCOMPLETE = 0;
 	public static final short ASSIGNMENT_STATUS_COMPLETED = 1;
 	public static final String[] ASSIGNMENT_FETCH = { KEY_ROWID, KEY_TITLE,
-		ASSIGNMENT_KEY_COURSE, KEY_DESCRIPTION, ASSIGNMENT_KEY_DUE_DATE, ASSIGNMENT_KEY_POINTS, ASSIGNMENT_KEY_STATUS };
+		ASSIGNMENT_KEY_COURSE, KEY_DESCRIPTION, ASSIGNMENT_KEY_DUE_DATE, ASSIGNMENT_KEY_STATUS };
 	public static final String[] ASSIGNMENT_LIST_FETCH = { KEY_ROWID, KEY_TITLE, ASSIGNMENT_KEY_COURSE, KEY_DESCRIPTION,
 		ASSIGNMENT_KEY_DUE_DATE };
 	public static final String ASSIGNMENT_DATABASE_CREATE = "create table " + ASSIGNMENT_TABLE
@@ -38,7 +37,6 @@ public final class Values {
 			+ ASSIGNMENT_KEY_COURSE + " int not null, "
 			+ KEY_DESCRIPTION + " text not null, "
 			+ ASSIGNMENT_KEY_DUE_DATE + " text not null, "
-			+ ASSIGNMENT_KEY_POINTS + " int, "
 			+ ASSIGNMENT_KEY_STATUS + " int not null default " + ASSIGNMENT_STATUS_INCOMPLETE + ");";
 	public static final String ASSIGNMENT_KEY_SHOWING_COMPLETED = "show_completed_assignments";
 	
@@ -56,7 +54,7 @@ public final class Values {
 			+ KEY_NAME + " text not null, "
 			+ COURSE_KEY_TEACHER + " text not null, "
 			+ KEY_DESCRIPTION + " text, "
-			+ KEY_ROOM + " int, "
+			+ KEY_ROOM + " text, "
 			+ COURSE_KEY_TIMES_OF_DAY + " text, "
 			+ COURSE_KEY_COLOR + " int not null);";
 	

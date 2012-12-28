@@ -40,12 +40,6 @@
 		
 		    <TextView android:id="@+id/assignment_view_description"
 		        style="@style/TextView.ViewActivity.Notes"/>
-		
-		    <TextView android:text="@string/points"
-		        style="@style/TextView.ViewActivity.Label"/>
-		
-		    <TextView android:id="@+id/assignment_view_points"
-		        style="@style/TextView.ViewActivity" />
 		    
 		</LinearLayout>
 	</LinearLayout>

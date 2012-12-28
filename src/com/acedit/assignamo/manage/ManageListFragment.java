@@ -36,21 +36,13 @@ public class ManageListFragment extends ListFragment {
 	private final static String KEY_POSITION = "pos";
 	
 	private static short position;
-	private static final short POSITION_BOOKS = 0;
-	private static final short POSITION_COURSES = 1;
-	//private static final short POSITION_TEACHERS = 2;
+	private static final short POSITION_COURSES = 0;
+	//private static final short POSITION_TEACHERS = 1;
 	
 	
 	// Needed for recreating the fragment
 	public ManageListFragment() {}
-	
-	/**
-	 * Create an assignment list that shows all assignments.
-	 */
-	public ManageListFragment(Context context) {
-		this.context = context;
-	}
-	
+		
 	@Override
 	public void onSaveInstanceState(Bundle outState) {
 		super.onSaveInstanceState(outState);
@@ -64,6 +56,7 @@ public class ManageListFragment extends ListFragment {
 			position = savedInstanceState.getShort(KEY_POSITION);
 		}
 		setRetainInstance(true);
+		context = getActivity();
 		
 		// Need to give cursor a value -- null will make it not work
 		updateAdapter();
@@ -104,9 +97,6 @@ public class ManageListFragment extends ListFragment {
 	public void updateAdapter() {
 		
 		switch (position) {
-		case POSITION_BOOKS:
-			
-			break;
 		case POSITION_COURSES:
 			
 			break;
@@ -131,9 +121,6 @@ public class ManageListFragment extends ListFragment {
 		
 		Intent i;
 		switch (this.position) {
-		case POSITION_BOOKS:
-			i = new Intent(context, BookViewFragment.class);
-			break;
 		case POSITION_COURSES:
 			i = new Intent(context, CourseViewFragment.class);
 			break;
@@ -150,9 +137,6 @@ public class ManageListFragment extends ListFragment {
 		MenuInflater inflater = new MenuInflater(context);
 		
 		switch (position) {
-		case POSITION_BOOKS:
-			inflater.inflate(R.menu.book_longpress, menu);
-			break;
 		case POSITION_COURSES:
 			inflater.inflate(R.menu.course_longpress, menu);
 			break;
@@ -171,9 +155,6 @@ public class ManageListFragment extends ListFragment {
 		case R.id.manage_context_menu_edit:
 			Intent i;
 			switch (position) {
-			case POSITION_BOOKS:
-				i = new Intent(context, BookEditActivity.class);
-				break;
 			case POSITION_COURSES:
 				i = new Intent(context, CourseEditActivity.class);
 				break;
@@ -187,8 +168,6 @@ public class ManageListFragment extends ListFragment {
 			String table;
 			switch (position) { // The table we are deleting from is the
 									// only thing that differs.
-			case POSITION_BOOKS:
-				table = Values.BOOK_TABLE;
 			case POSITION_COURSES:
 				table = Values.COURSE_TABLE;
 				break;

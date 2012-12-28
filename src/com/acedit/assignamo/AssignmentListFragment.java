@@ -5,14 +5,18 @@ import java.util.Calendar;
 import java.util.HashMap;
 import java.util.Map;
 
+import android.app.AlertDialog;
+import android.app.Dialog;
 import android.content.BroadcastReceiver;
 import android.content.Context;
+import android.content.DialogInterface;
 import android.content.Intent;
 import android.content.IntentFilter;
 import android.content.SharedPreferences;
 import android.database.Cursor;
 import android.os.Bundle;
 import android.preference.PreferenceManager;
+import android.support.v4.app.DialogFragment;
 import android.support.v4.app.ListFragment;
 import android.support.v4.content.LocalBroadcastManager;
 import android.support.v4.widget.CursorAdapter;
@@ -40,11 +44,13 @@ public class AssignmentListFragment extends ListFragment {
 	DbAdapter dbAdapter;
 	Cursor assignmentsCursor;
 	private Context context;
+	private long selectedItem;
 	
-	private final String DATE_FORMAT = "c, MMMMM dd";
+	private static final String DATE_FORMAT = "c, MMMMM dd";
 	
 	// The course we are displaying assignments for. If all, -1.
 	short course = -1;
+	
 	
 	public AssignmentListFragment() {}
 	
@@ -198,15 +204,16 @@ public class AssignmentListFragment extends ListFragment {
 			return true;
 		case 2:
 			// Delete the assignment
-			DbUtils.deleteAssignment(context, id);
-			broadcastRefresh();
+			selectedItem = id;
+			DeleteDialogFragment frag = new DeleteDialogFragment();
+			frag.setTargetFragment(this, 0);
+			frag.show(getFragmentManager(), "confirmDelete");
 			return true;
 		}
 		return super.onContextItemSelected(item);
 	}
 	
-	//TODO Finish implementing prompt when deleting assignment
-	/*---------- Assignment-Delete Prompt ----------*
+	/*---------- Assignment-Delete Prompt ----------*/
 	
 	public static class DeleteDialogFragment extends DialogFragment {
 		
@@ -217,29 +224,21 @@ public class AssignmentListFragment extends ListFragment {
 		@Override
 		public Dialog onCreateDialog(Bundle savedInstanceState) {
 			return new AlertDialog.Builder(getActivity())
-				.setTitle(R.string.assignment_confirm_delete_title)
+				.setTitle(R.string.confirm_delete)
 				.setMessage(R.string.assignment_confirm_delete_message)
-				.setPositiveButton(android.R.string.yes, new DialogInterface.OnClickListener() {
-					
-					@Override
+				.setPositiveButton(R.string.yes, new DialogInterface.OnClickListener() {
 					public void onClick(DialogInterface dialog, int which) {
-						((AssignmentListFragment)getTargetFragment()).doPositiveClick();
+						((AssignmentListFragment)getTargetFragment()).deleteAssignment();
 					}
 				})
-				.setNegativeButton(android.R.string.no, new DialogInterface.OnClickListener() {
-					
-					@Override
-					public void onClick(DialogInterface dialog, int which) {
-						
-					}
-				})
+				.setNegativeButton(R.string.no, null)
 				.create();
 		}
 	}
 	
-	public void doPositiveClick() {
+	public void deleteAssignment() {
 		// Delete the assignment
-		DbUtils.deleteAssignment(context, info.id);
+		DbUtils.deleteAssignment(context, selectedItem);
 		broadcastRefresh();
 	}
 	
