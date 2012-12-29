@@ -1,0 +1,18 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:orientation="vertical"
+    style="@style/Setup.Fragment">
+    <TextView style="@style/Setup.TextView.Title"
+        android:text="@string/setup_teachers_title"/>
+    <TextView style="@style/Setup.TextView.Message"
+        android:text="@string/setup_teachers_message"/>
+    <RelativeLayout android:layout_width="match_parent"
+        android:layout_height="wrap_content">
+		<Button android:id="@+id/setup_add_button"
+		    style="@style/Setup.AddButton"
+		    android:background="@android:drawable/ic_menu_add"/>
+    </RelativeLayout>
+    <ListView style="@style/Setup.ListView.ListView"/>
+</LinearLayout>

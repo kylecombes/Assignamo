@@ -1,5 +1,12 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources xmlns:android="http://schemas.android.com/apk/res/android">
+    
+    <!--  Setup Wizard  -->
+    <dimen name="setup_wizard_add_button_dimen">40dp</dimen>
+    <dimen name="setup_wizard_add_button_margin">10dp</dimen>
+    <dimen name="setup_wizard_list_button_dimen">30dp</dimen>
+    <dimen name="setup_wizard_list_button_spacing">10dp</dimen>
+    
     <dimen name="list_item_font_size">20sp</dimen>
     <dimen name="list_item_subfont_size">15sp</dimen>
     

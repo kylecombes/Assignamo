@@ -1,0 +1,15 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+	android:layout_width="match_parent"
+	android:layout_height="wrap_content"
+	style="@style/Setup.ListView.Item">
+	<TextView android:id="@+id/setup_list_item_text"
+	    style="@style/Setup.ListView.Text"/>
+	<Button android:id="@+id/setup_wizard_delete_button"
+	    style="@style/Setup.Button.Right"
+	    android:background="@android:drawable/ic_menu_delete"/>
+	<Button android:id="@+id/setup_wizard_edit_button"
+	    style="@style/Setup.Button.Left"
+	    android:background="@android:drawable/ic_menu_edit"
+	    android:layout_toLeftOf="@id/setup_wizard_delete_button"/>
+</RelativeLayout>

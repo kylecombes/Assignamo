@@ -7,10 +7,11 @@ public final class Values {
 	public static final String DATABASE_NAME = "data.db";
 	public static final short DATABASE_VERSION = 6;
 	public static final String[] DATABASE_CREATE = {Values.ASSIGNMENT_DATABASE_CREATE,
-		Values.COURSE_DATABASE_CREATE, Values.BOOK_DATABASE_CREATE, Values.TEACHER_DATABASE_CREATE };
+		Values.COURSE_DATABASE_CREATE, Values.TEACHER_DATABASE_CREATE };
 	public static final String INTENT_REFRESH_KEY = "refresh_id";
 	public static final String INTENT_REFRESH_COURSE_KEY = "refresh_course_id";
 	public static final String INTENT_REFRESH_ACTION = "assignamo.REFRESH";
+	public static final String PREFS_DB_INITIALIZED = "db_initialized";
 	
 	/*--------- Shared Variable Values ---------*/
 	public static final String KEY_ROWID = "_id";
@@ -57,26 +58,6 @@ public final class Values {
 			+ KEY_ROOM + " text, "
 			+ COURSE_KEY_TIMES_OF_DAY + " text, "
 			+ COURSE_KEY_COLOR + " int not null);";
-	
-	/*--------- Books ---------- */
-	public static final String BOOK_TABLE = "books";
-	public static final String BOOK_KEY_AUTHOR = "author";
-	public static final String BOOK_KEY_TYPE = "type";
-	public static final String BOOK_KEY_PAGES = "pages";
-	public static final String BOOK_KEY_CHAPTERS = "chapters";
-	public static final String BOOK_KEY_ISBN = "ISBN";
-	public static final String[] BOOK_FETCH = {KEY_ROWID, KEY_TITLE,
-		BOOK_KEY_AUTHOR, KEY_DESCRIPTION, BOOK_KEY_TYPE, BOOK_KEY_CHAPTERS,
-		BOOK_KEY_PAGES, BOOK_KEY_ISBN};
-	public static final String BOOK_DATABASE_CREATE = "create table " + BOOK_TABLE + " ( "
-			+ KEY_ROWID + " integer primary key autoincrement, "
-			+ KEY_TITLE + " text not null, "
-			+ BOOK_KEY_AUTHOR + " text not null, "
-			+ KEY_DESCRIPTION + " text, "
-			+ BOOK_KEY_TYPE + " text not null, "
-			+ BOOK_KEY_CHAPTERS + " int not null, "
-			+ BOOK_KEY_PAGES + " int not null, "
-			+ BOOK_KEY_ISBN + " text);";
 	
 	/*-------- Teachers ----------*/
 	public static final String TEACHER_TABLE = "teachers";

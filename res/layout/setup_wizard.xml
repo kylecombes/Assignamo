@@ -1,0 +1,22 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:orientation="vertical">
+    
+    <FrameLayout android:id="@+id/setup_wizard_fragment_container"
+        android:layout_width="match_parent"
+        android:layout_height="0dp"
+        android:layout_weight="1"/>
+    
+    <LinearLayout style="@style/ButtonBar">
+        <Button android:id="@+id/setup_wizard_back_button"
+            style="@style/Button.ButtonBar"
+            android:text="@android:string/cancel"
+            android:onClick="backClicked"/>
+        <Button android:id="@+id/setup_wizard_next_button"
+            style="@style/Button.ButtonBar"
+            android:text="@string/next"
+            android:onClick="nextClicked"/>
+    </LinearLayout>
+</LinearLayout>

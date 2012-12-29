@@ -1,4 +1,8 @@
 <resources>
+    
+    <!--  Setup Wizard  -->
+    <color name="setup_list_background">#afafaf</color>
+    
     <color name="list_text">#000000</color>
     <color name="background">#f5f5f5</color>
     <color name="tab_background">#c0c0c0</color>

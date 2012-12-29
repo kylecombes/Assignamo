@@ -54,6 +54,13 @@ public class DbUtils {
 	
 	
 	/*---------- Courses ----------*/
+
+	public static boolean deleteCourse(Context context, long rowId) {
+		DbAdapter adapter = new DbAdapter(context, null, Values.COURSE_TABLE).open();
+		boolean b = adapter.delete(rowId);
+		adapter.close();
+		return b;
+	}
 	
 	/**
 	 * Get the number of courses stored in the database.
@@ -121,6 +128,13 @@ public class DbUtils {
 	}
 	
 	/* ---------- Teachers ----------*/
+	
+	public static boolean deleteTeacher(Context context, long rowId) {
+		DbAdapter adapter = new DbAdapter(context, null, Values.TEACHER_TABLE).open();
+		boolean b = adapter.delete(rowId);
+		adapter.close();
+		return b;
+	}
 	
 	public static Cursor getTeachersAsCursor(Context context) {
 		return queryTable(context, Values.TEACHER_TABLE, new String[] {Values.KEY_ROWID, Values.KEY_NAME});

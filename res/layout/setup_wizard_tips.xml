@@ -1,0 +1,11 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:orientation="vertical"
+    style="@style/Setup.Fragment">
+    <TextView style="@style/Setup.TextView.Title"
+        android:text="@string/setup_tips_title"/>
+    <TextView style="@style/Setup.TextView.Message"
+        android:text="@string/setup_tips_message"/>
+</LinearLayout>

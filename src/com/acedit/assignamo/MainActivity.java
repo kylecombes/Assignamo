@@ -10,8 +10,6 @@ import android.support.v4.view.ViewPager.OnPageChangeListener;
 import android.view.Menu;
 import android.view.MenuItem;
 
-import com.acedit.assignamo.R;
-import com.acedit.assignamo.database.DbAdapter;
 import com.acedit.assignamo.database.Values;
 import com.acedit.assignamo.manage.ManageActivity;
 import com.acedit.assignamo.preferences.Preferences;
@@ -29,33 +27,14 @@ public class MainActivity extends FragmentActivity {
     @Override
     public void onCreate(Bundle savedInstanceState) {
     	super.onCreate(savedInstanceState);
-    	//TODO Add Welcome/Setup screen
     	if (savedInstanceState != null)
     		selectedPos = savedInstanceState.getShort(KEY_POSITION);
         setContentView(R.layout.tab_pager);
-    	
-    	checkForExistingDatabase();
-    }
-    
-    /**
-     * Checks to see if the database already exists. If not, it creates one.
-     * @return true if the database already existed
-     */
-    private boolean checkForExistingDatabase() {
-    	java.io.File dbFile = new java.io.File("/data/data/" + getApplicationContext().getPackageName() + "/databases/" + Values.DATABASE_NAME);
-    	if (!dbFile.exists()) {
-    		DbAdapter a = new DbAdapter(this, null, "temp");
-    		a.open();
-    		a.close();
-    		return false;
-    	}
-    	return true;
     }
     
     @Override
     public void onResume() {
     	super.onResume();
-    	
     	
     	String[] courses = DbUtils.getCoursesAsArray(this);
     	String[] titles = new String[courses.length+1];
