@@ -3,7 +3,6 @@ package com.acedit.assignamo.manage;
 import org.json.JSONArray;
 import org.json.JSONException;
 
-import android.app.Activity;
 import android.app.AlertDialog;
 import android.app.Dialog;
 import android.content.ContentValues;
@@ -13,6 +12,7 @@ import android.content.Intent;
 import android.database.Cursor;
 import android.graphics.Color;
 import android.os.Bundle;
+import android.support.v4.app.FragmentActivity;
 import android.support.v4.widget.SimpleCursorAdapter;
 import android.view.View;
 import android.view.View.OnClickListener;
@@ -25,7 +25,7 @@ import com.acedit.assignamo.database.DbAdapter;
 import com.acedit.assignamo.database.Values;
 import com.acedit.assignamo.utils.DbUtils;
 
-public class CourseEditActivity extends Activity {
+public class CourseEditActivity extends FragmentActivity {
 	
 	private Long rowId;
 	private Context context = this;

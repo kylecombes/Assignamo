@@ -6,10 +6,14 @@ import java.util.Map;
 import org.json.JSONArray;
 import org.json.JSONException;
 
+import android.app.AlertDialog;
+import android.app.Dialog;
 import android.content.Context;
+import android.content.DialogInterface;
 import android.content.Intent;
 import android.database.Cursor;
 import android.os.Bundle;
+import android.support.v4.app.DialogFragment;
 import android.view.ContextMenu;
 import android.view.ContextMenu.ContextMenuInfo;
 import android.view.LayoutInflater;
@@ -35,6 +39,8 @@ public class CourseListFragment extends BaseListFragment {
 	
 	Map<Short,String> teachers = new HashMap<Short,String>();
 	Map<Short,Integer> colors = new HashMap<Short,Integer>(); // Colors are light
+	
+	private long selectedItem;
 	
 	public CourseListFragment() {}
 	
@@ -155,17 +161,48 @@ public class CourseListFragment extends BaseListFragment {
     }
     
     public boolean onContextItemSelected(MenuItem item) {
-		AdapterContextMenuInfo info = (AdapterContextMenuInfo)item.getMenuInfo();
+		long id = ((AdapterContextMenuInfo)item.getMenuInfo()).id;
     	switch (item.getItemId()) {
     	case CONTEXT_EDIT:
     		startActivity( new Intent(context, CourseEditActivity.class)
-    			.putExtra(Values.KEY_ROWID, info.id) );
+    			.putExtra(Values.KEY_ROWID, id) );
     		return true;
     	case CONTEXT_DELETE:
-			delete(info.id);
-			fillData();
+    		selectedItem = id;
+			DeleteDialogFragment frag = new DeleteDialogFragment();
+			frag.setTargetFragment(this, 0);
+			frag.show(getFragmentManager(), "confirmDelete");
 			return true;
 		}
     	return false;
     }
+    
+/*---------- Course-Delete Prompt ----------*/
+	
+	public static class DeleteDialogFragment extends DialogFragment {
+		
+		static DeleteDialogFragment newInstance(int arg) {
+			return new DeleteDialogFragment();
+		}
+		
+		@Override
+		public Dialog onCreateDialog(Bundle savedInstanceState) {
+			return new AlertDialog.Builder(getActivity())
+				.setIcon(android.R.drawable.ic_dialog_alert)
+				.setTitle(R.string.confirm_delete)
+				.setMessage(R.string.course_delete_message)
+				.setPositiveButton(R.string.yes, new DialogInterface.OnClickListener() {
+					public void onClick(DialogInterface dialog, int which) {
+						((CourseListFragment)getTargetFragment()).deleteCourse();
+					}
+				})
+				.setNegativeButton(R.string.no, null)
+				.create();
+		}
+	}
+	
+	public void deleteCourse() {
+		DbUtils.deleteCourse(context, selectedItem);
+		fillData();
+	}
 }

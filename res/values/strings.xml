@@ -66,6 +66,7 @@
         <item>Sat</item>
     </string-array>
     <string name="course_no_days_set">No days set</string>
+    <string name="course_delete_message">WARNING: Deleting this course will also delete all of its assignments. Are you sure you want to delete it?</string>
     
     <!--          Teachers          -->
     <string name="teachers_title">Teachers</string>

@@ -224,6 +224,7 @@ public class AssignmentListFragment extends ListFragment {
 		@Override
 		public Dialog onCreateDialog(Bundle savedInstanceState) {
 			return new AlertDialog.Builder(getActivity())
+				.setIcon(android.R.drawable.ic_dialog_alert)
 				.setTitle(R.string.confirm_delete)
 				.setMessage(R.string.assignment_confirm_delete_message)
 				.setPositiveButton(R.string.yes, new DialogInterface.OnClickListener() {
@@ -277,6 +278,7 @@ public class AssignmentListFragment extends ListFragment {
 	private class CustomCursorAdapter extends CursorAdapter {
 		
 		LayoutInflater mInflater;
+		private final int mOverdueColor = getResources().getColor(R.color.assignment_list_overdue);
 		
 		public CustomCursorAdapter(Context context, Cursor c, int flags) {
 			super(context, c, flags);
@@ -289,7 +291,6 @@ public class AssignmentListFragment extends ListFragment {
 		@Override
 		public View getView(int position, View convertView, ViewGroup parent) {
 			
-			//long startTime = System.currentTimeMillis();
 			//ViewHolder holder;
 			
 			//if (convertView == null) {
@@ -313,13 +314,14 @@ public class AssignmentListFragment extends ListFragment {
 			titleLabel.setText(/*"Pos: " + position + " | " + */title);
 			colorStrip.setColor(colors.get(course));
 			convertView.setBackgroundColor(colorsLight.get(course));
-			String dueString = getDateString(due);
-			dueLabel.setText(dueString);
+			
+			dueLabel.setText(getDateString(due));
+			// Make the text red if it's overdue
+			if (due < System.currentTimeMillis() / 60000)
+				dueLabel.setTextColor(mOverdueColor);
+			
 			descriptionLabel.setText(desc);
 			
-			//Log.d("getView", "Position: " + position + ". RowID: " + assignmentsCursor.getLong(0));
-			//Log.d("getView", "Time to populate list item: " + (System.currentTimeMillis() - startTime) + " milliseconds");
-			//Log.d("getView", "Title: \"" + title + "\" label value: \"" + holder.titleLabel.getText() + "\"");
 			return convertView;
 		}
 

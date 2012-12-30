@@ -2,15 +2,11 @@ package com.acedit.assignamo;
 
 import java.util.HashMap;
 
-import android.app.AlertDialog;
-import android.app.Dialog;
-import android.content.DialogInterface;
-import android.content.Intent;
 import android.content.SharedPreferences;
 import android.database.Cursor;
 import android.os.Bundle;
 import android.preference.PreferenceManager;
-import android.support.v4.app.DialogFragment;
+import android.support.v4.app.FragmentActivity;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.widget.TextView;
@@ -50,7 +46,7 @@ public class AssignmentViewFragment extends ViewFragment {
 		colorStrip.setColor(getCourseColors().get(course));
 		
 		// Set course label
-		String courseText = DbUtils.getCourseNameFromId(context, course);
+		String courseText = DbUtils.getCourseNameFromId(mContext, course);
 		courseLabel.setText(courseText);
 		
 		// Set title label
@@ -69,7 +65,7 @@ public class AssignmentViewFragment extends ViewFragment {
 	
 	private HashMap<Short, Integer> getCourseColors() {
 		HashMap<Short, Integer> colors = new HashMap<Short, Integer>();
-		DbAdapter adapter = new DbAdapter(context, null, Values.COURSE_TABLE);
+		DbAdapter adapter = new DbAdapter(mContext, null, Values.COURSE_TABLE);
 		adapter.open();
 		Cursor c = adapter.fetchAll(new String[] { Values.KEY_ROWID, Values.COURSE_KEY_COLOR } );
 		c.moveToFirst();
@@ -95,56 +91,41 @@ public class AssignmentViewFragment extends ViewFragment {
 		else
 			menu.add(0, 0, 0, R.string.assignment_menu_mark_as_completed)
 			.setIcon(R.drawable.checkmark);
-		menu.add(0, 1, 0, R.string.edit).setIcon(android.R.drawable.ic_menu_edit);
-		menu.add(0, 2, 0, R.string.delete).setIcon(android.R.drawable.ic_menu_delete);
+		menu.add(0, R.id.view_edit, 0, R.string.edit).setIcon(android.R.drawable.ic_menu_edit);
+		menu.add(0, R.id.view_delete, 0, R.string.delete).setIcon(android.R.drawable.ic_menu_delete);
 		return true;
 	}
 	
 	@Override
 	public boolean onOptionsItemSelected(MenuItem item) {
-		switch (item.getItemId()) {
-		case 0:
+		if (item.getItemId() == 0) {
 			if (DbUtils.isAssignmentCompleted(getApplicationContext(), rowId))
 				DbUtils.setAssignmentState(getApplicationContext(), rowId, false);
 			else
 				DbUtils.setAssignmentState(getApplicationContext(), rowId, true);
-			break;
-		case 1:
-			Intent i = new Intent(getApplicationContext(), AssignmentEditFragment.class);
-			i.putExtra(Values.KEY_ROWID, rowId);
-			startActivity(i);
-			break;
-		case 2:
-			DeleteDialogFragment frag = new DeleteDialogFragment();
-			frag.show(getSupportFragmentManager(), "confirmDelete");
+			return true;
 		}
-		return true;
+		return super.onOptionsItemSelected(item); //Process Edit or Delete
 	}
 
-	public static class DeleteDialogFragment extends DialogFragment {
-		
-		static DeleteDialogFragment newInstance(int arg) {
-			return new DeleteDialogFragment();
-		}
-		
-		@Override
-		public Dialog onCreateDialog(Bundle savedInstanceState) {
-			return new AlertDialog.Builder(getActivity())
-				.setTitle(R.string.confirm_delete)
-				.setMessage(R.string.assignment_confirm_delete_message)
-				.setPositiveButton(R.string.yes, new DialogInterface.OnClickListener() {
-					public void onClick(DialogInterface dialog, int which) {
-						((AssignmentViewFragment)((ViewFragment)getActivity())).deleteAssignment();
-					}
-				})
-				.setNegativeButton(R.string.no, null)
-				.create();
-		}
-	}
-	
-	public void deleteAssignment() {
+	protected void deleteItem() {
 		// Delete the assignment
-		DbUtils.deleteAssignment(context, rowId);
+		DbUtils.deleteAssignment(mContext, rowId);
 		finish();
+	}
+
+	@Override
+	protected Class<? extends FragmentActivity> getEditClass() {
+		return AssignmentEditFragment.class;
+	}
+
+	@Override
+	protected String getDatabaseTable() {
+		return Values.ASSIGNMENT_TABLE;
+	}
+
+	@Override
+	protected String getDeleteConfirmationMessage() {
+		return getString(R.string.assignment_confirm_delete_message);
 	}
 }

@@ -33,7 +33,7 @@ import com.acedit.assignamo.utils.DbUtils;
 public class AssignmentEditFragment extends FragmentActivity {
 	
 	private Calendar calendar;
-	static final String DATE_FORMAT = "E, MM/dd/yyyy";
+	static final String DATE_FORMAT = "E, M/d/yyyy";
 	static final String TIME_FORMAT = "hh:mm a";
 	private Long rowId;
 	private boolean userSetDateTime;
@@ -46,26 +46,21 @@ public class AssignmentEditFragment extends FragmentActivity {
 	private Button dueDateButton;
 	private Button timeDueButton;
 	private TextView descriptionField;
+	private static enum DueDateButtons { DATE, TIME, BOTH };  
 	
 	@Override
 	public void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
 		
-		//TODO Needs something to check if a course exists
-		
 		setContentView(R.layout.assignment_edit);
-		// Set the title of the Activity
-		if (rowId == null)
-			setTitle(R.string.assignment_add);
-		else
-			setTitle(R.string.assignment_edit);
+		setTitle(rowId == null ? R.string.assignment_add : R.string.assignment_edit);
 		
 		mapViews();
 		populateSpinner();
 		loadDataFromIntent();
 		populateFields();
 		
-		updateButtons(0);
+		updateButtons(DueDateButtons.BOTH);
 	}
 	
 	private void mapViews() {
@@ -91,7 +86,7 @@ public class AssignmentEditFragment extends FragmentActivity {
 				if (!justRestoredState)
 					if (!userSetDateTime) {
 						setDueDateToNextClassTime();
-						updateButtons(0);
+						updateButtons(DueDateButtons.BOTH);
 					}
 				else
 					justRestoredState = false;
@@ -197,7 +192,7 @@ public class AssignmentEditFragment extends FragmentActivity {
 				descriptionField.setText(oldState.getString(Values.KEY_DESCRIPTION));
 				long time = oldState.getLong(CALENDAR_TIME_KEY);
 				calendar.setTimeInMillis(time);
-				updateButtons(0);
+				updateButtons(DueDateButtons.BOTH);
 				userSetDateTime = oldState.getBoolean(USER_SET_DUE_DATE);
 			} catch (NullPointerException e) {}
 			justRestoredState = true;
@@ -246,7 +241,7 @@ public class AssignmentEditFragment extends FragmentActivity {
 	protected void setTime(int hourOfDay, int minute) {
 		calendar.set(Calendar.HOUR_OF_DAY, hourOfDay);
 		calendar.set(Calendar.MINUTE, minute);
-		updateButtons(2);
+		updateButtons(DueDateButtons.TIME);
 	}
 	
 	public void showTimePickerDialog(View v) {
@@ -284,7 +279,7 @@ public class AssignmentEditFragment extends FragmentActivity {
 		calendar.set(Calendar.YEAR, year);
 		calendar.set(Calendar.MONTH, month);
 		calendar.set(Calendar.DAY_OF_MONTH, day);
-		updateButtons(1);
+		updateButtons(DueDateButtons.DATE);
 	}
 	
 	public void showDatePickerDialog(View v) {
@@ -297,13 +292,17 @@ public class AssignmentEditFragment extends FragmentActivity {
 	
 	/**
 	 * Update the date and/or time buttons.
-	 * @param which which button to update: <b>1</b> is date, <b>2</b> is time, <b>0</b> is both
+	 * @param whichButtons which button to update.
 	 */
-	private void updateButtons(int which) {
-		if (which == 0 || which == 1)
+	private void updateButtons(DueDateButtons whichButtons) {
+		switch (whichButtons) {
+		case BOTH:
+		case DATE:
 			dueDateButton.setText(DateUtils.formatAsString(calendar, DATE_FORMAT));
-		if (which == 0 || which == 2)
+			if (whichButtons != DueDateButtons.BOTH) break;
+		case TIME:
 			timeDueButton.setText(DateUtils.formatAsString(calendar, TIME_FORMAT));
+		}
 	}
 	
 	public void cancelPressed(View v) {

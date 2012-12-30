@@ -1,4 +1,4 @@
-Required
+Version 1.0
 --------------
 * No "No Books" or "No Teachers" message.
 * View label for Managing books, courses, and teachers
@@ -32,22 +32,23 @@ Required
 * Remove books
 * Add support for Gym and Library Room Numbers.
 * First-time setup wizard
+* Delete assignments when deleting course.
+* Display overdue assignments' due date in red.
 
 MUST by V1.0
 ------------
 Spinner on loading screen
 Visual indicator signifying completed assignments when showing completed assignments.
-Delete assignments when deleting course.
-Display overdue assignments' due date in red.
-
-Reminders!!
-Better teacher view
+Finalize teacher view
 Make sure content is saved on Edit pages when rotating and pausing activity.
 Padding on top of Course Day Select not same as padding on bottom.
 Finalize look of setup wizard
 Accept non-U.S. phone numbers for teachers
+Show assignment completion status on AssignmentView
 
-"invalid statement in fillWindow()"
+Reminders!!
+
+"invalid statement in fillWindow()"?
 
 Version 2
 -------------

@@ -4,10 +4,15 @@ import java.text.SimpleDateFormat;
 import java.util.Calendar;
 import java.util.Map;
 
+import android.app.AlertDialog;
+import android.app.Dialog;
 import android.content.Context;
+import android.content.DialogInterface;
+import android.content.Intent;
 import android.database.Cursor;
 import android.graphics.Typeface;
 import android.os.Bundle;
+import android.support.v4.app.DialogFragment;
 import android.support.v4.app.FragmentActivity;
 import android.text.SpannableString;
 import android.text.style.RelativeSizeSpan;
@@ -16,7 +21,6 @@ import android.view.Menu;
 import android.view.MenuInflater;
 import android.view.MenuItem;
 
-import com.acedit.assignamo.R;
 import com.acedit.assignamo.database.Values;
 import com.acedit.assignamo.utils.DateUtils;
 import com.acedit.assignamo.utils.DbUtils;
@@ -25,12 +29,12 @@ public abstract class ViewFragment extends FragmentActivity {
 	
 	protected long rowId;
 	protected Cursor cursor;
-	protected Context context;
+	protected Context mContext;
 		
 	@Override
 	public void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
-		context = getBaseContext();
+		mContext = getBaseContext();
 		if (savedInstanceState != null)
 			rowId = savedInstanceState.getLong(Values.KEY_ROWID);
 		else
@@ -46,6 +50,10 @@ public abstract class ViewFragment extends FragmentActivity {
 	protected abstract void mapViews();
 	
 	protected abstract void populateViews();
+	
+	protected abstract Class<? extends FragmentActivity> getEditClass();
+	
+	protected abstract String getDatabaseTable();
 	
 	@Override
 	public void onSaveInstanceState(Bundle outState) {
@@ -94,7 +102,7 @@ public abstract class ViewFragment extends FragmentActivity {
 
 	/**
 	 * Converts a time to a stylized string.
-	 * @param context a copy of the application context.
+	 * @param mContext a copy of the application mContext.
 	 * @param minutes the number of minutes since January 1st, 1970.
 	 * @param withTime whether or not to append the time to the end of the date
 	 * (January 05, 2010 vs January 05 2010 at 5:30 pm).
@@ -172,6 +180,46 @@ public abstract class ViewFragment extends FragmentActivity {
 		return true;
 	}
 	
-	public abstract boolean onOptionsItemSelected(MenuItem item);
+	public boolean onOptionsItemSelected(MenuItem item) {
+		switch (item.getItemId()) {
+		case R.id.view_edit:
+			startActivity(new Intent(mContext, getEditClass())
+				.putExtra(Values.KEY_ROWID, rowId));
+			return true;
+		case R.id.view_delete:
+			DeleteDialogFragment frag = new DeleteDialogFragment();
+			frag.show(getSupportFragmentManager(), "confirmDelete");
+			return true;
+		default:
+			return false;
+		}
+	}
+	
+	protected abstract String getDeleteConfirmationMessage();
+	
+
+	protected static class DeleteDialogFragment extends DialogFragment {
+		
+		static DeleteDialogFragment newInstance(int arg) {
+			return new DeleteDialogFragment();
+		}
+		
+		@Override
+		public Dialog onCreateDialog(Bundle savedInstanceState) {
+			return new AlertDialog.Builder(getActivity())
+				.setIcon(android.R.drawable.ic_dialog_alert)
+				.setTitle(R.string.confirm_delete)
+				.setMessage(((ViewFragment)getActivity()).getDeleteConfirmationMessage())
+				.setPositiveButton(R.string.yes, new DialogInterface.OnClickListener() {
+					public void onClick(DialogInterface dialog, int which) {
+						((ViewFragment)getActivity()).deleteItem();
+					}
+				})
+				.setNegativeButton(R.string.no, null)
+				.create();
+		}
+	}
+	
+	protected abstract void deleteItem();
 	
 }

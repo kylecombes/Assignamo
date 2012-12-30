@@ -1,9 +1,8 @@
 package com.acedit.assignamo.manage;
 
-import android.content.Intent;
 import android.os.Bundle;
+import android.support.v4.app.FragmentActivity;
 import android.text.SpannableString;
-import android.view.MenuItem;
 import android.widget.TextView;
 import android.widget.TextView.BufferType;
 
@@ -32,7 +31,7 @@ public class TeacherViewFragment extends ViewFragment {
 	}
 
 	protected void populateViews() {
-		DbAdapter dbAdapter = new DbAdapter(context, null, Values.TEACHER_TABLE);
+		DbAdapter dbAdapter = new DbAdapter(mContext, null, Values.TEACHER_TABLE);
 		dbAdapter.open();
 		cursor = dbAdapter.fetch(rowId,Values.TEACHER_FETCH);
 		dbAdapter.close();
@@ -59,21 +58,6 @@ public class TeacherViewFragment extends ViewFragment {
 			notesLabel.setText(getItalicizedString(R.string.no_notes), BufferType.SPANNABLE);
 		
 		cursor.close();
-	}
-	
-	@Override
-	public boolean onOptionsItemSelected(MenuItem item) {
-		switch (item.getItemId()) {
-		case R.id.view_edit:
-			Intent i = new Intent(context, TeacherEditActivity.class);
-			i.putExtra(Values.KEY_ROWID, rowId);
-			startActivity(i);
-			break;
-		case R.id.view_delete:
-			DbUtils.deleteAssignment(context,rowId);
-			finish();
-		}
-		return true;
 	}
 	
 	/**
@@ -126,6 +110,27 @@ public class TeacherViewFragment extends ViewFragment {
 			throw new NumberFormatException("Invalid phone number.");
 		
 		return new SpannableString(rStr);
+	}
+
+	@Override
+	protected Class<? extends FragmentActivity> getEditClass() {
+		return TeacherEditActivity.class;
+	}
+
+	@Override
+	protected String getDatabaseTable() {
+		return Values.TEACHER_TABLE;
+	}
+
+	@Override
+	protected void deleteItem() {
+		DbUtils.deleteTeacher(mContext, rowId);
+		finish();
+	}
+
+	@Override
+	protected String getDeleteConfirmationMessage() {
+		return getString(R.string.teacher_confirm_delete_message);
 	}
 	
 }

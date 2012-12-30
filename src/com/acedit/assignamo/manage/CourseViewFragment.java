@@ -1,10 +1,9 @@
 package com.acedit.assignamo.manage;
 
-import android.content.Intent;
 import android.os.Bundle;
+import android.support.v4.app.FragmentActivity;
 import android.text.SpannableString;
 import android.text.style.RelativeSizeSpan;
-import android.view.MenuItem;
 import android.widget.TextView;
 import android.widget.TextView.BufferType;
 
@@ -46,19 +45,9 @@ public class CourseViewFragment extends ViewFragment {
 		cursor.close();
 	}
 	
-	@Override
-	public boolean onOptionsItemSelected(MenuItem item) {
-		switch (item.getItemId()) {
-		case R.id.view_edit:
-			Intent i = new Intent(getApplicationContext(), CourseEditActivity.class);
-			i.putExtra(Values.KEY_ROWID, rowId);
-			startActivity(i);
-			break;
-		case R.id.view_delete:
-			DbUtils.deleteAssignment(context,rowId);
-			finish();
-		}
-		return true;
+	protected void deleteItem() {
+		DbUtils.deleteCourse(mContext, rowId);
+		finish();
 	}
 
 	private SpannableString getRoom(String id) {
@@ -70,6 +59,21 @@ public class CourseViewFragment extends ViewFragment {
 			rStr.setSpan(new RelativeSizeSpan(0.8f), 0, str.length(), 0);
 			return rStr;
 		}
+	}
+
+	@Override
+	protected Class<? extends FragmentActivity> getEditClass() {
+		return CourseEditActivity.class;
+	}
+
+	@Override
+	protected String getDatabaseTable() {
+		return Values.COURSE_TABLE;
+	}
+
+	@Override
+	protected String getDeleteConfirmationMessage() {
+		return getString(R.string.course_delete_message);
 	}
 	
 }

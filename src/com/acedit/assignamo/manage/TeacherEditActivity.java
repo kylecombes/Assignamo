@@ -1,19 +1,19 @@
 package com.acedit.assignamo.manage;
 
-import com.acedit.assignamo.R;
-import com.acedit.assignamo.database.DbAdapter;
-import com.acedit.assignamo.database.Values;
-
-import android.app.Activity;
 import android.content.ContentValues;
 import android.content.Context;
 import android.database.Cursor;
 import android.os.Bundle;
+import android.support.v4.app.FragmentActivity;
 import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
 
-public class TeacherEditActivity extends Activity {
+import com.acedit.assignamo.R;
+import com.acedit.assignamo.database.DbAdapter;
+import com.acedit.assignamo.database.Values;
+
+public class TeacherEditActivity extends FragmentActivity {
 	
 	private Long rowId;
 	private DbAdapter dbAdapter;

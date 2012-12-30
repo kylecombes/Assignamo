@@ -55,11 +55,19 @@ public class DbUtils {
 	
 	/*---------- Courses ----------*/
 
+	/**
+	 * Deletes the specified course AND all of the assignments for that course
+	 * @param context
+	 * @param rowId The id of the course.
+	 * @return Whether or not the deletion was successful.
+	 */
 	public static boolean deleteCourse(Context context, long rowId) {
 		DbAdapter adapter = new DbAdapter(context, null, Values.COURSE_TABLE).open();
-		boolean b = adapter.delete(rowId);
+		boolean b1 = adapter.delete(rowId);
+		adapter.setTable(Values.ASSIGNMENT_TABLE);
+		boolean b2 = adapter.deleteWhere(Values.ASSIGNMENT_KEY_COURSE + "=" + rowId);
 		adapter.close();
-		return b;
+		return b1 && b2;
 	}
 	
 	/**

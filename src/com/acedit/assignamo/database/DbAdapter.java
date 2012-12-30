@@ -9,7 +9,7 @@ import android.util.Log;
 
 public class DbAdapter {
 	
-	private String DATABASE_TABLE;
+	private String mDatabaseTable;
 	public static final String KEY_ROWID = "_id";
 	
 	protected SQLiteDatabase db;
@@ -25,7 +25,7 @@ public class DbAdapter {
 	 */
 	public DbAdapter(Context context, String databaseName, String tableName) {
 		this.context = context;
-		DATABASE_TABLE = tableName;
+		mDatabaseTable = tableName;
 	}
 	
 	public DbAdapter open() throws SQLException {
@@ -45,11 +45,11 @@ public class DbAdapter {
 	}
 	
 	public long add(ContentValues values) {
-		return db.insert(DATABASE_TABLE, null, values);
+		return db.insert(mDatabaseTable, null, values);
 	}
 
 	public boolean update(long rowId, ContentValues values) {
-		return db.update(DATABASE_TABLE, values, KEY_ROWID + "=" + rowId, null) > 0;
+		return db.update(mDatabaseTable, values, KEY_ROWID + "=" + rowId, null) > 0;
 	}
 	
 	/**
@@ -58,7 +58,16 @@ public class DbAdapter {
 	 * @return Whether or not the deletion was successful.
 	 */
 	public boolean delete(long rowId) {
-		return db.delete(DATABASE_TABLE, KEY_ROWID + "=" + rowId, null) > 0;
+		return db.delete(mDatabaseTable, KEY_ROWID + "=" + rowId, null) > 0;
+	}
+	
+	/**
+	 * Delete all of the rows that match the WHERE clause.
+	 * @param where The SQL WHERE clause.
+	 * @return Whether or not the deletion was successful.
+	 */
+	public boolean deleteWhere(String where) {
+		return db.delete(mDatabaseTable, where, null) > 0;
 	}
 	
 	/**
@@ -69,7 +78,7 @@ public class DbAdapter {
 	 * @throws SQLException
 	 */
 	public Cursor fetch(long rowId, String[] query) throws SQLException {
-		Cursor cursor = db.query(true, DATABASE_TABLE, query,
+		Cursor cursor = db.query(true, mDatabaseTable, query,
 				KEY_ROWID + "=" + rowId, null, null, null, null, null);
 		if (cursor != null)
 			cursor.moveToFirst();
@@ -81,7 +90,7 @@ public class DbAdapter {
 	 * @return Contains all the items in the table.
 	 */
 	public Cursor fetchAll(String[] query) {
-		Cursor c = db.query(DATABASE_TABLE, query, null, null, null, null, null);
+		Cursor c = db.query(mDatabaseTable, query, null, null, null, null, null);
 		if (c != null)
 			c.moveToFirst();
 		return c;
@@ -97,18 +106,26 @@ public class DbAdapter {
 	 */
 	public Cursor fetchAllOrdered(String[] query, String where, String orderBy) {
 		Cursor c;
-		c = db.query(DATABASE_TABLE, query, where, null, null, null, orderBy);
+		c = db.query(mDatabaseTable, query, where, null, null, null, orderBy);
 		if (c != null)
 			c.moveToFirst();
 		return c;
 	}
 	
 	public Cursor fetchAllWhere(String[] query, String where, String orderBy) throws SQLException {
-		Cursor cursor = db.query(true, DATABASE_TABLE, query,
+		Cursor cursor = db.query(true, mDatabaseTable, query,
 				where, null, null, null, orderBy, null);
 		if (cursor != null)
 			cursor.moveToFirst();
 		return cursor;
+	}
+	
+	/**
+	 * Set the table the adapter is accessing.
+	 * @param newTable The name of the new table.
+	 */
+	public void setTable(String newTable) {
+		mDatabaseTable = newTable;
 	}
 	
 }
