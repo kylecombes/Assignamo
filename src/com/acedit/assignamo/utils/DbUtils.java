@@ -139,7 +139,7 @@ public class DbUtils {
 	
 	public static String getCourseNameFromId(Context context, long courseId) {
 		Map<Short,String> map = getCourseNames(context);
-		String str = (String)map.get(courseId);
+		String str = (String)map.get((short)courseId);
 		return str;
 	}
 	

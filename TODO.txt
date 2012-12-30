@@ -36,6 +36,7 @@ Version 1.0
 * Display overdue assignments' due date in red.
 -- Spinner on loading screen --
 * Make sure content is saved on Edit pages when rotating and pausing activity.
+* AssignmentView not getting course name
 
 MUST by V1.0
 ------------
@@ -44,7 +45,6 @@ Finalize teacher view
 Padding on top of Course Day Select not same as padding on bottom.
 Finalize look of setup wizard and splash screen
 Accept non-U.S. phone numbers for teachers
-AssignmentView not getting course name
 Show assignment completion status on AssignmentView
 
 Reminders!!
