@@ -14,21 +14,19 @@ import com.acedit.assignamo.setup.SetupWizard;
 
 public class LoadingActivity extends Activity {
 	
-	private static final short MIN_DISPLAY_TIME = 1000;
+	private static final short MIN_DISPLAY_TIME = 2000;
 	
 	@Override
 	public void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
 		setContentView(R.layout.loading_screen);
 		
-		TimerTask task = new TimerTask() {
+		new Timer().schedule(new TimerTask() {
 			@Override
 			public void run() {
 				proceedToNextActivity();
 			}
-		};
-		
-		new Timer().schedule(task, MIN_DISPLAY_TIME);
+		}, MIN_DISPLAY_TIME);
 	}
 	
 	private void proceedToNextActivity() {

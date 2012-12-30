@@ -35,6 +35,27 @@ public class DbUtils {
 		return b;
 	}
 	
+	
+	public static Cursor fetchAllAssignments(Context context, Short course) {
+		DbAdapter adapter = new DbAdapter(context, null, Values.ASSIGNMENT_TABLE).open();
+		
+		if (course == null)
+			return adapter.fetchAllOrdered(Values.ASSIGNMENT_LIST_FETCH, null, Values.ASSIGNMENT_KEY_DUE_DATE);
+		else
+			return adapter.fetchAllOrdered(Values.ASSIGNMENT_LIST_FETCH, Values.ASSIGNMENT_KEY_COURSE + "=" + course, Values.ASSIGNMENT_KEY_DUE_DATE);
+	}
+	
+	public static Cursor fetchIncompleteAssignments(Context context, Short course) {
+		DbAdapter adapter = new DbAdapter(context, null, Values.ASSIGNMENT_TABLE).open();
+		
+		if (course == null) // Fetching from all courses
+			return adapter.fetchAllWhere(Values.ASSIGNMENT_LIST_FETCH, Values.ASSIGNMENT_KEY_STATUS + "=" + 0, Values.ASSIGNMENT_KEY_DUE_DATE);
+		else
+			return adapter.fetchAllWhere(Values.ASSIGNMENT_LIST_FETCH, Values.ASSIGNMENT_KEY_COURSE + "=" + course
+				+ " AND " + Values.ASSIGNMENT_KEY_STATUS + "=" + 0, Values.ASSIGNMENT_KEY_DUE_DATE);
+	}
+	
+	
 	public static boolean isAssignmentCompleted(Context context, long id) {
 		DbAdapter adapter = new DbAdapter(context, null, Values.ASSIGNMENT_TABLE).open();
 		Cursor c = adapter.fetch(id, new String[] {Values.ASSIGNMENT_KEY_STATUS});

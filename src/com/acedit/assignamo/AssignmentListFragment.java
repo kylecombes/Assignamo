@@ -14,13 +14,13 @@ import android.content.Intent;
 import android.content.IntentFilter;
 import android.content.SharedPreferences;
 import android.database.Cursor;
+import android.os.AsyncTask;
 import android.os.Bundle;
 import android.preference.PreferenceManager;
 import android.support.v4.app.DialogFragment;
 import android.support.v4.app.ListFragment;
 import android.support.v4.content.LocalBroadcastManager;
 import android.support.v4.widget.CursorAdapter;
-import android.util.Log;
 import android.view.ContextMenu;
 import android.view.ContextMenu.ContextMenuInfo;
 import android.view.LayoutInflater;
@@ -45,6 +45,7 @@ public class AssignmentListFragment extends ListFragment {
 	Cursor assignmentsCursor;
 	private Context context;
 	private long selectedItem;
+	private boolean activityJustCreated;
 	
 	private static final String DATE_FORMAT = "c, MMMMM dd";
 	
@@ -74,6 +75,7 @@ public class AssignmentListFragment extends ListFragment {
 		
 		cursorAdapter = new CustomCursorAdapter(context, assignmentsCursor, 0);
 		setListAdapter(cursorAdapter);
+		activityJustCreated = true; // Use to prevent calling updateAdapter() twice on first load
 	}
 
 	public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
@@ -85,13 +87,7 @@ public class AssignmentListFragment extends ListFragment {
 		super.onStart();
 		registerForContextMenu(getListView());
 	}
-/*
-	public void onPause() {
-		super.onPause();
-		if (!assignmentsCursor.isClosed())
-			assignmentsCursor.close();
-	}
-*/
+	
 	@Override
 	public void onSaveInstanceState(Bundle outState) {
 		super.onSaveInstanceState(outState);
@@ -103,7 +99,10 @@ public class AssignmentListFragment extends ListFragment {
 		
 		if (context == null) context = getActivity();
 		updateCourseColors();
-		refresh();
+		if (activityJustCreated)
+			activityJustCreated = false;
+		else
+			refresh();
 		
 		registerIntentListener();
 	}
@@ -134,28 +133,37 @@ public class AssignmentListFragment extends ListFragment {
 	 * Updates the content in the adapter.
 	 */
 	public void updateAdapter() {
-		
-		long startTime = System.currentTimeMillis();
-		
-		SharedPreferences sharedPrefs = PreferenceManager.getDefaultSharedPreferences(context);
-		boolean showingCompleted = sharedPrefs.getBoolean(Values.ASSIGNMENT_KEY_SHOWING_COMPLETED, false);
+		new LoadDataTask().execute((Void)null);
+	}
+	
 
-		if (course < 0) // Showing assignments from all courses
-			if (showingCompleted)
-				assignmentsCursor = fetchAllAssignments(null);
-			else
-				assignmentsCursor = fetchIncompleteAssignments(null);
-		else // Showing assignments from specified course
-			if (showingCompleted)
-				assignmentsCursor = fetchAllAssignments(course);
-			else
-				assignmentsCursor = fetchIncompleteAssignments(course);
+	private class LoadDataTask extends AsyncTask<Void, Void, Cursor> {
+
+		@Override
+		protected Cursor doInBackground(Void... params) {
+			SharedPreferences sharedPrefs = PreferenceManager.getDefaultSharedPreferences(context);
+			boolean showingCompleted = sharedPrefs.getBoolean(Values.ASSIGNMENT_KEY_SHOWING_COMPLETED, false);
+			
+			if (course < 0) // Showing assignments from all courses
+				if (showingCompleted)
+					return DbUtils.fetchAllAssignments(context, null);
+				else
+					return DbUtils.fetchIncompleteAssignments(context, null);
+			else // Showing assignments from specified course
+				if (showingCompleted)
+					return DbUtils.fetchAllAssignments(context, course);
+				else
+					return DbUtils.fetchIncompleteAssignments(context, course);
+		}
 		
-		// adapter is null when updateAdapter() is called in onCreate()
-		if (cursorAdapter != null)
-			cursorAdapter.changeCursor(assignmentsCursor);
+		@Override
+		protected void onPostExecute(Cursor result) {
+			assignmentsCursor = result;
+			// adapter is null when updateAdapter() is called in onCreate()
+			if (cursorAdapter != null)
+				cursorAdapter.changeCursor(assignmentsCursor);
+		}
 		
-		Log.d("updateAdapter", "Time to fetch data: " + (System.currentTimeMillis() - startTime) + " milliseconds");
 	}
 
 	private void refresh() {
@@ -243,32 +251,6 @@ public class AssignmentListFragment extends ListFragment {
 		broadcastRefresh();
 	}
 	
-	/*---------- Fetching Assignments from the Database ----------*/
-	
-	public Cursor fetchAllAssignments(Short course) {
-		Cursor c;
-		dbAdapter = new DbAdapter(context, null, Values.ASSIGNMENT_TABLE).open();
-		
-		if (course == null)
-			c = dbAdapter.fetchAllOrdered(Values.ASSIGNMENT_LIST_FETCH, null, Values.ASSIGNMENT_KEY_DUE_DATE);
-		else
-			c = dbAdapter.fetchAllOrdered(Values.ASSIGNMENT_LIST_FETCH, Values.ASSIGNMENT_KEY_COURSE + "=" + course, Values.ASSIGNMENT_KEY_DUE_DATE);
-		dbAdapter.close();
-		return c;
-	}
-	
-	public Cursor fetchIncompleteAssignments(Short course) {
-		dbAdapter = new DbAdapter(context, null, Values.ASSIGNMENT_TABLE).open();
-		
-		Cursor r;
-		if (course == null) // Fetching from all courses
-			r = dbAdapter.fetchAllWhere(Values.ASSIGNMENT_LIST_FETCH, Values.ASSIGNMENT_KEY_STATUS + "=" + 0, Values.ASSIGNMENT_KEY_DUE_DATE);
-		else
-			r = dbAdapter.fetchAllWhere(Values.ASSIGNMENT_LIST_FETCH, Values.ASSIGNMENT_KEY_COURSE + "=" + course
-				+ " AND " + Values.ASSIGNMENT_KEY_STATUS + "=" + 0, Values.ASSIGNMENT_KEY_DUE_DATE);
-		dbAdapter.close();
-		return r;
-	}
 	
 	/*---------- ListView Adapter and Related Subroutines ----------*/
 	
@@ -360,7 +342,6 @@ public class AssignmentListFragment extends ListFragment {
 			c.moveToNext();
 		}
 		c.close();
-		adapter.close();
 	}
 	/*
 	private static class ViewHolder {
