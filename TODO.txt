@@ -34,16 +34,17 @@ Version 1.0
 * First-time setup wizard
 * Delete assignments when deleting course.
 * Display overdue assignments' due date in red.
+-- Spinner on loading screen --
+* Make sure content is saved on Edit pages when rotating and pausing activity.
 
 MUST by V1.0
 ------------
-Spinner on loading screen
 Visual indicator signifying completed assignments when showing completed assignments.
 Finalize teacher view
-Make sure content is saved on Edit pages when rotating and pausing activity.
 Padding on top of Course Day Select not same as padding on bottom.
-Finalize look of setup wizard
+Finalize look of setup wizard and splash screen
 Accept non-U.S. phone numbers for teachers
+AssignmentView not getting course name
 Show assignment completion status on AssignmentView
 
 Reminders!!

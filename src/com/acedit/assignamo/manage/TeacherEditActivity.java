@@ -119,12 +119,8 @@ public class TeacherEditActivity extends FragmentActivity {
 			notesField.setText(data.getString(data.getColumnIndexOrThrow(Values.KEY_NOTES)));
 			//TODO Populate room field
 			int roomNum = data.getShort(data.getColumnIndexOrThrow(Values.KEY_ROOM));
-			switch (roomNum) {
-			case -1: // There is no room entered
-				break;
-			default:
+			if (roomNum != -1)
 				roomNumberField.setText("" + roomNum);
-			}
 			
 			emailField.setText(data.getString(data.getColumnIndexOrThrow(Values.TEACHER_KEY_EMAIL)));
 			long phone = data.getLong(data.getColumnIndexOrThrow(Values.TEACHER_KEY_PHONE));
@@ -144,25 +140,25 @@ public class TeacherEditActivity extends FragmentActivity {
 		} catch (NumberFormatException e) {}
 		
 		if (rowId == null)
-			addTeacher(nameField.getText().toString(),
-					subjectField.getText().toString(),
-					notesField.getText().toString(),
+			addTeacher(nameField.getText().toString().trim(),
+					subjectField.getText().toString().trim(),
+					notesField.getText().toString().trim(),
 					roomNum,
-					emailField.getText().toString(),
+					emailField.getText().toString().trim(),
 					phoneNum);
 		else
 			updateTeacher(rowId,
-					nameField.getText().toString(),
-					subjectField.getText().toString(),
-					notesField.getText().toString(),
+					nameField.getText().toString().trim(),
+					subjectField.getText().toString().trim(),
+					notesField.getText().toString().trim(),
 					roomNum,
-					emailField.getText().toString(),
+					emailField.getText().toString().trim(),
 					phoneNum);
 		
 	}
 	
+	//TODO Combine these into one
     private long addTeacher(String name, String subject, String notes, short roomNumber, String email, long phoneNumber) {
-    	// TODO
     	ContentValues values = new ContentValues();
     	values.put(Values.KEY_NAME, name);
     	values.put(Values.TEACHER_KEY_SUBJECT, subject);
@@ -174,7 +170,6 @@ public class TeacherEditActivity extends FragmentActivity {
     }
 
     private boolean updateTeacher(long rowId, String name, String subject, String notes, short roomNumber, String email, long phoneNumber) {
-    	// TODO
     	ContentValues values = new ContentValues();
     	values.put(Values.KEY_NAME, name);
     	values.put(Values.TEACHER_KEY_SUBJECT, subject);

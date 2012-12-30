@@ -105,8 +105,8 @@ public class DaySelectFragment extends FragmentActivity {
 					}
 				}
 				Intent data = new Intent()
-				.putExtra(Values.COURSE_EDIT_DAYS_SELECT_START_TIMES_KEY, startTimes)
-				.putExtra(Values.COURSE_EDIT_DAYS_SELECT_STOP_TIMES_KEY, stopTimes);
+				.putExtra(Values.COURSE_EDIT_START_TIMES_KEY, startTimes)
+				.putExtra(Values.COURSE_EDIT_STOP_TIMES_KEY, stopTimes);
 				setResult(RESULT_OK, data);
 				finish();
 			}
@@ -119,20 +119,20 @@ public class DaySelectFragment extends FragmentActivity {
 	@Override
 	public void onSaveInstanceState(Bundle outState) {
 		super.onSaveInstanceState(outState);
-		outState.putShortArray(Values.COURSE_EDIT_DAYS_SELECT_START_TIMES_KEY, startTimes);
-		outState.putShortArray(Values.COURSE_EDIT_DAYS_SELECT_STOP_TIMES_KEY, stopTimes);
+		outState.putShortArray(Values.COURSE_EDIT_START_TIMES_KEY, startTimes);
+		outState.putShortArray(Values.COURSE_EDIT_STOP_TIMES_KEY, stopTimes);
 	}
 	
 	private void initializeTimes(Bundle savedInstanceState) {
 		
 		if (savedInstanceState != null) {
-			startTimes = savedInstanceState.getShortArray(Values.COURSE_EDIT_DAYS_SELECT_START_TIMES_KEY);
-			stopTimes = savedInstanceState.getShortArray(Values.COURSE_EDIT_DAYS_SELECT_STOP_TIMES_KEY);
+			startTimes = savedInstanceState.getShortArray(Values.COURSE_EDIT_START_TIMES_KEY);
+			stopTimes = savedInstanceState.getShortArray(Values.COURSE_EDIT_STOP_TIMES_KEY);
 		} else {
 			Bundle extras = getIntent().getExtras();
-			if (extras != null) {
-				startTimes = extras.getShortArray(Values.COURSE_EDIT_DAYS_SELECT_START_TIMES_KEY);
-				stopTimes = extras.getShortArray(Values.COURSE_EDIT_DAYS_SELECT_STOP_TIMES_KEY);
+			if (extras != null && extras.containsKey(Values.COURSE_EDIT_START_TIMES_KEY)) {
+				startTimes = extras.getShortArray(Values.COURSE_EDIT_START_TIMES_KEY);
+				stopTimes = extras.getShortArray(Values.COURSE_EDIT_STOP_TIMES_KEY);
 			} else {
 				startTimes = new short[7];
 				stopTimes = new short[7];

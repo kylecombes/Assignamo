@@ -180,8 +180,7 @@ public class AssignmentEditFragment extends FragmentActivity {
 		state.putString(Values.KEY_TITLE, titleField.getText().toString());
 		state.putString(Values.KEY_DESCRIPTION, descriptionField.getText().toString());
 		state.putBoolean(USER_SET_DUE_DATE, userSetDateTime);
-		long time = calendar.getTimeInMillis();
-		state.putLong(CALENDAR_TIME_KEY, time);
+		state.putLong(CALENDAR_TIME_KEY, calendar.getTimeInMillis());
 	}
 	
 	public void onRestoreInstanceState(Bundle oldState) {
@@ -241,6 +240,7 @@ public class AssignmentEditFragment extends FragmentActivity {
 	protected void setTime(int hourOfDay, int minute) {
 		calendar.set(Calendar.HOUR_OF_DAY, hourOfDay);
 		calendar.set(Calendar.MINUTE, minute);
+		userSetDateTime = true;
 		updateButtons(DueDateButtons.TIME);
 	}
 	
@@ -270,7 +270,6 @@ public class AssignmentEditFragment extends FragmentActivity {
 		}
 		
 		public void onDateSet(DatePicker view, int year, int month, int day) {
-			//TODO Not sure I'm doing this right...
 			((AssignmentEditFragment)getActivity()).setDate(year, month, day);
 		}
 	}
@@ -279,6 +278,7 @@ public class AssignmentEditFragment extends FragmentActivity {
 		calendar.set(Calendar.YEAR, year);
 		calendar.set(Calendar.MONTH, month);
 		calendar.set(Calendar.DAY_OF_MONTH, day);
+		userSetDateTime = true;
 		updateButtons(DueDateButtons.DATE);
 	}
 	
@@ -316,9 +316,9 @@ public class AssignmentEditFragment extends FragmentActivity {
 	
 	private void saveData() {
 		
-		addAssignment(titleField.getText().toString(),
+		addAssignment(titleField.getText().toString().trim(),
 				(short) courseSpinner.getSelectedItemId(),
-				descriptionField.getText().toString(),
+				descriptionField.getText().toString().trim(),
 				DateUtils.convertMillsToMinutes(calendar.getTimeInMillis()),
 				rowId);
 	}

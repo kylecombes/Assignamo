@@ -45,8 +45,8 @@ public final class Values {
 	public static final String COURSE_TABLE = "courses";
 	public static final String COURSE_KEY_TEACHER = "teacher";
 	public static final String COURSE_KEY_TIMES_OF_DAY = "times_of_day";
-	public static final String COURSE_EDIT_DAYS_SELECT_START_TIMES_KEY= "start_times";
-	public static final String COURSE_EDIT_DAYS_SELECT_STOP_TIMES_KEY= "stop_times";
+	public static final String COURSE_EDIT_START_TIMES_KEY= "start_times";
+	public static final String COURSE_EDIT_STOP_TIMES_KEY= "stop_times";
 	public static final String COURSE_KEY_COLOR = "color";
 	public static final String[] COURSE_FETCH = { KEY_ROWID, KEY_NAME, COURSE_KEY_TEACHER, KEY_DESCRIPTION,
 		KEY_ROOM, COURSE_KEY_TIMES_OF_DAY, COURSE_KEY_COLOR };

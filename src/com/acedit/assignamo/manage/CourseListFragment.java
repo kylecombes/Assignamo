@@ -102,7 +102,6 @@ public class CourseListFragment extends BaseListFragment {
 			c.moveToNext();
 		}
 		c.close();
-		adapter.close();
 	}
 	
 	private String getDaysOfWeek(String strArray) {

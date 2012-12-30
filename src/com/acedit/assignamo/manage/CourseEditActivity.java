@@ -35,7 +35,8 @@ public class CourseEditActivity extends FragmentActivity {
 	private Spinner teacherSpinner;
 	private TextView descriptionField;
 	private TextView roomNumberField;
-	private short[][] times;
+	private short[] startTimes;
+	private short[] stopTimes;
 	
 	int courseColor;
 		
@@ -58,7 +59,16 @@ public class CourseEditActivity extends FragmentActivity {
 		setContentView(R.layout.course_edit);
 		
 		mapViews();
-		setRowIdFromIntent();
+		if (savedInstanceState != null) {
+			if (savedInstanceState.containsKey(Values.KEY_ROWID))
+				rowId = savedInstanceState.getLong(Values.KEY_ROWID);
+			startTimes = savedInstanceState.getShortArray(Values.COURSE_EDIT_START_TIMES_KEY);
+			stopTimes = savedInstanceState.getShortArray(Values.COURSE_EDIT_STOP_TIMES_KEY);
+			courseColor = savedInstanceState.getInt(Values.COURSE_KEY_COLOR);
+		} else {
+		 setRowIdFromIntent();
+		 courseColor = Color.parseColor(getString(R.color.default_course_color));
+		}
 		populateFields();
 	}
 	
@@ -125,30 +135,21 @@ public class CourseEditActivity extends FragmentActivity {
 			if (!room.equals("-1"))
 				roomNumberField.setText(room);
 			
-			try {
-				times = getTimes(data.getString(data.getColumnIndexOrThrow(Values.COURSE_KEY_TIMES_OF_DAY)));
-			} catch (JSONException e) { e.printStackTrace(); }
+			loadTimes(data.getString(data.getColumnIndexOrThrow(Values.COURSE_KEY_TIMES_OF_DAY)));
 			
 			courseColor = data.getInt(data.getColumnIndexOrThrow(Values.COURSE_KEY_COLOR));
 			
 			data.close();
 			adapter.close();
-		} else
-			courseColor = Color.parseColor(getString(R.color.default_course_color));
+		}
 		
 		((Button)findViewById(R.id.course_edit_days_button)).setOnClickListener(new OnClickListener() {
 			
 			public void onClick(View v) {
 				Intent intent = new Intent(context, DaySelectFragment.class);
-				if (times != null) {
-					short[] startTimes = new short[7];
-					short[] stopTimes = new short[7];
-					for (short i = 0; i < 7; i++) {
-						startTimes[i] = times[i][0];
-						stopTimes[i] = times[i][1];
-					}
-					intent.putExtra(Values.COURSE_EDIT_DAYS_SELECT_START_TIMES_KEY, startTimes);
-					intent.putExtra(Values.COURSE_EDIT_DAYS_SELECT_STOP_TIMES_KEY, stopTimes);
+				if (startTimes != null) {
+					intent.putExtra(Values.COURSE_EDIT_START_TIMES_KEY, startTimes);
+					intent.putExtra(Values.COURSE_EDIT_STOP_TIMES_KEY, stopTimes);
 				}
 				startActivityForResult(intent, DAY_SELECT_RESULT_ID);
 			}
@@ -156,30 +157,36 @@ public class CourseEditActivity extends FragmentActivity {
 		
 	}
 	
-	/**
-	 * Parse a String for class start and end times.
-	 * @param timesStr a JSONArray String
-	 * @return an array holding the start times and stop times for each day of the week.
-	 * @throws JSONException
-	 */
-	private short[][] getTimes(String timesStr) throws JSONException {
-		short[][] times = new short[7][2];
-		JSONArray array = new JSONArray(timesStr);
-		for (short x = 0; x < 14; x++)
-			if (x % 2 == 0) // Evens are start times
-				times[x/2][0] = (short)array.getInt(x);
-			else			// Odds are stop times
-				times[x/2][1] = (short)array.getInt(x);
-		return times;
+	@Override
+	public void onSaveInstanceState(Bundle outState) {
+		super.onSaveInstanceState(outState);
+		if (rowId != null)
+			outState.putLong(Values.KEY_ROWID, rowId);
+		if (startTimes != null) {
+			outState.putShortArray(Values.COURSE_EDIT_START_TIMES_KEY, startTimes);
+			outState.putShortArray(Values.COURSE_EDIT_STOP_TIMES_KEY, startTimes);
+		}
+		outState.putInt(Values.COURSE_KEY_COLOR, courseColor);
+	}
+	
+	private void loadTimes(String timesStr) {
+		JSONArray array;
+		try {
+			array = new JSONArray(timesStr);
+			for (short x = 0; x < 14; x+=2) {
+				startTimes[x] = (short)array.getInt(x);
+				stopTimes[x+1] = (short)array.getInt(x);
+			}
+		} catch (JSONException e) {e.printStackTrace();}
 	}
 	
 	private void saveData() {
 		
-		addCourse(titleField.getText().toString(),
+		addCourse(titleField.getText().toString().trim(),
 				(short)teacherSpinner.getSelectedItemId(),
-				descriptionField.getText().toString(),
-				roomNumberField.getText().toString(),
-				times,
+				descriptionField.getText().toString().trim(),
+				roomNumberField.getText().toString().trim(),
+				startTimes, stopTimes,
 				rowId);
 		
 	}
@@ -197,13 +204,8 @@ public class CourseEditActivity extends FragmentActivity {
 	protected void onActivityResult(int requestCode, int resultCode, Intent data) {
 		switch (resultCode) {
 		case RESULT_OK:
-			short[] startTimes = data.getShortArrayExtra(Values.COURSE_EDIT_DAYS_SELECT_START_TIMES_KEY);
-			short[] stopTimes = data.getShortArrayExtra(Values.COURSE_EDIT_DAYS_SELECT_STOP_TIMES_KEY);
-			times = new short[7][2];
-			for (short i = 0; i < 7; i++) {
-				times[i][0] = startTimes[i];
-				times[i][1] = stopTimes[i];
-			}
+			startTimes = data.getShortArrayExtra(Values.COURSE_EDIT_START_TIMES_KEY);
+			stopTimes = data.getShortArrayExtra(Values.COURSE_EDIT_STOP_TIMES_KEY);
 		}
 	}
 	
@@ -211,7 +213,8 @@ public class CourseEditActivity extends FragmentActivity {
 		return DbUtils.getTeachersAsCursor(getBaseContext()).getCount() > 0;
 	}
 	
-	private void addCourse(String name, short teacherId, String description, String room, short[][] timesOfDay, Long rowId) {
+	private void addCourse(String name, short teacherId, String description, String room,
+			short[] startTimes, short[] stopTimes, Long rowId) {
     	ContentValues values = new ContentValues();
     	values.put(Values.KEY_NAME, name);
     	values.put(Values.COURSE_KEY_TEACHER, teacherId);
@@ -219,10 +222,11 @@ public class CourseEditActivity extends FragmentActivity {
     	values.put(Values.KEY_ROOM, room == "" ? "-1" : room);
     	
     	JSONArray timesAsArray = new JSONArray();
-    	if (timesOfDay != null) {
-	    	for (short x = 0; x < 7; x++)
-	    		for (short y = 0; y < 2; y++)
-	    			timesAsArray.put(timesOfDay[x][y]);
+    	if (startTimes != null && stopTimes != null) {
+	    	for (short x = 0; x < 7; x++) {
+	    			timesAsArray.put(startTimes[x]);
+	    			timesAsArray.put(stopTimes[x]);
+	    	}
     	} else for (short i = 0; i < 14; i++)
     		timesAsArray.put(0);
     	

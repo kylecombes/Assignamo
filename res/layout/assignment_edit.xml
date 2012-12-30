@@ -18,8 +18,7 @@
 		
 	    <EditText android:id="@+id/assignment_add_title_field"
 	        style="@style/TextBox.Title"
-	        android:hint="@string/title" >
-	    </EditText>
+	        android:hint="@string/title" />
 	    
 	    <EditText android:id="@+id/assignment_add_description_field"
 	        style="@style/TextBox.Description"
