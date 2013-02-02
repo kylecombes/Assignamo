@@ -33,6 +33,8 @@ import android.widget.TextView;
 
 import com.acedit.assignamo.database.DbAdapter;
 import com.acedit.assignamo.database.Values;
+import com.acedit.assignamo.objects.Assignment;
+import com.acedit.assignamo.objects.Course;
 import com.acedit.assignamo.ui.ColorStrip;
 import com.acedit.assignamo.utils.DateUtils;
 import com.acedit.assignamo.utils.DbUtils;
@@ -64,7 +66,7 @@ public class AssignmentListFragment extends ListFragment {
 			course = args.getShort("courseId");
 		
 		if (savedInstanceState != null) {
-			course = savedInstanceState.getShort(Values.ASSIGNMENT_KEY_COURSE);
+			course = savedInstanceState.getShort(Assignment.KEY_COURSE);
 		}
 		setRetainInstance(true);
 		
@@ -91,7 +93,7 @@ public class AssignmentListFragment extends ListFragment {
 	@Override
 	public void onSaveInstanceState(Bundle outState) {
 		super.onSaveInstanceState(outState);
-		outState.putShort(Values.ASSIGNMENT_KEY_COURSE, course);
+		outState.putShort(Assignment.KEY_COURSE, course);
 	}
 	
 	public void onResume() {
@@ -142,7 +144,7 @@ public class AssignmentListFragment extends ListFragment {
 		@Override
 		protected Cursor doInBackground(Void... params) {
 			SharedPreferences sharedPrefs = PreferenceManager.getDefaultSharedPreferences(context);
-			boolean showingCompleted = sharedPrefs.getBoolean(Values.ASSIGNMENT_KEY_SHOWING_COMPLETED, false);
+			boolean showingCompleted = sharedPrefs.getBoolean(Assignment.KEY_SHOWING_COMPLETED, false);
 			
 			if (course < 0) // Showing assignments from all courses
 				if (showingCompleted)
@@ -202,9 +204,9 @@ public class AssignmentListFragment extends ListFragment {
 		switch (item.getItemId()) {
 		case 0:
 			if (DbUtils.isAssignmentCompleted(context, id))
-				DbUtils.setAssignmentState(context, id, false);
+				DbUtils.setAssignmentCompletionStatus(context, id, false);
 			else
-				DbUtils.setAssignmentState(context, id, true);
+				DbUtils.setAssignmentCompletionStatus(context, id, true);
 			broadcastRefresh();
 			return true;
 		case 1: // Edit the assignment
@@ -330,13 +332,13 @@ public class AssignmentListFragment extends ListFragment {
 	public final static short ALPHA = 30;
 
 	private void updateCourseColors() {
-		DbAdapter adapter = new DbAdapter(context, null, Values.COURSE_TABLE);
+		DbAdapter adapter = new DbAdapter(context, null, Course.TABLE_NAME);
 		adapter.open();
-		Cursor c = adapter.fetchAll(new String[] { Values.KEY_ROWID, Values.COURSE_KEY_COLOR } );
+		Cursor c = adapter.fetchAll(new String[] { Values.KEY_ROWID, Course.KEY_COLOR } );
 		c.moveToFirst();
 		for (short i = 0; i < c.getCount(); i++) {
 			short id = c.getShort(c.getColumnIndexOrThrow(Values.KEY_ROWID));
-			int color = c.getInt(c.getColumnIndexOrThrow(Values.COURSE_KEY_COLOR));
+			int color = c.getInt(c.getColumnIndexOrThrow(Course.KEY_COLOR));
 			colors.put(id, color);
 			colorsLight.put(id,UiUtils.changeAlpha(color, ALPHA));
 			c.moveToNext();

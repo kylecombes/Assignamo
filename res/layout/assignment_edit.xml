@@ -25,11 +25,11 @@
 	        android:hint="@string/description" />
 	    
 	    <LinearLayout android:orientation="horizontal"
-	           	android:layout_width="wrap_content"
+	           	android:layout_width="match_parent"
 	           	android:layout_height="wrap_content">
 	           	<!-- Due date -->
 	           	<LinearLayout android:orientation="vertical"
-	           	    android:layout_width="fill_parent"
+	           	    android:layout_width="wrap_content"
 	           	    android:layout_height="wrap_content">
 	           	    <TextView android:text="@string/assignment_due_date"
 			            style="@style/TextView.EditActivity.Label" />
@@ -50,6 +50,27 @@
 			            android:onClick="showTimePickerDialog"/>
 			    </LinearLayout>
 			</LinearLayout>
+			<!-- REMINDERS -->
+	  	  	<LinearLayout
+        		android:id="@+id/assignment_edit_reminders_row"
+        		android:orientation="vertical"
+        		android:layout_width="match_parent"
+        		android:layout_height="wrap_content"
+        		android:focusable="true">
+        		<TextView android:text="@string/assignment_reminders"
+            		android:layout_height="wrap_content"
+            		android:layout_width="wrap_content"
+            		android:gravity="center_vertical"
+            		android:layout_marginBottom="0dip" />
+        		<LinearLayout android:id="@+id/reminder_items_container"
+        		    android:layout_width="match_parent"
+            		android:layout_height="wrap_content"
+            		android:orientation="vertical" />
+		        <Button android:id="@+id/assignment_edit_reminder_add_button"
+		            style="@style/Button"
+		            android:text="@string/assignment_edit_add_reminder"
+		            android:contentDescription="@string/assignment_edit_add_reminder" />
+		    </LinearLayout>
 		</LinearLayout>
 	</ScrollView>
 	<LinearLayout android:orientation="horizontal"

@@ -46,10 +46,12 @@ Padding on top of Course Day Select not same as padding on bottom.
 Finalize look of setup wizard and splash screen
 Accept non-U.S. phone numbers for teachers
 Show assignment completion status on AssignmentView
+Finalize CourseEdit layout
+Prevent long teacher names from overlapping buttons in Setup Wizard
+Show course days on CourseView
+All Assignments tab not getting updated when marking an assignment as completed?
 
 Reminders!!
-
-"invalid statement in fillWindow()"?
 
 Version 2
 -------------
@@ -62,6 +64,14 @@ Add ability to choose between Light and Dark theme in Preferences.
 Default assignment point value for course.
 Add support for teacher phone number extensions.
 Add ability to call/email teacher directly from app.
+ListView separators between days (with number of assignments due):
+   |------------------------------|
+   | Monday                     2 |
+   |------------------------------|
+
+General TODO
+-------------
+AssignmentEditFragment: more efficient way to get course start time?
 
 Ideas
 --------------

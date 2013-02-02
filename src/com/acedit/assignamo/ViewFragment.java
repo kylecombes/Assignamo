@@ -9,7 +9,6 @@ import android.app.Dialog;
 import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
-import android.database.Cursor;
 import android.graphics.Typeface;
 import android.os.Bundle;
 import android.support.v4.app.DialogFragment;
@@ -28,7 +27,6 @@ import com.acedit.assignamo.utils.DbUtils;
 public abstract class ViewFragment extends FragmentActivity {
 	
 	protected long rowId;
-	protected Cursor cursor;
 	protected Context mContext;
 		
 	@Override
@@ -43,12 +41,9 @@ public abstract class ViewFragment extends FragmentActivity {
 	
 	public void onStart() {
 		super.onStart();
-		mapViews();
 		populateViews();
 	}
-	
-	protected abstract void mapViews();
-	
+		
 	protected abstract void populateViews();
 	
 	protected abstract Class<? extends FragmentActivity> getEditClass();
@@ -94,7 +89,7 @@ public abstract class ViewFragment extends FragmentActivity {
 		return rStr;
 	}
 
-	protected SpannableString getItalicizedString(String str) {
+	public static SpannableString getItalicizedString(String str) {
 		SpannableString rStr = new SpannableString(str);
 		rStr.setSpan(new StyleSpan(Typeface.ITALIC), 0, str.length(), 0);
 		return rStr;
@@ -199,6 +194,8 @@ public abstract class ViewFragment extends FragmentActivity {
 	
 
 	protected static class DeleteDialogFragment extends DialogFragment {
+		
+		public DeleteDialogFragment() {}
 		
 		static DeleteDialogFragment newInstance(int arg) {
 			return new DeleteDialogFragment();

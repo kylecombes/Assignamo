@@ -9,6 +9,9 @@ import android.database.Cursor;
 
 import com.acedit.assignamo.database.DbAdapter;
 import com.acedit.assignamo.database.Values;
+import com.acedit.assignamo.objects.Assignment;
+import com.acedit.assignamo.objects.Course;
+import com.acedit.assignamo.objects.Teacher;
 
 public class DbUtils {
 	
@@ -29,48 +32,44 @@ public class DbUtils {
 	/*---------- Assignments ----------*/
 	
 	public static boolean deleteAssignment(Context context, long rowId) {
-		DbAdapter adapter = new DbAdapter(context, null, Values.ASSIGNMENT_TABLE).open();
-		boolean b = adapter.delete(rowId);
-		adapter.close();
-		return b;
+		DbAdapter adapter = new DbAdapter(context, null, Assignment.TABLE_NAME).open();
+		return adapter.delete(rowId);
 	}
 	
 	
-	public static Cursor fetchAllAssignments(Context context, Short course) {
-		DbAdapter adapter = new DbAdapter(context, null, Values.ASSIGNMENT_TABLE).open();
+	public synchronized static Cursor fetchAllAssignments(Context context, Short course) {
+		DbAdapter adapter = new DbAdapter(context, null, Assignment.TABLE_NAME).open();
 		
 		if (course == null)
-			return adapter.fetchAllOrdered(Values.ASSIGNMENT_LIST_FETCH, null, Values.ASSIGNMENT_KEY_DUE_DATE);
+			return adapter.fetchAllOrdered(Assignment.LIST_FETCH_DATA, null, Assignment.KEY_DUE_DATE);
 		else
-			return adapter.fetchAllOrdered(Values.ASSIGNMENT_LIST_FETCH, Values.ASSIGNMENT_KEY_COURSE + "=" + course, Values.ASSIGNMENT_KEY_DUE_DATE);
+			return adapter.fetchAllOrdered(Assignment.LIST_FETCH_DATA, Assignment.KEY_COURSE + "=" + course, Assignment.KEY_DUE_DATE);
 	}
 	
-	public static Cursor fetchIncompleteAssignments(Context context, Short course) {
-		DbAdapter adapter = new DbAdapter(context, null, Values.ASSIGNMENT_TABLE).open();
+	public synchronized static Cursor fetchIncompleteAssignments(Context context, Short course) {
+		DbAdapter adapter = new DbAdapter(context, null, Assignment.TABLE_NAME).open();
 		
 		if (course == null) // Fetching from all courses
-			return adapter.fetchAllWhere(Values.ASSIGNMENT_LIST_FETCH, Values.ASSIGNMENT_KEY_STATUS + "=" + 0, Values.ASSIGNMENT_KEY_DUE_DATE);
+			return adapter.fetchAllWhere(Assignment.LIST_FETCH_DATA, Assignment.KEY_STATUS + "=" + 0, Assignment.KEY_DUE_DATE);
 		else
-			return adapter.fetchAllWhere(Values.ASSIGNMENT_LIST_FETCH, Values.ASSIGNMENT_KEY_COURSE + "=" + course
-				+ " AND " + Values.ASSIGNMENT_KEY_STATUS + "=" + 0, Values.ASSIGNMENT_KEY_DUE_DATE);
+			return adapter.fetchAllWhere(Assignment.LIST_FETCH_DATA, Assignment.KEY_COURSE + "=" + course
+				+ " AND " + Assignment.KEY_STATUS + "=" + 0, Assignment.KEY_DUE_DATE);
 	}
 	
 	
 	public static boolean isAssignmentCompleted(Context context, long id) {
-		DbAdapter adapter = new DbAdapter(context, null, Values.ASSIGNMENT_TABLE).open();
-		Cursor c = adapter.fetch(id, new String[] {Values.ASSIGNMENT_KEY_STATUS});
-		boolean b = c.getShort(0) == Values.ASSIGNMENT_STATUS_COMPLETED;
+		DbAdapter adapter = new DbAdapter(context, null, Assignment.TABLE_NAME).open();
+		Cursor c = adapter.fetch(id, new String[] {Assignment.KEY_STATUS});
+		boolean b = c.getShort(0) == Assignment.STATUS_COMPLETED;
 		c.close();
-		adapter.close();
 		return b;
 	}
 	
-	public static void setAssignmentState(Context context, long id, boolean completed) {
-		DbAdapter adapter = new DbAdapter(context, null, Values.ASSIGNMENT_TABLE).open();
+	public static void setAssignmentCompletionStatus(Context context, long id, boolean completed) {
+		DbAdapter adapter = new DbAdapter(context, null, Assignment.TABLE_NAME).open();
 		ContentValues newValue = new ContentValues();
-		newValue.put(Values.ASSIGNMENT_KEY_STATUS, completed);
+		newValue.put(Assignment.KEY_STATUS, completed);
 		adapter.update(id, newValue);
-		adapter.close();
 	}
 	
 	
@@ -83,12 +82,10 @@ public class DbUtils {
 	 * @return Whether or not the deletion was successful.
 	 */
 	public static boolean deleteCourse(Context context, long rowId) {
-		DbAdapter adapter = new DbAdapter(context, null, Values.COURSE_TABLE).open();
-		boolean b1 = adapter.delete(rowId);
-		adapter.setTable(Values.ASSIGNMENT_TABLE);
-		boolean b2 = adapter.deleteWhere(Values.ASSIGNMENT_KEY_COURSE + "=" + rowId);
-		adapter.close();
-		return b1 && b2;
+		DbAdapter adapter = new DbAdapter(context, null, Course.TABLE_NAME).open();
+		boolean b = adapter.delete(rowId);
+		adapter.setTable(Assignment.TABLE_NAME);
+		return b && adapter.deleteWhere(Assignment.KEY_COURSE + "=" + rowId);
 	}
 	
 	/**
@@ -97,7 +94,7 @@ public class DbUtils {
 	 * @return the number of courses
 	 */
 	public static int getCourseCount(Context context) {
-		Cursor courseCursor = queryTable(context, Values.COURSE_TABLE,
+		Cursor courseCursor = queryTable(context, Course.TABLE_NAME,
 				new String[] { Values.KEY_ROWID});
 		int count = courseCursor.getCount();
 		courseCursor.close();
@@ -105,7 +102,7 @@ public class DbUtils {
 	}
 	
 	public static Cursor getCoursesAsCursor(Context context) {
-		return queryTable(context, Values.COURSE_TABLE,	new String[] {Values.KEY_ROWID, Values.KEY_NAME});
+		return queryTable(context, Course.TABLE_NAME,	new String[] {Values.KEY_ROWID, Values.KEY_NAME});
 	}
 	
 	/**
@@ -126,7 +123,7 @@ public class DbUtils {
 	}
 	
 	public static short[] getCourseIds(Context context) {
-		Cursor c = queryTable(context, Values.COURSE_TABLE,	new String[] {Values.KEY_ROWID});
+		Cursor c = queryTable(context, Course.TABLE_NAME,	new String[] {Values.KEY_ROWID});
 		short[] ids = new short[c.getCount()];
 		c.moveToFirst();
 		for (short i = 0; i < c.getCount(); i++) {
@@ -144,7 +141,7 @@ public class DbUtils {
 	}
 	
 	public static Map<Short,String> getCourseNames(Context context) {
-		Cursor c = queryTable(context, Values.COURSE_TABLE,
+		Cursor c = queryTable(context, Course.TABLE_NAME,
 				new String[] {Values.KEY_ROWID, Values.KEY_NAME});
 		Map<Short,String> map = new HashMap<Short,String>();
 		c.moveToFirst();
@@ -159,14 +156,12 @@ public class DbUtils {
 	/* ---------- Teachers ----------*/
 	
 	public static boolean deleteTeacher(Context context, long rowId) {
-		DbAdapter adapter = new DbAdapter(context, null, Values.TEACHER_TABLE).open();
-		boolean b = adapter.delete(rowId);
-		adapter.close();
-		return b;
+		DbAdapter adapter = new DbAdapter(context, null, Teacher.TABLE_NAME).open();
+		return adapter.delete(rowId);
 	}
 	
 	public static Cursor getTeachersAsCursor(Context context) {
-		return queryTable(context, Values.TEACHER_TABLE, new String[] {Values.KEY_ROWID, Values.KEY_NAME});
+		return queryTable(context, Teacher.TABLE_NAME, new String[] {Values.KEY_ROWID, Values.KEY_NAME});
 	}
 	
 	public static String[] getTeachersAsArray(Context context) {
@@ -201,9 +196,7 @@ public class DbUtils {
 	private static Cursor queryTable(Context context, String table, String[] query) {
 		DbAdapter adapter = new DbAdapter(context, null, table);
 		adapter.open();
-		Cursor c = adapter.fetchAll(query);
-		adapter.close();
-		return c;
+		return adapter.fetchAll(query);
 	}
 	
 }

@@ -23,6 +23,8 @@ import android.widget.TextView;
 import com.acedit.assignamo.R;
 import com.acedit.assignamo.database.DbAdapter;
 import com.acedit.assignamo.database.Values;
+import com.acedit.assignamo.objects.Course;
+import com.acedit.assignamo.objects.Teacher;
 import com.acedit.assignamo.ui.ColorStrip;
 import com.acedit.assignamo.utils.DateUtils;
 
@@ -30,7 +32,7 @@ public class ManageListFragment extends ListFragment {
 	
 	CustomCursorAdapter adapter;
 	Cursor cursor;
-	private Context context;
+	private Context mContext;
 	
 	private final String DATE_FORMAT = "c, MMMMM dd";
 	private final static String KEY_POSITION = "pos";
@@ -56,12 +58,12 @@ public class ManageListFragment extends ListFragment {
 			position = savedInstanceState.getShort(KEY_POSITION);
 		}
 		setRetainInstance(true);
-		context = getActivity();
+		mContext = getActivity();
 		
 		// Need to give cursor a value -- null will make it not work
 		updateAdapter();
 		
-		adapter = new CustomCursorAdapter(context, cursor, 0);
+		adapter = new CustomCursorAdapter(mContext, cursor, 0);
 		setListAdapter(adapter);
 	}
 
@@ -122,10 +124,10 @@ public class ManageListFragment extends ListFragment {
 		Intent i;
 		switch (this.position) {
 		case POSITION_COURSES:
-			i = new Intent(context, CourseViewFragment.class);
+			i = new Intent(mContext, CourseViewFragment.class);
 			break;
 		default:
-			i = new Intent(context, TeacherViewFragment.class);
+			i = new Intent(mContext, TeacherViewFragment.class);
 		}
 		
 		i.putExtra(Values.KEY_ROWID, id);
@@ -134,7 +136,7 @@ public class ManageListFragment extends ListFragment {
 
 	public void onCreateContextMenu(ContextMenu menu, View v, ContextMenuInfo menuInfo) {
 		
-		MenuInflater inflater = new MenuInflater(context);
+		MenuInflater inflater = new MenuInflater(mContext);
 		
 		switch (position) {
 		case POSITION_COURSES:
@@ -156,10 +158,10 @@ public class ManageListFragment extends ListFragment {
 			Intent i;
 			switch (position) {
 			case POSITION_COURSES:
-				i = new Intent(context, CourseEditActivity.class);
+				i = new Intent(mContext, CourseEditActivity.class);
 				break;
 			default:
-				i = new Intent(context, TeacherEditActivity.class);
+				i = new Intent(mContext, TeacherEditActivity.class);
 			}
 			startActivity(i);
 			return true;
@@ -169,15 +171,14 @@ public class ManageListFragment extends ListFragment {
 			switch (position) { // The table we are deleting from is the
 									// only thing that differs.
 			case POSITION_COURSES:
-				table = Values.COURSE_TABLE;
+				table = Course.TABLE_NAME;
 				break;
 			default:
-				table = Values.TEACHER_TABLE;	
+				table = Teacher.TABLE_NAME;	
 			}
-			DbAdapter db = new DbAdapter(context, null, table);
+			DbAdapter db = new DbAdapter(mContext, null, table);
 			db.open();
 			db.delete(rowId);
-			db.close();
 			
 			return true;
 		}
@@ -193,11 +194,11 @@ public class ManageListFragment extends ListFragment {
 		int[] stripColors;
 		int[] stripColorsLight;
 		
-		public CustomCursorAdapter(Context context, Cursor c, int flags) {
-			super(context, c, flags);
-			this.mContext = context;
+		public CustomCursorAdapter(Context mContext, Cursor c, int flags) {
+			super(mContext, c, flags);
+			this.mContext = mContext;
 			
-			mInflater = (LayoutInflater) context.getSystemService(Context.LAYOUT_INFLATER_SERVICE);
+			mInflater = (LayoutInflater) mContext.getSystemService(Context.LAYOUT_INFLATER_SERVICE);
 		}
 
 		@SuppressWarnings("static-access")

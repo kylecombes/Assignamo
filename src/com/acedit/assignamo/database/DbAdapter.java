@@ -5,51 +5,36 @@ import android.content.Context;
 import android.database.Cursor;
 import android.database.SQLException;
 import android.database.sqlite.SQLiteDatabase;
-import android.util.Log;
 
 public class DbAdapter {
 	
 	private String mDatabaseTable;
-	public static final String KEY_ROWID = "_id";
-	
 	protected SQLiteDatabase db;
-	private DatabaseHelper dbHelper;
-	private final Context context;
-	
+	private final Context mContext;
 	
 	/**
 	 * Creates a new database adapter.
-	 * @param context
+	 * @param mContext
 	 * @param databaseName the name of the database. Pass <b>null</b> to use the default database.
 	 * @param tableName the name of the table in the database
 	 */
-	public DbAdapter(Context context, String databaseName, String tableName) {
-		this.context = context;
+	public DbAdapter(Context mContext, String databaseName, String tableName) {
+		this.mContext = mContext;
 		mDatabaseTable = tableName;
 	}
 	
 	public DbAdapter open() throws SQLException {
-		dbHelper = DatabaseHelper.getInstance(context);
+		DatabaseHelper dbHelper = DatabaseHelper.getInstance(mContext);
 		db = dbHelper.getWritableDatabase();
 		return this;
 	}
-	
-	public void close() {
-		if (db != null && db.isOpen()) {
-			try {
-				db.close();
-			} catch (NullPointerException e) {
-				Log.e("Close", "Error: " + e + " " + e.getMessage());
-			}
-		}
-	}
-	
+		
 	public long add(ContentValues values) {
 		return db.insert(mDatabaseTable, null, values);
 	}
 
 	public boolean update(long rowId, ContentValues values) {
-		return db.update(mDatabaseTable, values, KEY_ROWID + "=" + rowId, null) > 0;
+		return db.update(mDatabaseTable, values, Values.KEY_ROWID + "=" + rowId, null) > 0;
 	}
 	
 	/**
@@ -58,7 +43,7 @@ public class DbAdapter {
 	 * @return Whether or not the deletion was successful.
 	 */
 	public boolean delete(long rowId) {
-		return db.delete(mDatabaseTable, KEY_ROWID + "=" + rowId, null) > 0;
+		return db.delete(mDatabaseTable, Values.KEY_ROWID + "=" + rowId, null) > 0;
 	}
 	
 	/**
@@ -79,7 +64,7 @@ public class DbAdapter {
 	 */
 	public Cursor fetch(long rowId, String[] query) throws SQLException {
 		Cursor cursor = db.query(true, mDatabaseTable, query,
-				KEY_ROWID + "=" + rowId, null, null, null, null, null);
+				Values.KEY_ROWID + "=" + rowId, null, null, null, null, null);
 		if (cursor != null)
 			cursor.moveToFirst();
 		return cursor;

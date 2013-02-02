@@ -1,9 +1,6 @@
 package com.acedit.assignamo;
 
-import java.util.HashMap;
-
 import android.content.SharedPreferences;
-import android.database.Cursor;
 import android.os.Bundle;
 import android.preference.PreferenceManager;
 import android.support.v4.app.FragmentActivity;
@@ -12,74 +9,44 @@ import android.view.MenuItem;
 import android.widget.TextView;
 import android.widget.TextView.BufferType;
 
-import com.acedit.assignamo.database.DbAdapter;
-import com.acedit.assignamo.database.Values;
+import com.acedit.assignamo.objects.Assignment;
+import com.acedit.assignamo.objects.Course;
 import com.acedit.assignamo.ui.ColorStrip;
 import com.acedit.assignamo.utils.DbUtils;
 
 public class AssignmentViewFragment extends ViewFragment {
-	
-	private TextView courseLabel, titleLabel, dueDateLabel, descriptionLabel;
 	
 	public void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
 		setContentView(R.layout.assignment_view);
 	}
 	
-	protected void mapViews() {
-		courseLabel = (TextView)findViewById(R.id.assignment_view_course);
-		titleLabel = (TextView)findViewById(R.id.assignment_view_title);
-		dueDateLabel = (TextView)findViewById(R.id.assignment_view_date);
-		descriptionLabel = (TextView)findViewById(R.id.assignment_view_description);
-	}
-	
 	protected void populateViews() {
-		DbAdapter dbAdapter = new DbAdapter(getBaseContext(), null, Values.ASSIGNMENT_TABLE);
-		dbAdapter.open();
-		cursor = dbAdapter.fetch(rowId, Values.ASSIGNMENT_FETCH);
-		dbAdapter.close();
-		
-		short course = cursor.getShort(cursor.getColumnIndexOrThrow(Values.ASSIGNMENT_KEY_COURSE));
-		
+		Assignment assignment = new Assignment(mContext, rowId);
+		Course course = new Course(mContext, assignment.getCourseId());
 		// Set color strip
-		ColorStrip colorStrip = (ColorStrip)findViewById(R.id.assignment_view_color_strip);
-		colorStrip.setColor(getCourseColors().get(course));
+		((ColorStrip)findViewById(R.id.assignment_view_color_strip))
+		.setColor(course.getColor());
 		
 		// Set course label
-		String courseText = DbUtils.getCourseNameFromId(mContext, course);
-		courseLabel.setText(courseText);
+		((TextView)findViewById(R.id.assignment_view_course))
+		.setText(course.getTitle());
 		
 		// Set title label
-		titleLabel.setText(cursor.getString(cursor.getColumnIndexOrThrow(Values.KEY_TITLE)));
+		((TextView)findViewById(R.id.assignment_view_title))
+		.setText(assignment.getTitle());
 		
 		// Set due date label
 		SharedPreferences prefs = PreferenceManager.getDefaultSharedPreferences(getBaseContext());
 		boolean withTime = prefs.getBoolean("pref_appearance_show_time", true);
-		dueDateLabel.setText(getDateString(	cursor.getLong(cursor.getColumnIndexOrThrow(Values.ASSIGNMENT_KEY_DUE_DATE)),
-				withTime), BufferType.SPANNABLE);
+		((TextView)findViewById(R.id.assignment_view_date))
+		.setText(getDateString(assignment.getDueDate(),
+			withTime), BufferType.SPANNABLE);
 		
 		// Set description label
-		descriptionLabel.setText(getDescription(cursor.getString(cursor.getColumnIndexOrThrow(Values.KEY_DESCRIPTION))));
-		cursor.close();
+		((TextView)findViewById(R.id.assignment_view_description)).setText(getDescription(assignment.getDescription()));
 	}
-	
-	private HashMap<Short, Integer> getCourseColors() {
-		HashMap<Short, Integer> colors = new HashMap<Short, Integer>();
-		DbAdapter adapter = new DbAdapter(mContext, null, Values.COURSE_TABLE);
-		adapter.open();
-		Cursor c = adapter.fetchAll(new String[] { Values.KEY_ROWID, Values.COURSE_KEY_COLOR } );
-		c.moveToFirst();
-		for (short i = 0; i < c.getCount(); i++) {
-			short id = c.getShort(c.getColumnIndexOrThrow(Values.KEY_ROWID));
-			int color = c.getInt(c.getColumnIndexOrThrow(Values.COURSE_KEY_COLOR));
-			colors.put(id, color);
-			c.moveToNext();
-		}
-		c.close();
-		adapter.close();
-		return colors;
-	}
-	
+		
 	/*---- Menus ----*/
 	
 	@Override
@@ -100,9 +67,9 @@ public class AssignmentViewFragment extends ViewFragment {
 	public boolean onOptionsItemSelected(MenuItem item) {
 		if (item.getItemId() == 0) {
 			if (DbUtils.isAssignmentCompleted(getApplicationContext(), rowId))
-				DbUtils.setAssignmentState(getApplicationContext(), rowId, false);
+				DbUtils.setAssignmentCompletionStatus(getApplicationContext(), rowId, false);
 			else
-				DbUtils.setAssignmentState(getApplicationContext(), rowId, true);
+				DbUtils.setAssignmentCompletionStatus(getApplicationContext(), rowId, true);
 			return true;
 		}
 		return super.onOptionsItemSelected(item); //Process Edit or Delete
@@ -121,7 +88,7 @@ public class AssignmentViewFragment extends ViewFragment {
 
 	@Override
 	protected String getDatabaseTable() {
-		return Values.ASSIGNMENT_TABLE;
+		return Assignment.TABLE_NAME;
 	}
 
 	@Override

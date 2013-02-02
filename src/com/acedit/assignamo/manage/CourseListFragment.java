@@ -14,6 +14,7 @@ import android.content.Intent;
 import android.database.Cursor;
 import android.os.Bundle;
 import android.support.v4.app.DialogFragment;
+import android.support.v4.widget.SimpleCursorAdapter.ViewBinder;
 import android.view.ContextMenu;
 import android.view.ContextMenu.ContextMenuInfo;
 import android.view.LayoutInflater;
@@ -25,13 +26,13 @@ import android.view.ViewGroup;
 import android.widget.AdapterView.AdapterContextMenuInfo;
 import android.widget.LinearLayout;
 import android.widget.ListView;
-import android.widget.SimpleCursorAdapter.ViewBinder;
 import android.widget.TextView;
 
 import com.acedit.assignamo.AssignmentListFragment;
 import com.acedit.assignamo.R;
 import com.acedit.assignamo.database.DbAdapter;
 import com.acedit.assignamo.database.Values;
+import com.acedit.assignamo.objects.Course;
 import com.acedit.assignamo.utils.DbUtils;
 import com.acedit.assignamo.utils.UiUtils;
 
@@ -47,15 +48,15 @@ public class CourseListFragment extends BaseListFragment {
 	/** Called when the activity is first created. */
 	public void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
-		dbAdapter = getDbAdapter(Values.COURSE_TABLE);
-		setListFrom( new String[] { Values.KEY_NAME, Values.COURSE_KEY_TEACHER,
-				Values.COURSE_KEY_TIMES_OF_DAY } );
+		dbAdapter = getDbAdapter(Course.TABLE_NAME);
+		setListFrom( new String[] { Values.KEY_NAME, Course.KEY_TEACHER,
+				Course.KEY_TIMES_OF_DAY } );
 		setListTo( new int[] { R.id.list_title, R.id.list_teacher, R.id.list_days } );
 		setListItem(R.layout.course_list_item);
 		
-		Context context = getActivity();
+		Context mContext = getActivity();
 		// Get the list of teachers
-		Cursor c = DbUtils.getTeachersAsCursor(context);
+		Cursor c = DbUtils.getTeachersAsCursor(mContext);
 		c.moveToFirst();
 		for (short i = 0; i < c.getCount(); i++) {
 			teachers.put(c.getShort(0),c.getString(1));
@@ -71,10 +72,10 @@ public class CourseListFragment extends BaseListFragment {
 					((LinearLayout)view.getParent()).setBackgroundColor(colors.get(cursor.getShort(0)));
 					return true;
 				case R.id.list_teacher:
-					((TextView)view).setText(teachers.get(cursor.getShort(cursor.getColumnIndexOrThrow(Values.COURSE_KEY_TEACHER))));
+					((TextView)view).setText(teachers.get(cursor.getShort(cursor.getColumnIndexOrThrow(Course.KEY_TEACHER))));
 					return true;
 				case R.id.list_days:
-					((TextView)view).setText(getDaysOfWeek(cursor.getString(cursor.getColumnIndexOrThrow(Values.COURSE_KEY_TIMES_OF_DAY))));
+					((TextView)view).setText(getDaysOfWeek(cursor.getString(cursor.getColumnIndexOrThrow(Course.KEY_TIMES_OF_DAY))));
 					return true;
 				}
 				return false;
@@ -91,13 +92,13 @@ public class CourseListFragment extends BaseListFragment {
 	}
 	
 	private void loadCourseColors() {
-		DbAdapter adapter = new DbAdapter(context, null, Values.COURSE_TABLE);
+		DbAdapter adapter = new DbAdapter(mContext, null, Course.TABLE_NAME);
 		adapter.open();
-		Cursor c = adapter.fetchAll(new String[] { Values.KEY_ROWID, Values.COURSE_KEY_COLOR } );
+		Cursor c = adapter.fetchAll(new String[] { Values.KEY_ROWID, Course.KEY_COLOR } );
 		c.moveToFirst();
 		for (short i = 0; i < c.getCount(); i++) {
 			short id = c.getShort(c.getColumnIndexOrThrow(Values.KEY_ROWID));
-			int color = c.getInt(c.getColumnIndexOrThrow(Values.COURSE_KEY_COLOR));
+			int color = c.getInt(c.getColumnIndexOrThrow(Course.KEY_COLOR));
 			colors.put(id, UiUtils.changeAlpha(color,AssignmentListFragment.ALPHA));
 			c.moveToNext();
 		}
@@ -134,7 +135,7 @@ public class CourseListFragment extends BaseListFragment {
 	
 	@Override
 	public void onListItemClick(ListView l, View v, int position, long id) {
-		Intent i = new Intent(context, CourseViewFragment.class);
+		Intent i = new Intent(mContext, CourseViewFragment.class);
 		i.putExtra(Values.KEY_ROWID, id);
 		startActivity(i);
 	}
@@ -146,7 +147,7 @@ public class CourseListFragment extends BaseListFragment {
     @Override
     public boolean onOptionsItemSelected(MenuItem item) {
     	// (The only choice is to add a course)
-		Intent i = new Intent(context, CourseEditActivity.class);
+		Intent i = new Intent(mContext, CourseEditActivity.class);
 		startActivity(i);
     	return true;
     }
@@ -163,7 +164,7 @@ public class CourseListFragment extends BaseListFragment {
 		long id = ((AdapterContextMenuInfo)item.getMenuInfo()).id;
     	switch (item.getItemId()) {
     	case CONTEXT_EDIT:
-    		startActivity( new Intent(context, CourseEditActivity.class)
+    		startActivity( new Intent(mContext, CourseEditActivity.class)
     			.putExtra(Values.KEY_ROWID, id) );
     		return true;
     	case CONTEXT_DELETE:
@@ -201,7 +202,7 @@ public class CourseListFragment extends BaseListFragment {
 	}
 	
 	public void deleteCourse() {
-		DbUtils.deleteCourse(context, selectedItem);
+		DbUtils.deleteCourse(mContext, selectedItem);
 		fillData();
 	}
 }

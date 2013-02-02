@@ -6,6 +6,8 @@ import android.content.Context;
 import android.database.Cursor;
 import android.os.Bundle;
 import android.support.v4.app.ListFragment;
+import android.support.v4.widget.SimpleCursorAdapter;
+import android.support.v4.widget.SimpleCursorAdapter.ViewBinder;
 import android.view.ContextMenu;
 import android.view.ContextMenu.ContextMenuInfo;
 import android.view.LayoutInflater;
@@ -13,14 +15,12 @@ import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ListView;
-import android.widget.SimpleCursorAdapter;
-import android.widget.SimpleCursorAdapter.ViewBinder;
 
 import com.acedit.assignamo.database.DbAdapter;
 
 public abstract class BaseListFragment extends ListFragment {
 
-	protected Context context;
+	protected Context mContext;
 	
 	protected DbAdapter dbAdapter;
 	private Cursor cursor;
@@ -32,18 +32,15 @@ public abstract class BaseListFragment extends ListFragment {
 	private String[] fetchSQL;
 	private ViewBinder viewBinder;
 	
-	public BaseListFragment() {
-		
-	}
+	public BaseListFragment() {}
 	
 	public DbAdapter getDbAdapter(String tableName) {
-		return new DbAdapter(context, null, tableName);
+		return new DbAdapter(mContext, null, tableName);
 	}
 	
-	/** Called when the activity is first created. */
 	public void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
-		context = getActivity();
+		mContext = getActivity();
 	}
 	
 	/** Called when the activity becomes visible. */
@@ -69,7 +66,7 @@ public abstract class BaseListFragment extends ListFragment {
 		return v;
 	}
 	
-	/* Set the XML file to use as a layout for the ListView. MUST be called
+	/** Set the XML file to use as a layout for the ListView. MUST be called
 	 * before super.onCreateView().
 	 * @param id the id for the XML layout resource
 	 */
@@ -104,8 +101,7 @@ public abstract class BaseListFragment extends ListFragment {
     	
     	dbAdapter.open();
     	cursor = dbAdapter.fetchAll(fetchSQL);
-    	dbAdapter.close();
-    	SimpleCursorAdapter cursorAdapter = new SimpleCursorAdapter(context, listItem, cursor, from, to, 0);
+    	SimpleCursorAdapter cursorAdapter = new SimpleCursorAdapter(mContext, listItem, cursor, from, to, 0);
     	if (viewBinder != null)
     		cursorAdapter.setViewBinder(viewBinder);
     	setListAdapter(cursorAdapter);
@@ -113,9 +109,7 @@ public abstract class BaseListFragment extends ListFragment {
     
     protected boolean delete(long rowId) {
     	dbAdapter.open();
-    	boolean b = dbAdapter.delete(rowId);
-    	dbAdapter.close();
-    	return b;
+    	return dbAdapter.delete(rowId);
     }
     
     @Override

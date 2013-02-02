@@ -15,7 +15,7 @@ import android.widget.CompoundButton.OnCheckedChangeListener;
 import android.widget.TimePicker;
 
 import com.acedit.assignamo.R;
-import com.acedit.assignamo.database.Values;
+import com.acedit.assignamo.objects.Course;
 import com.acedit.assignamo.utils.DateUtils;
 
 public class DaySelectFragment extends FragmentActivity {
@@ -105,8 +105,8 @@ public class DaySelectFragment extends FragmentActivity {
 					}
 				}
 				Intent data = new Intent()
-				.putExtra(Values.COURSE_EDIT_START_TIMES_KEY, startTimes)
-				.putExtra(Values.COURSE_EDIT_STOP_TIMES_KEY, stopTimes);
+				.putExtra(Course.START_TIMES_KEY, startTimes)
+				.putExtra(Course.STOP_TIMES_KEY, stopTimes);
 				setResult(RESULT_OK, data);
 				finish();
 			}
@@ -119,20 +119,20 @@ public class DaySelectFragment extends FragmentActivity {
 	@Override
 	public void onSaveInstanceState(Bundle outState) {
 		super.onSaveInstanceState(outState);
-		outState.putShortArray(Values.COURSE_EDIT_START_TIMES_KEY, startTimes);
-		outState.putShortArray(Values.COURSE_EDIT_STOP_TIMES_KEY, stopTimes);
+		outState.putShortArray(Course.START_TIMES_KEY, startTimes);
+		outState.putShortArray(Course.STOP_TIMES_KEY, stopTimes);
 	}
 	
 	private void initializeTimes(Bundle savedInstanceState) {
 		
 		if (savedInstanceState != null) {
-			startTimes = savedInstanceState.getShortArray(Values.COURSE_EDIT_START_TIMES_KEY);
-			stopTimes = savedInstanceState.getShortArray(Values.COURSE_EDIT_STOP_TIMES_KEY);
+			startTimes = savedInstanceState.getShortArray(Course.START_TIMES_KEY);
+			stopTimes = savedInstanceState.getShortArray(Course.STOP_TIMES_KEY);
 		} else {
 			Bundle extras = getIntent().getExtras();
-			if (extras != null && extras.containsKey(Values.COURSE_EDIT_START_TIMES_KEY)) {
-				startTimes = extras.getShortArray(Values.COURSE_EDIT_START_TIMES_KEY);
-				stopTimes = extras.getShortArray(Values.COURSE_EDIT_STOP_TIMES_KEY);
+			if (extras != null && extras.containsKey(Course.START_TIMES_KEY)) {
+				startTimes = extras.getShortArray(Course.START_TIMES_KEY);
+				stopTimes = extras.getShortArray(Course.STOP_TIMES_KEY);
 			} else {
 				startTimes = new short[7];
 				stopTimes = new short[7];
@@ -226,17 +226,10 @@ public class DaySelectFragment extends FragmentActivity {
 	}
 	
 	private void refreshButtonText() {
-		for (short d = 0; d < 7; d++)
-			for (short i = 0; i < 2; i++) {
-				short hrs = (short)( (i == START_BUTTON ? startTimes[d] : stopTimes[d]) / 60);
-				short mins = (short)( (i == START_BUTTON ? startTimes[d] : stopTimes[d]) % 60);
-				String text;
-				if (hrs == 0 && mins == 0)
-					text = getString(R.string.course_edit_days_select_not_set);
-				else
-					text = DateUtils.formatAsString(hrs, mins, false);
-				buttons[d][i].setText(text);
-			}
+		for (short d = 0; d < 7; d++) {
+			updateButtonText(d, START_BUTTON);
+			updateButtonText(d, STOP_BUTTON);
+		}
 	}
 
 }

@@ -1,13 +1,15 @@
 package com.acedit.assignamo.database;
 
-// Variable names used by the database
+import com.acedit.assignamo.objects.*;
+
+/** Values used by the database */
 
 public final class Values {
 	
 	public static final String DATABASE_NAME = "data.db";
-	public static final short DATABASE_VERSION = 6;
-	public static final String[] DATABASE_CREATE = {Values.ASSIGNMENT_DATABASE_CREATE,
-		Values.COURSE_DATABASE_CREATE, Values.TEACHER_DATABASE_CREATE };
+	public static final short DATABASE_VERSION = 1;
+	public static final String[] DATABASE_CREATE = {Assignment.DATABASE_CREATE,
+		Course.DATABASE_CREATE, Teacher.DATABASE_CREATE };
 	public static final String INTENT_REFRESH_KEY = "refresh_id";
 	public static final String INTENT_REFRESH_COURSE_KEY = "refresh_course_id";
 	public static final String INTENT_REFRESH_ACTION = "assignamo.REFRESH";
@@ -19,60 +21,6 @@ public final class Values {
 	public static final String KEY_NAME = "name";
 	public static final String KEY_DESCRIPTION = "description";
 	public static final String KEY_NOTES = "notes";
-	public static final String KEY_ROOM = "room";
-	
-	/*--------- Assignments --------*/
-	public static final String ASSIGNMENT_TABLE = "assignments";
-	public static final String ASSIGNMENT_KEY_COURSE = "course";
-	public static final String ASSIGNMENT_KEY_DUE_DATE = "due_date";
-	public static final String ASSIGNMENT_KEY_STATUS = "status";
-	public static final short ASSIGNMENT_STATUS_INCOMPLETE = 0;
-	public static final short ASSIGNMENT_STATUS_COMPLETED = 1;
-	public static final String[] ASSIGNMENT_FETCH = { KEY_ROWID, KEY_TITLE,
-		ASSIGNMENT_KEY_COURSE, KEY_DESCRIPTION, ASSIGNMENT_KEY_DUE_DATE, ASSIGNMENT_KEY_STATUS };
-	public static final String[] ASSIGNMENT_LIST_FETCH = { KEY_ROWID, KEY_TITLE, ASSIGNMENT_KEY_COURSE, KEY_DESCRIPTION,
-		ASSIGNMENT_KEY_DUE_DATE };
-	public static final String ASSIGNMENT_DATABASE_CREATE = "create table " + ASSIGNMENT_TABLE
-			+ " ( " + KEY_ROWID + " integer primary key autoincrement, "
-			+ KEY_TITLE + " text not null, "
-			+ ASSIGNMENT_KEY_COURSE + " int not null, "
-			+ KEY_DESCRIPTION + " text not null, "
-			+ ASSIGNMENT_KEY_DUE_DATE + " text not null, "
-			+ ASSIGNMENT_KEY_STATUS + " int not null default " + ASSIGNMENT_STATUS_INCOMPLETE + ");";
-	public static final String ASSIGNMENT_KEY_SHOWING_COMPLETED = "show_completed_assignments";
-	
-	/*--------- Courses ---------*/
-	public static final String COURSE_TABLE = "courses";
-	public static final String COURSE_KEY_TEACHER = "teacher";
-	public static final String COURSE_KEY_TIMES_OF_DAY = "times_of_day";
-	public static final String COURSE_EDIT_START_TIMES_KEY= "start_times";
-	public static final String COURSE_EDIT_STOP_TIMES_KEY= "stop_times";
-	public static final String COURSE_KEY_COLOR = "color";
-	public static final String[] COURSE_FETCH = { KEY_ROWID, KEY_NAME, COURSE_KEY_TEACHER, KEY_DESCRIPTION,
-		KEY_ROOM, COURSE_KEY_TIMES_OF_DAY, COURSE_KEY_COLOR };
-	public static final String COURSE_DATABASE_CREATE = "create table " + COURSE_TABLE + " ( "
-			+ KEY_ROWID + " integer primary key autoincrement, "
-			+ KEY_NAME + " text not null, "
-			+ COURSE_KEY_TEACHER + " text not null, "
-			+ KEY_DESCRIPTION + " text, "
-			+ KEY_ROOM + " text, "
-			+ COURSE_KEY_TIMES_OF_DAY + " text, "
-			+ COURSE_KEY_COLOR + " int not null);";
-	
-	/*-------- Teachers ----------*/
-	public static final String TEACHER_TABLE = "teachers";
-	public static final String TEACHER_KEY_SUBJECT = "subject";
-	public static final String TEACHER_KEY_EMAIL = "email";
-	public static final String TEACHER_KEY_PHONE = "phone_number";
-	public static final String[] TEACHER_FETCH = { KEY_ROWID, KEY_NAME,
-		TEACHER_KEY_SUBJECT, KEY_ROOM, TEACHER_KEY_EMAIL, TEACHER_KEY_PHONE, KEY_NOTES };
-	public static final String TEACHER_DATABASE_CREATE = "create table " + TEACHER_TABLE + " ( "
-			+ KEY_ROWID + " integer primary key autoincrement, "
-			+ KEY_NAME + " text not null, "
-			+ TEACHER_KEY_SUBJECT + " text, "
-			+ KEY_ROOM + " int, "
-			+ TEACHER_KEY_EMAIL + " text, "
-			+ TEACHER_KEY_PHONE + " int, "
-			+ KEY_NOTES + " text);";
+	public static final String KEY_ROOM = "room";	
 	
 }

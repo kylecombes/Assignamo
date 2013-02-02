@@ -1,5 +1,7 @@
 package com.acedit.assignamo;
 
+import java.util.Locale;
+
 import android.content.Context;
 import android.content.Intent;
 import android.os.Bundle;
@@ -10,8 +12,8 @@ import android.support.v4.view.ViewPager.OnPageChangeListener;
 import android.view.Menu;
 import android.view.MenuItem;
 
-import com.acedit.assignamo.database.Values;
 import com.acedit.assignamo.manage.ManageActivity;
+import com.acedit.assignamo.objects.Assignment;
 import com.acedit.assignamo.preferences.Preferences;
 import com.acedit.assignamo.utils.DbUtils;
 import com.viewpagerindicator.TabPageIndicator;
@@ -23,7 +25,6 @@ public class MainActivity extends FragmentActivity {
     short selectedPos;
     TitlePageAdapter adapter;
     
-    /** Called when the activity is first created. */
     @Override
     public void onCreate(Bundle savedInstanceState) {
     	super.onCreate(savedInstanceState);
@@ -97,7 +98,7 @@ public class MainActivity extends FragmentActivity {
 		switch (item.getItemId()) {
 		case OPTIONS_ASSIGNMENT_ADD:
 			i = new Intent(this, AssignmentEditFragment.class);
-			i.putExtra(Values.ASSIGNMENT_KEY_COURSE, (short)(selectedPos - 1));
+			i.putExtra(Assignment.KEY_COURSE, (short)(selectedPos - 1));
 			startActivity(i);
 			return true;
 		case OPTIONS_MANAGE:
@@ -126,7 +127,7 @@ public class MainActivity extends FragmentActivity {
 		}
 
 		public String getTitle(int position) {
-			return titles[position % titles.length].toUpperCase();
+			return titles[position % titles.length].toUpperCase(Locale.getDefault());
 		}
 	}
 }

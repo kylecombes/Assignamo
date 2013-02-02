@@ -7,7 +7,7 @@ import java.util.Date;
 public class DateUtils {
 	
 	public static final String TWENTY_FOUR_HOUR_FORMAT = "H:mm";
-	public static final String TWELVE_HOUR_FORMAT = "h:mm a";
+	public static final String TWELVE_HOUR_FORMAT = "hh:mm a";
 	
 	/**
 	 * Format a Calendar object as a string.
@@ -16,8 +16,7 @@ public class DateUtils {
 	 * @return A String representation of the Calendar object.
 	 */
 	public static String formatAsString(Calendar calendar, String format) {
-		SimpleDateFormat dateFormat = new SimpleDateFormat(format);
-		return dateFormat.format(calendar.getTime());
+		return new SimpleDateFormat(format).format(calendar.getTime());
 	}
 	
 	/**
@@ -44,10 +43,9 @@ public class DateUtils {
 			format = new SimpleDateFormat(TWENTY_FOUR_HOUR_FORMAT);
 		else
 			format = new SimpleDateFormat(TWELVE_HOUR_FORMAT);
-		Date date = new Date();
-		date.setHours(hour);
-		date.setMinutes(minute);
-		return format.format(date);
+		long hrs = hour * 3600000;
+		long newTime = hrs + convertMinutesToMills(minute);
+		return format.format(new Date(newTime));
 	}
 	
 	/**

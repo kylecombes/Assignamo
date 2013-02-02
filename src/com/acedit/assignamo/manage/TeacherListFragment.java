@@ -15,6 +15,7 @@ import android.widget.ListView;
 
 import com.acedit.assignamo.R;
 import com.acedit.assignamo.database.Values;
+import com.acedit.assignamo.objects.Teacher;
 
 public class TeacherListFragment extends BaseListFragment {
 	
@@ -26,8 +27,8 @@ public class TeacherListFragment extends BaseListFragment {
 	@Override
 	public void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
-		dbAdapter = getDbAdapter(Values.TEACHER_TABLE);
-		setListFrom( new String[] { Values.KEY_NAME, Values.TEACHER_KEY_SUBJECT, Values.KEY_NOTES } );
+		dbAdapter = getDbAdapter(Teacher.TABLE_NAME);
+		setListFrom( new String[] { Values.KEY_NAME, Teacher.KEY_DEPARTMENT, Values.KEY_NOTES } );
 		setListTo( new int[] { R.id.list_title, R.id.list_department, R.id.list_room_num } );
 		setListItem(R.layout.teacher_list_item);
 	}
@@ -38,7 +39,7 @@ public class TeacherListFragment extends BaseListFragment {
 
     @Override
     public void onListItemClick(ListView l, View v, int position, long id) {
-		Intent i = new Intent(context, TeacherViewFragment.class);
+		Intent i = new Intent(mContext, TeacherViewFragment.class);
 		i.putExtra(Values.KEY_ROWID, id);
 		startActivity(i);
 	}
@@ -50,7 +51,7 @@ public class TeacherListFragment extends BaseListFragment {
     @Override
     public boolean onOptionsItemSelected(MenuItem item) {
     	// (The only choice is to add a teacher)
-		Intent i = new Intent(context, TeacherEditActivity.class);
+		Intent i = new Intent(mContext, TeacherEditActivity.class);
 		startActivity(i);
     	return true;
     }
@@ -69,7 +70,7 @@ public class TeacherListFragment extends BaseListFragment {
 		
     	switch (item.getItemId()) {
     	case CONTEXT_EDIT:
-    		Intent i = new Intent(context, TeacherEditActivity.class);
+    		Intent i = new Intent(mContext, TeacherEditActivity.class);
     		i.putExtra(Values.KEY_ROWID, info.id);
     		startActivity(i);
     		break;

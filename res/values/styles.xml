@@ -45,16 +45,6 @@
         <item name="android:textAppearance">@android:style/TextAppearance.Medium</item>
         <item name="android:layout_centerVertical">true</item>
     </style>
-    <style name="Setup.Button">
-        <item name="android:layout_width">@dimen/setup_wizard_list_button_dimen</item>
-        <item name="android:layout_height">@dimen/setup_wizard_list_button_dimen</item>
-    </style>
-    <style name="Setup.Button.Left">
-        <item name="android:layout_marginRight">@dimen/setup_wizard_list_button_spacing</item>
-    </style>
-    <style name="Setup.Button.Right">
-        <item name="android:layout_alignParentRight">true</item>
-</style>
     
     <style name="Setup.TextView" parent="TextView">
         <item name="android:paddingLeft">@dimen/activity_edge_padding</item>
@@ -150,6 +140,17 @@
     <style name="ListText.Due">
         <item name="android:textSize">15sp</item>
     </style>
+    
+    <style name="ListItem.Button" parent="@android:style/Widget.Button">
+        <item name="android:layout_width">@dimen/setup_wizard_list_button_dimen</item>
+        <item name="android:layout_height">@dimen/setup_wizard_list_button_dimen</item>
+    </style>
+    <style name="ListItem.Button.Left">
+        <item name="android:layout_marginRight">@dimen/setup_wizard_list_button_spacing</item>
+    </style>
+    <style name="ListItem.Button.Right">
+        <item name="android:layout_alignParentRight">true</item>
+	</style>
     
     <!-- TextView Styling -->
     

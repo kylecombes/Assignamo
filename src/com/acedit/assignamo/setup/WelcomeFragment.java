@@ -20,7 +20,7 @@ public class WelcomeFragment  extends Fragment {
 	public void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
 		// Create the database
-		new DbAdapter(getActivity(), null, null).open().close();
+		new DbAdapter(getActivity(), null, null).open();
 	}
 	
 }
