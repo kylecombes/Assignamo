@@ -21,6 +21,7 @@ public final class Values {
 	public static final String KEY_NAME = "name";
 	public static final String KEY_DESCRIPTION = "description";
 	public static final String KEY_NOTES = "notes";
-	public static final String KEY_ROOM = "room";	
+	public static final String KEY_ROOM = "room";
+	public static final String BLANK_VALUE = "-1";
 	
 }

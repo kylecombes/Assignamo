@@ -1,7 +1,6 @@
 <resources>
-    <style name="StyledIndicators" parent="Widget.TitlePageIndicator">
+    <style name="StyledIndicators" parent="android:style/Theme.Holo.Light">
         <item name="vpiTabPageIndicatorStyle">@style/CustomTabPageIndicator</item>
-        <item name="vpiTabTextStyle">@style/CustomTabPageIndicator.Text</item>
         <item name="android:windowNoTitle">true</item>
     </style>
     

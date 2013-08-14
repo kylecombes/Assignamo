@@ -2,7 +2,6 @@ package com.acedit.assignamo.objects;
 
 import java.io.Serializable;
 
-import android.content.ContentValues;
 import android.content.Context;
 import android.database.Cursor;
 import android.text.SpannableString;
@@ -22,14 +21,15 @@ public class Teacher implements Serializable {
 			+ Values.KEY_ROWID + " integer primary key autoincrement, "
 			+ Values.KEY_NAME + " text not null, "
 			+ KEY_DEPARTMENT + " text, "
-			+ Values.KEY_ROOM + " int, "
+			+ Values.KEY_ROOM + " text, "
 			+ KEY_EMAIL + " text, "
-			+ KEY_PHONE + " int, "
+			+ KEY_PHONE + " text, "
 			+ Values.KEY_NOTES + " text);";
 	
-	private Short mId;
-	private String mName, mDepartment, mNotes, mEmail, mRoom;
-	private short mPhoneNumber;
+	protected Short mId;
+	protected String mName, mDepartment, mNotes, mEmail, mRoom, mPhoneNumber;
+	
+	public Teacher() {}
 	
 	public Teacher(Context context, short id) {
 		mId = id;
@@ -40,7 +40,7 @@ public class Teacher implements Serializable {
 		mNotes = c.getString(c.getColumnIndexOrThrow(Values.KEY_NOTES));
 		mEmail = c.getString(c.getColumnIndexOrThrow(KEY_EMAIL));
 		mRoom = c.getString(c.getColumnIndexOrThrow(Values.KEY_ROOM));
-		mPhoneNumber = c.getShort(c.getColumnIndexOrThrow(KEY_PHONE));
+		mPhoneNumber = c.getString(c.getColumnIndexOrThrow(KEY_PHONE));
 		c.close();
 	}
 	
@@ -68,7 +68,7 @@ public class Teacher implements Serializable {
 		return mRoom;
 	}
 	
-	public short getPhoneNumber() {
+	public String getPhoneNumber() {
 		return mPhoneNumber;
 	}
 	
@@ -85,10 +85,10 @@ public class Teacher implements Serializable {
 	 */
 	// TODO Add support for foreign phone numbers
 	public SpannableString getPhoneNumberAsFormattedString(Context context) throws NumberFormatException {
-		if (mPhoneNumber < 0)
+		if (mPhoneNumber == null)
 			return ViewFragment.getItalicizedString(context.getString(R.string.teacher_view_no_phone));
 		
-		String str = Long.toString(mPhoneNumber);
+		String str = mPhoneNumber;
 		String rStr = "";
 		
 		short len = (short) str.length();
@@ -128,52 +128,4 @@ public class Teacher implements Serializable {
 		return new SpannableString(rStr);
 	}
 
-	
-	public void setName(String name) {
-		mName = name;
-	}
-	
-	public void setDepartment(String department) {
-		mDepartment = department;
-	}
-	
-	public void setNotes(String notes) {
-		mNotes = notes;
-	}
-	
-	public void setEmail(String email) {
-		mEmail = email;
-	}
-	
-	public void setPhoneNumber(short phoneNumber) {
-		mPhoneNumber = phoneNumber;
-	}
-	
-	public void setRoom(String room) {
-		mRoom = room;
-	}
-	
-	/**
-	 * Check whether or not the teacher is stored in the database. This does
-	 * <strong>not</strong> check to see if the copy in the database is
-	 * up to date. 
-	 * @return whether or not a version of the teacher is stored in the database
-	 */
-	public boolean existsInDatabase() {
-		return mId != null;
-	}
-	
-	public boolean commitToDatabase(Context context) {
-		ContentValues values = new ContentValues();
-    	values.put(Values.KEY_NAME, mName);
-    	values.put(KEY_DEPARTMENT, mDepartment);
-    	values.put(Values.KEY_NOTES, mNotes);
-    	values.put(Values.KEY_ROOM, mRoom);
-    	values.put(KEY_EMAIL, mEmail);
-    	values.put(KEY_PHONE, mPhoneNumber);
-    	DbAdapter dbAdapter = new DbAdapter(context, null, TABLE_NAME).open();
-    	if (mId == null)
-    		return dbAdapter.add(values) > 0;
-    	return dbAdapter.update(mId, values);
-	}
 }

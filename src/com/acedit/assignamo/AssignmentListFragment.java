@@ -36,7 +36,6 @@ import com.acedit.assignamo.database.Values;
 import com.acedit.assignamo.objects.Assignment;
 import com.acedit.assignamo.objects.Course;
 import com.acedit.assignamo.ui.ColorStrip;
-import com.acedit.assignamo.utils.DateUtils;
 import com.acedit.assignamo.utils.DbUtils;
 import com.acedit.assignamo.utils.UiUtils;
 
@@ -318,13 +317,14 @@ public class AssignmentListFragment extends ListFragment {
 		@Override
 		public boolean hasStableIds() {	return true; }
 		
-		@Override
-		public int getViewTypeCount() { return 2; }
+		//TODO Might not need
+		/*@Override
+		public int getViewTypeCount() { return 2; }*/
 	}
 	
 	private String getDateString(long minutes) {
 		Calendar calendar = Calendar.getInstance();
-		calendar.setTimeInMillis(DateUtils.convertMinutesToMills(minutes));
+		calendar.setTimeInMillis(minutes * 60000);
 		
 		return (new SimpleDateFormat(DATE_FORMAT)).format(calendar.getTime());
 	}

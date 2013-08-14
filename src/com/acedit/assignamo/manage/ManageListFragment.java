@@ -26,7 +26,6 @@ import com.acedit.assignamo.database.Values;
 import com.acedit.assignamo.objects.Course;
 import com.acedit.assignamo.objects.Teacher;
 import com.acedit.assignamo.ui.ColorStrip;
-import com.acedit.assignamo.utils.DateUtils;
 
 public class ManageListFragment extends ListFragment {
 	
@@ -243,7 +242,7 @@ public class ManageListFragment extends ListFragment {
 	
 	private String getDateString(long minutes) {
 		Calendar calendar = Calendar.getInstance();
-		calendar.setTimeInMillis(DateUtils.convertMinutesToMills(minutes));
+		calendar.setTimeInMillis(minutes * 60000);
 		
 		return (new SimpleDateFormat(DATE_FORMAT)).format(calendar.getTime());
 	}

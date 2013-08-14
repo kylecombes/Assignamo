@@ -2,7 +2,6 @@ package com.acedit.assignamo.objects;
 
 import java.io.Serializable;
 
-import android.content.ContentValues;
 import android.content.Context;
 import android.database.Cursor;
 
@@ -30,11 +29,12 @@ public class Assignment implements Serializable {
 			+ KEY_POINTS + " int);";
 	public static final String KEY_SHOWING_COMPLETED = "show_completed_assignments";
 	
-	private Long mId;
-	private String mTitle, mDescription;
-	private short mCourseId;
-	private long mDueDate;
-	private boolean isCompleted;
+	protected Long mId;
+	protected String mTitle, mDescription;
+	protected short mCourseId;
+	/** The number of minutes (as opposed to seconds) since the UNIX epoch time. */
+	protected long mDueDate;
+	protected boolean isCompleted;
 	
 	public Assignment() {
 		
@@ -101,61 +101,11 @@ public class Assignment implements Serializable {
 	 * @return the due date (in milliseconds)
 	 */
 	public long getDueDate() {
-		return mDueDate;
+		return mDueDate * 60000;
 	}
 	
 	public boolean isCompleted() {
 		return isCompleted;
-	}
-	
-	/**
-	 * Set the assignment's title.
-	 * @param title the new title
-	 */
-	public void setTitle(String title) {
-		mTitle = title;
-	}
-	
-	/**
-	 * Set the course the assignment is for.
-	 * @param id the id of the course
-	 */
-	public void setCourseId(short id) {
-		mCourseId = id;
-	}
-	
-	/**
-	 * Set the assignment's description.
-	 * @param description the new description
-	 */
-	public void setDescription(String description) {
-		mDescription = description;
-	}
-	
-	/**
-	 * Set the assignment's due date.
-	 * @param dueDate the new due date (in milliseconds)
-	 */
-	public void setDueDate(long dueDate) {
-		mDueDate = dueDate;
-	}
-	
-	/**
-	 * Commits the assignment to the database. If the assignment already exists,
-	 * it will update it. If it is new, it will add a new assignment.
-	 * @param context
-	 * @return whether or not the commit was successful
-	 */
-	public boolean commitToDatabase(Context context) {
-		ContentValues values = new ContentValues();
-    	values.put(Values.KEY_TITLE, mTitle);
-    	values.put(Assignment.KEY_COURSE, mCourseId);
-    	values.put(Values.KEY_DESCRIPTION, mDescription);
-    	values.put(Assignment.KEY_DUE_DATE, mDueDate);
-    	DbAdapter dbAdapter = new DbAdapter(context, null, TABLE_NAME).open();
-		if (mId == null)
-			return dbAdapter.add(values) > 0;
-		return dbAdapter.update(mId, values);
 	}
 	
 }

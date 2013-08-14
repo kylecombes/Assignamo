@@ -14,7 +14,6 @@ import android.view.MenuItem;
 import com.acedit.assignamo.FragmentAdapter;
 import com.acedit.assignamo.R;
 import com.viewpagerindicator.TabPageIndicator;
-import com.viewpagerindicator.TitleProvider;
 
 public class ManageActivity extends FragmentActivity {
 
@@ -105,7 +104,7 @@ public class ManageActivity extends FragmentActivity {
     }
     
 
-    class TitlePageAdapter extends FragmentAdapter implements TitleProvider {
+    class TitlePageAdapter extends FragmentAdapter {
     	String[] titles;
     	Context context;
 		public TitlePageAdapter(FragmentManager fm, String[] titles, Context context) {

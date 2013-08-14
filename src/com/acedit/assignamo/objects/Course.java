@@ -6,7 +6,6 @@ import java.util.Calendar;
 import org.json.JSONArray;
 import org.json.JSONException;
 
-import android.content.ContentValues;
 import android.content.Context;
 import android.database.Cursor;
 
@@ -29,11 +28,11 @@ public class Course implements Serializable {
 			+ KEY_TIMES_OF_DAY + " text, "
 			+ KEY_COLOR + " int not null);";
 	
-	private Short mId;
-	private String mName, mDescription, mRoom;
-	private short mTeacherId;
-	private int mColor;
-	private short[] mStartTimes, mStopTimes;
+	protected Short mId;
+	protected String mName, mDescription, mRoom;
+	protected short mTeacherId;
+	protected int mColor;
+	protected short[] mStartTimes, mStopTimes;
 	
 	/**
 	 * Create a new manipulatable Course object.
@@ -56,6 +55,15 @@ public class Course implements Serializable {
 		mColor = data.getInt(data.getColumnIndexOrThrow(KEY_COLOR));
 		
 		data.close();
+	}
+	
+	/**
+	 * Check to see whether or not we are creating a new course or
+	 * editing an existing course.
+	 * @return whether or not we are editing an existing course
+	 */
+	public boolean editingExisting() {
+		return mId != null;
 	}
 	
 	public Short getId() {
@@ -121,38 +129,6 @@ public class Course implements Serializable {
 		return mRoom;
 	}
 	
-	public void setTitle(String title) {
-		mName = title;
-	}
-	
-	public void setTeacher(Teacher teacher) {
-		mTeacherId = teacher.getId();
-	}
-	
-	public void setTeacher(short id) {
-		mTeacherId = id;
-	}
-	
-	public void setDescription(String desc) {
-		mDescription = desc;
-	}
-	
-	public void setColor(int color) {
-		mColor = color;
-	}
-	
-	public void setRoom(String room) {
-		mRoom = room;
-	}
-	
-	public void setClassStartTimes(short[] startTimes) {
-		mStartTimes = startTimes;
-	}
-	
-	public void setClassStopTimes(short[] stopTimes) {
-		mStopTimes = stopTimes;
-	}
-	
 	private void loadTimes(String timesStr) {
 		JSONArray array;
 		try {
@@ -166,27 +142,4 @@ public class Course implements Serializable {
 		} catch (JSONException e) {e.printStackTrace();}
 	}
 	
-	public boolean commitToDatabase(Context context) {
-		ContentValues values = new ContentValues();
-    	values.put(Values.KEY_NAME, mName);
-    	values.put(KEY_TEACHER, mTeacherId);
-    	values.put(Values.KEY_DESCRIPTION, mDescription);
-    	values.put(Values.KEY_ROOM, mRoom);
-    	values.put(KEY_COLOR, mColor);
-    	
-    	JSONArray timesAsArray = new JSONArray();
-    	if (mStartTimes != null && mStopTimes != null) {
-	    	for (short x = 0; x < 7; x++) {
-	    			timesAsArray.put(mStartTimes[x]);
-	    			timesAsArray.put(mStopTimes[x]);
-	    	}
-    	} else for (short i = 0; i < 14; i++)
-    		timesAsArray.put(0);
-    	values.put(KEY_TIMES_OF_DAY, timesAsArray.toString());
-    	
-    	DbAdapter dbAdapter = new DbAdapter(context, null, TABLE_NAME).open();
-		if (mId == null)
-			return dbAdapter.add(values) > 0;
-		return dbAdapter.update(mId, values);
-	}
 }

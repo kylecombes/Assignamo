@@ -23,27 +23,25 @@
 		        style="@style/TextBox.Description"
 		        android:hint="@string/description" />
 			
-		    <TextView
-		        android:id="@+id/course_edit_days_title_label"
+		    <TextView android:id="@+id/course_edit_days_title_label"
 		        android:layout_width="wrap_content"
 		        android:layout_height="wrap_content"
 		        android:text="@string/course_days_of_week"
 		        android:textAppearance="?android:attr/textAppearanceSmall"/>
 		    
-		    <Button
-		        android:id="@+id/course_edit_days_button"
+		    <Button android:id="@+id/course_edit_days_button"
 		        android:layout_width="wrap_content"
 		        android:layout_height="wrap_content"
-		        android:text="@string/configure"/>
+		        android:text="@string/configure"
+		        android:onClick="daySelectButtonPressed"/>
 		    
-		    <Button
-		        android:id="@+id/course_edit_color_select_button"
+		    <Button android:id="@+id/course_edit_color_select_button"
 		        android:layout_width="wrap_content"
 		        android:layout_height="wrap_content"
-		        android:text="@string/select_color"/>
+		        android:text="@string/select_color"
+		        android:onClick="colorSelectButtonPressed"/>
 		
-		    <EditText
-		        android:id="@+id/course_edit_room_field"
+		    <EditText android:id="@+id/course_edit_room_field"
 		        android:hint="@string/room"
 		        style="@style/TextBox.Title" />
 		
@@ -55,9 +53,11 @@
 	    style="@style/ButtonBar" >
 	    <Button android:id="@+id/course_edit_cancel"
 	   	    android:text="@android:string/cancel"
-	   	    style="@style/Button.ButtonBar" />
+	   	    style="@style/Button.ButtonBar"
+	   	    android:onClick="cancelPressed" />
 	    <Button android:id="@+id/course_edit_save"
 	   	    android:text="@string/save"
-	   	    style="@style/Button.ButtonBar" />
+	   	    style="@style/Button.ButtonBar"
+	   	    android:onClick="savePressed" />
     </LinearLayout>
 </LinearLayout>

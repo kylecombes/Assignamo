@@ -24,26 +24,22 @@ public class AssignmentViewFragment extends ViewFragment {
 	protected void populateViews() {
 		Assignment assignment = new Assignment(mContext, rowId);
 		Course course = new Course(mContext, assignment.getCourseId());
-		// Set color strip
+		
 		((ColorStrip)findViewById(R.id.assignment_view_color_strip))
 		.setColor(course.getColor());
 		
-		// Set course label
 		((TextView)findViewById(R.id.assignment_view_course))
 		.setText(course.getTitle());
 		
-		// Set title label
 		((TextView)findViewById(R.id.assignment_view_title))
 		.setText(assignment.getTitle());
 		
-		// Set due date label
 		SharedPreferences prefs = PreferenceManager.getDefaultSharedPreferences(getBaseContext());
 		boolean withTime = prefs.getBoolean("pref_appearance_show_time", true);
 		((TextView)findViewById(R.id.assignment_view_date))
 		.setText(getDateString(assignment.getDueDate(),
 			withTime), BufferType.SPANNABLE);
 		
-		// Set description label
 		((TextView)findViewById(R.id.assignment_view_description)).setText(getDescription(assignment.getDescription()));
 	}
 		
@@ -76,7 +72,6 @@ public class AssignmentViewFragment extends ViewFragment {
 	}
 
 	protected void deleteItem() {
-		// Delete the assignment
 		DbUtils.deleteAssignment(mContext, rowId);
 		finish();
 	}

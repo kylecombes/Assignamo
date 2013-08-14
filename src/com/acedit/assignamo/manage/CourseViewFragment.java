@@ -12,15 +12,13 @@ import com.acedit.assignamo.utils.DbUtils;
 
 public class CourseViewFragment extends ViewFragment {
 	
-	private Course mCourse;
-	
 	public void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
 		setContentView(R.layout.course_view);
 	}
 	
 	protected void populateViews() {
-		mCourse = new Course(mContext, (short) rowId);
+		Course mCourse = new Course(mContext, (short) rowId);
 		((TextView)findViewById(R.id.course_view_name))
 			.setText(mCourse.getTitle());
 		((TextView)findViewById(R.id.course_view_teacher))

@@ -21,7 +21,6 @@ import android.view.MenuInflater;
 import android.view.MenuItem;
 
 import com.acedit.assignamo.database.Values;
-import com.acedit.assignamo.utils.DateUtils;
 import com.acedit.assignamo.utils.DbUtils;
 
 public abstract class ViewFragment extends FragmentActivity {
@@ -113,8 +112,7 @@ public abstract class ViewFragment extends FragmentActivity {
 		
 		Calendar calendar = Calendar.getInstance();
 		int curYear = calendar.get(Calendar.YEAR);
-		//if (rowId != null)
-		calendar.setTimeInMillis(DateUtils.convertMinutesToMills(minutes));
+		calendar.setTimeInMillis(minutes * 60000);
 		
 		SimpleDateFormat dateFormat;
 		if (calendar.get(Calendar.YEAR) == curYear)

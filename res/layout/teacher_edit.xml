@@ -23,7 +23,7 @@
 	            android:layout_weight="1"/>
 	        <EditText android:id="@+id/teacher_edit_room_field"
 	            style="@style/TextBox"
-	            android:inputType="number"
+	            android:inputType="textAutoCorrect|textCapSentences"
 	            android:hint="@string/teacher_room" />
 	        <EditText android:id="@+id/teacher_edit_email_field"
 	            style="@style/TextBox.Email"
@@ -40,9 +40,11 @@
 	    style="@style/ButtonBar" >
 	    <Button android:id="@+id/teacher_edit_cancel"
 	   	    android:text="@android:string/cancel"
-	   	    style="@style/Button.ButtonBar" />
+	   	    style="@style/Button.ButtonBar"
+	   	    android:onClick="cancelButtonPressed"/>
 	    <Button android:id="@+id/teacher_edit_save"
 	   	    android:text="@string/save"
-	   	    style="@style/Button.ButtonBar" />
+	   	    style="@style/Button.ButtonBar"
+	   	    android:onClick="saveButtonPressed"/>
     </LinearLayout>
 </LinearLayout>

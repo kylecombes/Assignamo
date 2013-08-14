@@ -24,41 +24,65 @@ import android.widget.TimePicker;
 
 import com.acedit.assignamo.database.Values;
 import com.acedit.assignamo.objects.Assignment;
+import com.acedit.assignamo.objects.AssignmentEditor;
 import com.acedit.assignamo.objects.Course;
 import com.acedit.assignamo.utils.DateUtils;
 import com.acedit.assignamo.utils.DbUtils;
 
 public class AssignmentEditFragment extends FragmentActivity {
 	
-	Context mContext;
 	LinearLayout mRemindersContainer;
 	private Calendar mCalendar;
 	static final String DATE_FORMAT = "E, M/d/yyyy";
 	static final String TIME_FORMAT = "hh:mm a";
-	private Long rowId;
-	private Assignment mAssignment;
+	private AssignmentEditor mAssignment;
 	private boolean userSetDateTime;
 	private Cursor courseCursor;
-	/** If we just restored the state, we don't need to reload the next class time */
-	private boolean justRestoredState;
 	
 	private Spinner courseSpinner;
 	private TextView titleField;
 	private Button dueDateButton;
 	private Button timeDueButton;
 	private TextView descriptionField;
-	private static enum DueDateButtons { DATE, TIME, BOTH };  
+	private static enum DueDateButtons { DATE, TIME, BOTH };
+	/** Used to keep track of whether the activity was just restored. This way we don't have
+	 * to call {@link #setDueDateToNextClassTime()} when the spinner has just been populated
+	 * after an orientation change. Probably not the most efficient way of doing this...
+	 */
+	private boolean justRestoredState;
 	
 	@Override
 	public void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
 		setContentView(R.layout.assignment_edit);
-		mContext = getApplicationContext();
 		
 		mRemindersContainer = (LinearLayout) findViewById(R.id.assignment_edit_reminders_row);
-		loadDataFromIntent();
-		setTitle(rowId == null ? R.string.assignment_add : R.string.assignment_edit);
+		
 		mapViews();
+		if (savedInstanceState != null) {
+			mAssignment = (AssignmentEditor) savedInstanceState.getSerializable("mAssignment");
+			titleField.setText(mAssignment.getTitle());
+			descriptionField.setText(mAssignment.getDescription());
+			mCalendar = (Calendar) savedInstanceState.getSerializable(CALENDAR_KEY);
+			updateButtons(DueDateButtons.BOTH);
+			userSetDateTime = savedInstanceState.getBoolean(USER_SET_DUE_DATE);
+		} else { // Get data from Intent
+			Bundle extras = getIntent().getExtras();
+			if (extras != null) {
+				if (extras.containsKey(Values.KEY_ROWID)) {;
+					mAssignment = new AssignmentEditor(this, extras.getLong(Values.KEY_ROWID));
+				} else
+					mAssignment = new AssignmentEditor(this);
+				short passedCourse = extras.getShort(Assignment.KEY_COURSE);
+				if (passedCourse > 0)
+					// The user entered Add Assignment from viewing a course
+						// other than the first course, so we should change to
+						// that course. The course id was passed in the Bundle.
+					courseSpinner.setSelection(passedCourse);
+			}
+		}
+		
+		setTitle(mAssignment.editingExisting() ? R.string.assignment_add : R.string.assignment_edit);
 		populateFields();
 		
 		updateButtons(DueDateButtons.BOTH);
@@ -66,13 +90,6 @@ public class AssignmentEditFragment extends FragmentActivity {
 	
 	private void mapViews() {
 		courseSpinner = (Spinner)findViewById(R.id.assignment_add_course_select);
-		titleField = (TextView)findViewById(R.id.assignment_add_title_field);
-		descriptionField = (TextView)findViewById(R.id.assignment_add_description_field);
-		dueDateButton = (Button)findViewById(R.id.assignment_add_date_due);
-		timeDueButton = (Button)findViewById(R.id.assignment_add_time_due);
-	}
-
-	private void populateFields() {
 		// Populate the spinner
 		courseCursor = DbUtils.getCoursesAsCursor(this);
 		SimpleCursorAdapter adapter = new SimpleCursorAdapter(this, android.R.layout.simple_spinner_item,
@@ -92,16 +109,20 @@ public class AssignmentEditFragment extends FragmentActivity {
 			public void onNothingSelected(AdapterView<?> arg0) {}
 		});
 		
-		if (rowId != null) {
-			Assignment mAssignment = new Assignment(mContext, rowId);
+		titleField = (TextView)findViewById(R.id.assignment_add_title_field);
+		descriptionField = (TextView)findViewById(R.id.assignment_add_description_field);
+		dueDateButton = (Button)findViewById(R.id.assignment_add_date_due);
+		timeDueButton = (Button)findViewById(R.id.assignment_add_time_due);
+	}
+
+	private void populateFields() {
+		if (mAssignment != null) {
 			courseSpinner.setSelection(DbUtils.getPositionFromRowID(courseCursor, mAssignment.getCourseId()));
 			titleField.setText(mAssignment.getTitle());
-			descriptionField.setText(mAssignment.getTitle());
+			descriptionField.setText(mAssignment.getDescription());
 			
-			long time = mAssignment.getDueDate();
-			time = DateUtils.convertMinutesToMills(time);
 			mCalendar = Calendar.getInstance();
-			mCalendar.setTimeInMillis(time);
+			mCalendar.setTimeInMillis(mAssignment.getDueDate());
 			userSetDateTime = true;
 		} else {
 			setDueDateToNextClassTime();
@@ -109,52 +130,26 @@ public class AssignmentEditFragment extends FragmentActivity {
 	}
 
 	private void setDueDateToNextClassTime() {
-		Course course = new Course(mContext, (short) courseSpinner.getSelectedItemId());
-		mCalendar = course.getNextClassTime(mContext);
+		Course course = new Course(this, (short) courseSpinner.getSelectedItemId());
+		mCalendar = course.getNextClassTime(this);
 	}
 	
-	private static final String CALENDAR_TIME_KEY = "mCalendar_time";
 	private static final String USER_SET_DUE_DATE = "user_set_due_date";
 	
 	public void onSaveInstanceState(Bundle state) {
-		state.putShort(Assignment.KEY_COURSE, (short)courseSpinner.getSelectedItemPosition()); // Selected course
-		state.putString(Values.KEY_TITLE, titleField.getText().toString());
-		state.putString(Values.KEY_DESCRIPTION, descriptionField.getText().toString());
+		updateAssignmentObject();
+		state.putSerializable("mAssignment", mAssignment);
+		state.putSerializable(CALENDAR_KEY, mCalendar);
 		state.putBoolean(USER_SET_DUE_DATE, userSetDateTime);
-		state.putLong(CALENDAR_TIME_KEY, mCalendar.getTimeInMillis());
 	}
 	
-	public void onRestoreInstanceState(Bundle oldState) {
-		if (oldState != null) {
-			try {
-				courseSpinner.setSelection(oldState.getShort(Assignment.KEY_COURSE));
-				titleField.setText(oldState.getString(Values.KEY_TITLE));
-				descriptionField.setText(oldState.getString(Values.KEY_DESCRIPTION));
-				long time = oldState.getLong(CALENDAR_TIME_KEY);
-				mCalendar.setTimeInMillis(time);
-				updateButtons(DueDateButtons.BOTH);
-				userSetDateTime = oldState.getBoolean(USER_SET_DUE_DATE);
-			} catch (NullPointerException e) {}
-			justRestoredState = true;
-		}
+	private void updateAssignmentObject() {
+		mAssignment.setTitle(titleField.getText().toString().trim());
+		mAssignment.setCourseId((short) courseSpinner.getSelectedItemId());
+		mAssignment.setDescription(descriptionField.getText().toString().trim());
+		mAssignment.setDueDate(mCalendar);
 	}
-	
-	private void loadDataFromIntent() {
-		Bundle extras = getIntent().getExtras();
-		if (extras != null) {
-			if (rowId == null && extras.containsKey(Values.KEY_ROWID)) {
-				// We are editing an existing mAssignment
-				rowId = extras.getLong(Values.KEY_ROWID);
-			}
-			short passedCourse = extras.getShort(Assignment.KEY_COURSE);
-			if (passedCourse > 0)
-				// The user entered Add Assignment from viewing a course
-					// other than the first course, so we should change to
-					// that course. The course id was passed in the Bundle.
-				courseSpinner.setSelection(passedCourse);
-		}
-	}
-	
+			
 	/*---------- Due date and time pickers ---------*/
 	
 	private static final String CALENDAR_KEY = "mCalendar";
@@ -253,11 +248,8 @@ public class AssignmentEditFragment extends FragmentActivity {
 	}
 	
 	public void savePressed(View v) {
-		mAssignment.setTitle(titleField.getText().toString().trim());
-		mAssignment.setCourseId((short) courseSpinner.getSelectedItemId());
-		mAssignment.setDescription(descriptionField.getText().toString().trim());
-		mAssignment.setDueDate(DateUtils.convertMillsToMinutes(mCalendar.getTimeInMillis()));
-		mAssignment.commitToDatabase(mContext);
+		updateAssignmentObject();
+		mAssignment.commitToDatabase();
 		finish();
 	}
 		

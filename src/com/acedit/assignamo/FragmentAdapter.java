@@ -23,7 +23,7 @@ public class FragmentAdapter extends FragmentPagerAdapter {
 
 	@Override
 	public Fragment getItem(int position) {
-		setCurrentPosition(position);
+		currentPosition = (short)position;
 		AssignmentListFragment frag = new AssignmentListFragment();
 		if (position != 0) {
 			// Get the course ID based on the position

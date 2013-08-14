@@ -60,8 +60,6 @@
     <!--     Tabs     -->
     <style name="CustomTabPageIndicator" parent="Widget.TabPageIndicator">
         <item name="android:background">@drawable/tab_indicator</item>
-    </style>
-    <style name="CustomTabPageIndicator.Text" parent="Widget.TabPageIndicator.Text">
         <item name="android:textColor">@color/list_text</item>
     </style>
     

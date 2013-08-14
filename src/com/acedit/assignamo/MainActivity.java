@@ -17,13 +17,10 @@ import com.acedit.assignamo.objects.Assignment;
 import com.acedit.assignamo.preferences.Preferences;
 import com.acedit.assignamo.utils.DbUtils;
 import com.viewpagerindicator.TabPageIndicator;
-import com.viewpagerindicator.TitleProvider;
 
 public class MainActivity extends FragmentActivity {
 	
-    short titleCount;
     short selectedPos;
-    TitlePageAdapter adapter;
     
     @Override
     public void onCreate(Bundle savedInstanceState) {
@@ -39,11 +36,10 @@ public class MainActivity extends FragmentActivity {
     	
     	String[] courses = DbUtils.getCoursesAsArray(this);
     	String[] titles = new String[courses.length+1];
-    	titleCount = (short)titles.length;
     	titles[0] = getString(R.string.all_assignments);
     	for (int i = 0; i < courses.length; i++)
     		titles[i+1] = courses[i];
-        adapter = new TitlePageAdapter(getSupportFragmentManager(),titles,this);
+        TitlePageAdapter adapter = new TitlePageAdapter(getSupportFragmentManager(),titles,this);
         
         ViewPager pager = (ViewPager)findViewById(R.id.viewpager);
         pager.setAdapter(adapter);
@@ -113,7 +109,7 @@ public class MainActivity extends FragmentActivity {
 		return false;
 	}
     
-    class TitlePageAdapter extends FragmentAdapter implements TitleProvider {
+    class TitlePageAdapter extends FragmentAdapter {
     	String[] titles;
 		public TitlePageAdapter(FragmentManager fm, String[] titles, Context context) {
 			super(fm,titles);
