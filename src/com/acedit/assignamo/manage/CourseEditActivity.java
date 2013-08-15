@@ -51,7 +51,7 @@ public class CourseEditActivity extends FragmentActivity {
 			mCourse = (CourseEditor) savedInstanceState.getSerializable("mCourse");
 		else {
 			Short rowId = getRowIdFromIntent();
-			mCourse = rowId == null ? new CourseEditor(this) : new CourseEditor(this, rowId);
+			mCourse = rowId == null ? new CourseEditor() : new CourseEditor(this, rowId);
 		}
 		
 		setTitle(mCourse.editingExisting() ? R.string.course_edit : R.string.course_add);
@@ -150,7 +150,7 @@ public class CourseEditActivity extends FragmentActivity {
 	
 	public void savePressed(View v) {
 		updateCourseObject();
-		mCourse.commitToDatabase();
+		mCourse.commitToDatabase(this);
 		finish();
 	}
 	

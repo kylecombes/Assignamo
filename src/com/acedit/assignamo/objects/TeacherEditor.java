@@ -8,10 +8,10 @@ import com.acedit.assignamo.database.Values;
 
 public class TeacherEditor extends Teacher {
 	
-	private Context mContext;
+	private static final long serialVersionUID = 1L;
 	
-	public TeacherEditor(Context context) {
-		mContext = context;
+	public TeacherEditor() {
+		
 	}
 
 	public TeacherEditor(Context context, short id) {
@@ -51,7 +51,7 @@ public class TeacherEditor extends Teacher {
 		return mId != null;
 	}
 	
-	public boolean commitToDatabase() {
+	public boolean commitToDatabase(Context context) {
 		ContentValues values = new ContentValues();
     	values.put(Values.KEY_NAME, mName);
     	values.put(KEY_DEPARTMENT, mDepartment);
@@ -59,7 +59,7 @@ public class TeacherEditor extends Teacher {
     	values.put(Values.KEY_ROOM, mRoom);
     	values.put(KEY_EMAIL, mEmail);
     	values.put(KEY_PHONE, mPhoneNumber);
-    	DbAdapter dbAdapter = new DbAdapter(mContext, null, TABLE_NAME).open();
+    	DbAdapter dbAdapter = new DbAdapter(context, null, TABLE_NAME).open();
     	if (mId == null)
     		return dbAdapter.add(values) > 0;
     	return dbAdapter.update(mId, values);

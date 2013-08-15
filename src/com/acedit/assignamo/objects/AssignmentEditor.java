@@ -10,10 +10,10 @@ import android.content.Context;
 
 public class AssignmentEditor extends Assignment {
 	
-	private Context mContext;
+	private static final long serialVersionUID = 1L;
 	
-	public AssignmentEditor(Context context) {
-		mContext = context;
+	public AssignmentEditor() {
+		
 	}
 	
 	public AssignmentEditor(Context context, long id) {
@@ -75,13 +75,13 @@ public class AssignmentEditor extends Assignment {
 	 * @param context
 	 * @return whether or not the commit was successful
 	 */
-	public boolean commitToDatabase() {
+	public boolean commitToDatabase(Context context) {
 		ContentValues values = new ContentValues();
     	values.put(Values.KEY_TITLE, mTitle);
     	values.put(Assignment.KEY_COURSE, mCourseId);
     	values.put(Values.KEY_DESCRIPTION, mDescription);
     	values.put(Assignment.KEY_DUE_DATE, mDueDate);
-    	DbAdapter dbAdapter = new DbAdapter(mContext, null, TABLE_NAME).open();
+    	DbAdapter dbAdapter = new DbAdapter(context, null, TABLE_NAME).open();
 		if (mId == null)
 			return dbAdapter.add(values) > 0;
 		return dbAdapter.update(mId, values);

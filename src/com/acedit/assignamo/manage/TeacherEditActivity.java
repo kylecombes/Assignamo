@@ -24,7 +24,7 @@ public class TeacherEditActivity extends FragmentActivity {
 			mTeacher = (TeacherEditor) savedInstanceState.getSerializable("mTeacher");
 		else {
 			Short rowId = getRowIdFromIntent();
-			mTeacher = rowId == null ? new TeacherEditor(this) : new TeacherEditor(this, rowId);
+			mTeacher = rowId == null ? new TeacherEditor() : new TeacherEditor(this, rowId);
 		}
 		
 		setTitle(mTeacher.editingExisting() ? R.string.teacher_edit_edit_teacher : R.string.teacher_edit_add_teacher);
@@ -68,13 +68,13 @@ public class TeacherEditActivity extends FragmentActivity {
 	}
 	
 	private void updateTeacherObject() {
-		mTeacher.setName(nameField.getText().toString());
-		mTeacher.setDepartment(departmentField.getText().toString());
-		mTeacher.setNotes(notesField.getText().toString());
-		mTeacher.setEmail(emailField.getText().toString());
-		mTeacher.setPhoneNumber(phoneNumberField.getText().toString());
-		mTeacher.setRoom(roomField.getText().toString());
-		mTeacher.setPhoneNumber(phoneNumberField.getText().toString());
+		mTeacher.setName(nameField.getText().toString().trim());
+		mTeacher.setDepartment(departmentField.getText().toString().trim());
+		mTeacher.setNotes(notesField.getText().toString().trim());
+		mTeacher.setEmail(emailField.getText().toString().trim());
+		mTeacher.setPhoneNumber(phoneNumberField.getText().toString().trim());
+		mTeacher.setRoom(roomField.getText().toString().trim());
+		mTeacher.setPhoneNumber(phoneNumberField.getText().toString().trim());
 	}
 	
 	public void cancelButtonPressed(View v) {
@@ -83,7 +83,7 @@ public class TeacherEditActivity extends FragmentActivity {
 	
 	public void saveButtonPressed(View v) {
 		updateTeacherObject();
-		mTeacher.commitToDatabase();
+		mTeacher.commitToDatabase(this);
 		finish();
 	}
 	

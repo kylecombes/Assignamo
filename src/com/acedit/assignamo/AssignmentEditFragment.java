@@ -72,7 +72,7 @@ public class AssignmentEditFragment extends FragmentActivity {
 				if (extras.containsKey(Values.KEY_ROWID)) {;
 					mAssignment = new AssignmentEditor(this, extras.getLong(Values.KEY_ROWID));
 				} else
-					mAssignment = new AssignmentEditor(this);
+					mAssignment = new AssignmentEditor();
 				short passedCourse = extras.getShort(Assignment.KEY_COURSE);
 				if (passedCourse > 0)
 					// The user entered Add Assignment from viewing a course
@@ -249,7 +249,7 @@ public class AssignmentEditFragment extends FragmentActivity {
 	
 	public void savePressed(View v) {
 		updateAssignmentObject();
-		mAssignment.commitToDatabase();
+		mAssignment.commitToDatabase(this);
 		finish();
 	}
 		

@@ -9,9 +9,12 @@
 	    <LinearLayout android:layout_width="match_parent"
 	        android:layout_height="wrap_content"
 	    	android:orientation="vertical" >
-	        <EditText android:id="@+id/teacher_edit_name_field"
-	            style="@style/TextBox.Title"
+
+	        <EditText
+	            android:id="@+id/teacher_edit_name_field"
+	            style="@style/TextBox.Name"
 	            android:hint="@string/name" >
+
 	        </EditText>
 	        <EditText android:id="@+id/teacher_edit_subject_field"
 	            style="@style/TextBox.Title"

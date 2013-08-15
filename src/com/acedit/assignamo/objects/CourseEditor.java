@@ -10,10 +10,10 @@ import com.acedit.assignamo.database.Values;
 
 public class CourseEditor extends Course {
 	
-	private Context mContext;
+	private static final long serialVersionUID = 1L;
 	
-	public CourseEditor(Context context) {
-		mContext = context;
+	public CourseEditor() {
+		
 	}
 	
 	public CourseEditor(Context context, short id) {
@@ -52,7 +52,7 @@ public class CourseEditor extends Course {
 		mStopTimes = stopTimes;
 	}
 
-	public boolean commitToDatabase() {
+	public boolean commitToDatabase(Context context) {
 		ContentValues values = new ContentValues();
     	values.put(Values.KEY_NAME, mName);
     	values.put(KEY_TEACHER, mTeacherId);
@@ -70,7 +70,7 @@ public class CourseEditor extends Course {
     		timesAsArray.put(0);
     	values.put(KEY_TIMES_OF_DAY, timesAsArray.toString());
     	
-    	DbAdapter dbAdapter = new DbAdapter(mContext, null, TABLE_NAME).open();
+    	DbAdapter dbAdapter = new DbAdapter(context, null, TABLE_NAME).open();
 		if (mId == null)
 			return dbAdapter.add(values) > 0;
 		return dbAdapter.update(mId, values);

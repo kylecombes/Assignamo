@@ -696,21 +696,21 @@ or to a theme attribute in the form "<code>?[<i>package</i>:][<i>type</i>:]<i>na
     public static final class style {
         /**  Button Styling 
          */
-        public static final int Button=0x7f0a002b;
-        public static final int Button_ButtonBar=0x7f0a002c;
-        public static final int Button_ButtonBar_Cancel=0x7f0a002d;
-        public static final int Button_ButtonBar_Save=0x7f0a002e;
-        public static final int ButtonBar=0x7f0a002f;
-        public static final int CourseDaysSelect=0x7f0a0038;
-        public static final int CourseDaysSelect_Buttons=0x7f0a0033;
-        public static final int CourseDaysSelect_CheckBoxes=0x7f0a0034;
-        public static final int CourseDaysSelect_Row=0x7f0a0035;
+        public static final int Button=0x7f0a002c;
+        public static final int Button_ButtonBar=0x7f0a002d;
+        public static final int Button_ButtonBar_Cancel=0x7f0a002e;
+        public static final int Button_ButtonBar_Save=0x7f0a002f;
+        public static final int ButtonBar=0x7f0a0030;
+        public static final int CourseDaysSelect=0x7f0a0039;
+        public static final int CourseDaysSelect_Buttons=0x7f0a0034;
+        public static final int CourseDaysSelect_CheckBoxes=0x7f0a0035;
+        public static final int CourseDaysSelect_Row=0x7f0a0036;
         /**  Course Days Select 
  Course Days Select 
          */
-        public static final int CourseDaysSelect_Text=0x7f0a0030;
-        public static final int CourseDaysSelect_Text_Divider=0x7f0a0032;
-        public static final int CourseDaysSelect_Text_Title=0x7f0a0031;
+        public static final int CourseDaysSelect_Text=0x7f0a0031;
+        public static final int CourseDaysSelect_Text_Divider=0x7f0a0033;
+        public static final int CourseDaysSelect_Text_Title=0x7f0a0032;
         /**      Tabs     
          */
         public static final int CustomTabPageIndicator=0x7f0a0011;
@@ -738,7 +738,7 @@ or to a theme attribute in the form "<code>?[<i>package</i>:][<i>type</i>:]<i>na
         /**    Loading Screen   
          */
         public static final int LoadingScreen=0x7f0a0005;
-        public static final int MainStyle=0x7f0a0037;
+        public static final int MainStyle=0x7f0a0038;
         /**    Setup Wizard   
          */
         public static final int Setup=0x7f0a0006;
@@ -752,13 +752,14 @@ or to a theme attribute in the form "<code>?[<i>package</i>:][<i>type</i>:]<i>na
         public static final int Setup_TextView=0x7f0a000e;
         public static final int Setup_TextView_Message=0x7f0a0010;
         public static final int Setup_TextView_Title=0x7f0a000f;
-        public static final int StyledIndicators=0x7f0a0036;
+        public static final int StyledIndicators=0x7f0a0037;
         public static final int TextAppearance_TabPageIndicator=0x7f0a0003;
         /**  Text Box Styling 
          */
         public static final int TextBox=0x7f0a0027;
-        public static final int TextBox_Description=0x7f0a0029;
-        public static final int TextBox_Email=0x7f0a002a;
+        public static final int TextBox_Description=0x7f0a002a;
+        public static final int TextBox_Email=0x7f0a002b;
+        public static final int TextBox_Name=0x7f0a0029;
         public static final int TextBox_Title=0x7f0a0028;
         /**  TextView Styling 
          */
