@@ -122,7 +122,7 @@ public class MainActivity extends FragmentActivity {
 			return titles.length;
 		}
 
-		public String getTitle(int position) {
+		public String getPageTitle(int position) {
 			return titles[position % titles.length].toUpperCase(Locale.getDefault());
 		}
 	}
