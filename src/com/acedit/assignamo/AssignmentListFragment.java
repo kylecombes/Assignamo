@@ -248,7 +248,7 @@ public class AssignmentListFragment extends ListFragment {
 	
 	public void deleteAssignment() {
 		// Delete the assignment
-		DbUtils.deleteAssignment(context, selectedItem);
+		DbUtils.deleteItem(context, Assignment.TABLE_NAME, selectedItem);
 		broadcastRefresh();
 	}
 	

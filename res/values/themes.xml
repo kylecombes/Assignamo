@@ -1,15 +1,15 @@
 <resources>
 
-    <style name="StyledIndicators" parent="android:style/Theme.Light">
+    <style name="StyledIndicators" parent="@style/Theme.AppCompat.Light">
         <item name="vpiTabPageIndicatorStyle">@style/CustomTabPageIndicator</item>
         <item name="android:windowNoTitle">true</item>
     </style>
     
-    <style name="MainStyle" parent="@android:style/Theme.Light">
+    <style name="MainStyle" parent="@style/Theme.AppCompat.Light">
         
     </style>
     
-    <style name="CourseDaysSelect" parent="android:Theme.Holo.Light">
+    <style name="CourseDaysSelect" parent="@style/Theme.AppCompat.Light">
         <item name="android:buttonStyle">@style/CourseDaysSelect.Buttons</item>
     </style>
     

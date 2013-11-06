@@ -4,6 +4,7 @@ import java.util.Locale;
 
 import android.content.Context;
 import android.content.Intent;
+import android.database.Cursor;
 import android.os.Bundle;
 import android.support.v4.app.FragmentActivity;
 import android.support.v4.app.FragmentManager;
@@ -20,7 +21,8 @@ import com.viewpagerindicator.TabPageIndicator;
 
 public class MainActivity extends FragmentActivity {
 	
-    short selectedPos;
+    private short selectedPos;
+    private short[] courseIds;
     
     @Override
     public void onCreate(Bundle savedInstanceState) {
@@ -34,11 +36,16 @@ public class MainActivity extends FragmentActivity {
     public void onResume() {
     	super.onResume();
     	
-    	String[] courses = DbUtils.getCoursesAsArray(this);
-    	String[] titles = new String[courses.length+1];
+    	Cursor courses = DbUtils.getCoursesAsCursor(this);
+    	int pageCount = courses.getCount() + 1;
+    	courseIds = new short[pageCount];
+    	String[] titles = new String[pageCount];
     	titles[0] = getString(R.string.all_assignments);
-    	for (int i = 0; i < courses.length; i++)
-    		titles[i+1] = courses[i];
+    	for (int i = 1;; ++i) {
+    		courseIds[i] = courses.getShort(0);
+    		titles[i] = courses.getString(1);
+    		if (courses.moveToNext() == false) break;
+    	}
         TitlePageAdapter adapter = new TitlePageAdapter(getSupportFragmentManager(),titles,this);
         
         ViewPager pager = (ViewPager)findViewById(R.id.viewpager);
@@ -94,7 +101,7 @@ public class MainActivity extends FragmentActivity {
 		switch (item.getItemId()) {
 		case OPTIONS_ASSIGNMENT_ADD:
 			i = new Intent(this, AssignmentEditFragment.class);
-			i.putExtra(Assignment.KEY_COURSE, (short)(selectedPos - 1));
+			i.putExtra(Assignment.KEY_COURSE, courseIds[selectedPos]);
 			startActivity(i);
 			return true;
 		case OPTIONS_MANAGE:

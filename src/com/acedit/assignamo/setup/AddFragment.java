@@ -21,29 +21,34 @@ import android.widget.Toast;
 
 import com.acedit.assignamo.R;
 import com.acedit.assignamo.database.Values;
+import com.acedit.assignamo.manage.CourseEditActivity;
+import com.acedit.assignamo.manage.TeacherEditActivity;
+import com.acedit.assignamo.utils.DbUtils;
 
-public abstract class BaseAddFragment extends ListFragment {
+public class AddFragment extends ListFragment {
 	
 	private static Context context;
-	private static long selectedItem;
 	private CustomOnClickListener mButtonListener;
 	private ItemExistenceMonitor mItemExistsMonitor;
 	private ViewHolder viewHolder;
 	private static String mDeleteMessage;
 	private static int mFragmentId;
+	public static enum DisplayState { TEACHERS, COURSES };
+	private static DisplayState displayState = DisplayState.TEACHERS;
+	private static TextView titleMsg, msgMsg;
 	
-	protected abstract int getLayoutId();
-	protected abstract Cursor getCursor(Context context);
-	protected abstract Class<? extends Activity> getEditClass();
 	protected void setDeleteConfirmationMessage(String msg) {
 		mDeleteMessage = msg;
 	}
-	protected abstract void deleteItem(Context context, long rowId);
 	
 	@Override
 	public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
-		View v = inflater.inflate(getLayoutId(), container, false);
-		v.findViewById(R.id.setup_add_button).setOnClickListener(new OnClickListener() {
+		View v = inflater.inflate(R.layout.setup_wizard_add, container, false);
+		titleMsg = (TextView)v.findViewById(R.id.setup_wizard_add_screen_title);
+		msgMsg = (TextView)v.findViewById(R.id.setup_wizard_add_screen_message);
+		updateTitle();
+		Button addButton = (Button)v.findViewById(R.id.setup_add_button);
+		addButton.setOnClickListener(new OnClickListener() {
 			public void onClick(View v) {
 				addButtonClicked(v);
 			}
@@ -70,26 +75,48 @@ public abstract class BaseAddFragment extends ListFragment {
 		updateAdapter();
 	}
 	
+	public void setDisplayState(DisplayState newState) {
+		displayState = newState;
+		updateTitle();
+		updateAdapter();
+	}
+	
 	protected void updateAdapter() {
-		Cursor c = getCursor(context);
+		Cursor c = displayState == DisplayState.TEACHERS ? DbUtils.getTeachersAsCursor(context)
+				: DbUtils.getCoursesAsCursor(context);
 		CustomCursorAdapter adapter = new CustomCursorAdapter(context, c, 0);
 		mItemExistsMonitor.itemsExist(c.getCount() > 0);
 		getListView().setAdapter(adapter);
 		adapter.notifyDataSetChanged();
 	}
 	
+	private void updateTitle() {
+		switch (displayState) {
+		case TEACHERS:
+			titleMsg.setText(R.string.setup_teachers_title);
+			msgMsg.setText(R.string.setup_teachers_message);
+			break;
+
+		case COURSES:
+			titleMsg.setText(R.string.setup_courses_title);
+			msgMsg.setText(R.string.setup_courses_message);
+			break;
+		}
+	}
+	
 	public void addButtonClicked(View v) {
-		startActivity(new Intent(context, getEditClass()));
+		startActivity(new Intent(context, displayState == DisplayState.TEACHERS ? TeacherEditActivity.class : CourseEditActivity.class ));
 	}
 	
 	private class CustomOnClickListener implements OnClickListener {
 		public void onClick(View v) {
 			Toast.makeText(context, "Button pressed", Toast.LENGTH_SHORT).show();
-			if (v.getId() == viewHolder.editButton.getId())
-				startActivity(new Intent(context, getEditClass()).putExtra(Values.KEY_ROWID, (Long)v.getTag()));
-			else { // Delete it
-				selectedItem = (Long) v.getTag();
-				DeleteDialogFragment frag = new DeleteDialogFragment();
+			if (v.getId() == viewHolder.editButton.getId()) {
+				Class<? extends Activity> targetClass = displayState == DisplayState.TEACHERS ? TeacherEditActivity.class
+						: CourseEditActivity.class;
+				startActivity(new Intent(context, targetClass).putExtra(Values.KEY_ROWID, (Long)v.getTag()));
+			} else { // Delete it
+				DeleteDialogFragment frag = new DeleteDialogFragment().setTargetItemId((Long)v.getTag());
 				frag.setTargetFragment(getFragmentManager().findFragmentById(mFragmentId), 0);
 				frag.show(getFragmentManager(), "confirmDelete");
 			}
@@ -142,10 +169,19 @@ public abstract class BaseAddFragment extends ListFragment {
 		public ViewHolder() {}
 	}
 	
+	/*---------- Delete Confirmation Dialog ----------*/
+	
 	public static class DeleteDialogFragment extends DialogFragment {
+		
+		private DialogOnClickListener mOnClickListener;
 		
 		static DeleteDialogFragment newInstance(int arg) {
 			return new DeleteDialogFragment();
+		}
+		
+		public DeleteDialogFragment setTargetItemId(long id) {
+			mOnClickListener = new DialogOnClickListener().setTargetItemId(id);
+			return this;
 		}
 		
 		@Override
@@ -153,15 +189,31 @@ public abstract class BaseAddFragment extends ListFragment {
 			return new AlertDialog.Builder(getActivity())
 				.setTitle(R.string.confirm_delete)
 				.setMessage(mDeleteMessage)
-				.setPositiveButton(R.string.yes, new DialogInterface.OnClickListener() {
-					public void onClick(DialogInterface dialog, int which) {
-						((BaseAddFragment)getTargetFragment()).deleteItem(context, selectedItem);
-					}
-				})
+				.setPositiveButton(R.string.yes, mOnClickListener)
 				.setNegativeButton(R.string.no, null)
 				.create();
 		}
+		
+		private class DialogOnClickListener implements DialogInterface.OnClickListener {
+			
+			private long mTargetId;
+			
+			public DialogOnClickListener setTargetItemId(long targedId) {
+				mTargetId = targedId;
+				return this;
+			}
+			
+			public void onClick(DialogInterface dialog, int which) {
+				if (displayState == DisplayState.TEACHERS) {
+					DbUtils.deleteTeacher(context, mTargetId);
+				} else {
+					DbUtils.deleteCourse(context, mTargetId);
+				}
+			}
+			
+		}
 	}
+	
 	
 	/** Used by SetupWizard to enable/disable Next button depending on whether or not the user
 		has added items to the database (teachers or courses). This prevents the user from

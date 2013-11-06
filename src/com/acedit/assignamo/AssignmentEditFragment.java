@@ -1,16 +1,20 @@
 package com.acedit.assignamo;
 
 import java.util.Calendar;
+import java.util.TreeMap;
 
 import android.app.DatePickerDialog;
 import android.app.Dialog;
 import android.app.TimePickerDialog;
 import android.content.Context;
+import android.content.Intent;
 import android.database.Cursor;
+import android.database.MatrixCursor;
+import android.database.MergeCursor;
 import android.os.Bundle;
 import android.support.v4.app.DialogFragment;
-import android.support.v4.app.FragmentActivity;
 import android.support.v4.widget.SimpleCursorAdapter;
+import android.support.v7.app.ActionBarActivity;
 import android.text.format.DateFormat;
 import android.view.View;
 import android.widget.AdapterView;
@@ -23,13 +27,14 @@ import android.widget.TextView;
 import android.widget.TimePicker;
 
 import com.acedit.assignamo.database.Values;
+import com.acedit.assignamo.manage.CourseEditActivity;
 import com.acedit.assignamo.objects.Assignment;
 import com.acedit.assignamo.objects.AssignmentEditor;
 import com.acedit.assignamo.objects.Course;
 import com.acedit.assignamo.utils.DateUtils;
 import com.acedit.assignamo.utils.DbUtils;
 
-public class AssignmentEditFragment extends FragmentActivity {
+public class AssignmentEditFragment extends ActionBarActivity {
 	
 	LinearLayout mRemindersContainer;
 	private Calendar mCalendar;
@@ -37,7 +42,6 @@ public class AssignmentEditFragment extends FragmentActivity {
 	static final String TIME_FORMAT = "hh:mm a";
 	private AssignmentEditor mAssignment;
 	private boolean userSetDateTime;
-	private Cursor courseCursor;
 	
 	private Spinner courseSpinner;
 	private TextView titleField;
@@ -51,12 +55,12 @@ public class AssignmentEditFragment extends FragmentActivity {
 	 */
 	private boolean justRestoredState;
 	
+	private TreeMap<Short,Short> courseIdToPos;
+	
 	@Override
 	public void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
 		setContentView(R.layout.assignment_edit);
-		
-		mRemindersContainer = (LinearLayout) findViewById(R.id.assignment_edit_reminders_row);
 		
 		mapViews();
 		if (savedInstanceState != null) {
@@ -69,44 +73,67 @@ public class AssignmentEditFragment extends FragmentActivity {
 		} else { // Get data from Intent
 			Bundle extras = getIntent().getExtras();
 			if (extras != null) {
-				if (extras.containsKey(Values.KEY_ROWID)) {;
+				if (extras.containsKey(Values.KEY_ROWID)) {
 					mAssignment = new AssignmentEditor(this, extras.getLong(Values.KEY_ROWID));
-				} else
+				} else {
 					mAssignment = new AssignmentEditor();
-				short passedCourse = extras.getShort(Assignment.KEY_COURSE);
-				if (passedCourse > 0)
-					// The user entered Add Assignment from viewing a course
-						// other than the first course, so we should change to
-						// that course. The course id was passed in the Bundle.
-					courseSpinner.setSelection(passedCourse);
+					short passedCourseId = extras.getShort(Assignment.KEY_COURSE);
+					mAssignment.setCourseId(passedCourseId);
+				}
 			}
 		}
 		
-		setTitle(mAssignment.editingExisting() ? R.string.assignment_add : R.string.assignment_edit);
+		setTitle(mAssignment.editingExisting() ? R.string.assignment_edit : R.string.assignment_add);
 		populateFields();
 		
 		updateButtons(DueDateButtons.BOTH);
 	}
 	
 	private void mapViews() {
+		
+		mRemindersContainer = (LinearLayout) findViewById(R.id.assignment_edit_reminders_row);
 		courseSpinner = (Spinner)findViewById(R.id.assignment_add_course_select);
+		
 		// Populate the spinner
-		courseCursor = DbUtils.getCoursesAsCursor(this);
+		Cursor courseCursor = DbUtils.getCoursesAsCursor(this);
+		courseCursor.moveToFirst();
+		courseIdToPos = new TreeMap<Short, Short>();
+		for (short i = 0;; ++i) {
+			short id = courseCursor.getShort(0);
+			courseIdToPos.put(id, i);
+			if (courseCursor.moveToNext() == false) break;
+		}
+		MatrixCursor extras = new MatrixCursor(new String[] { "_id", Values.KEY_TITLE });
+		extras.addRow(new String[] { "-1", getString(R.string.assignment_edit_new_course)});
+		MergeCursor mc = new MergeCursor(new Cursor[] { courseCursor, extras });
+		
+		
 		SimpleCursorAdapter adapter = new SimpleCursorAdapter(this, android.R.layout.simple_spinner_item,
-				courseCursor, new String[]{Values.KEY_NAME}, new int[]{android.R.id.text1}, 0);
+				mc, new String[]{Values.KEY_NAME}, new int[]{android.R.id.text1}, 0);
 		adapter.setDropDownViewResource( android.R.layout.simple_spinner_dropdown_item );
 		courseSpinner.setAdapter(adapter);
 		courseSpinner.setOnItemSelectedListener(new OnItemSelectedListener() {
-			public void onItemSelected(AdapterView<?> arg0, View arg1, int arg2, long arg3) {
-				if (!justRestoredState)
-					if (!userSetDateTime) {
-						setDueDateToNextClassTime();
-						updateButtons(DueDateButtons.BOTH);
+			
+			public void onItemSelected(AdapterView<?> parent, View view, int pos, long id) {
+				if (!justRestoredState) {
+					
+					switch ((int)id) {
+					case -1:
+						startActivity(new Intent(getApplicationContext(), CourseEditActivity.class));
+						break;
+					default:
+						if (!userSetDateTime) {
+							setDueDateToNextClassTime();
+							updateButtons(DueDateButtons.BOTH);
+						}
 					}
-				else
+					
+				} else {
 					justRestoredState = false;
+				}
 			}
 			public void onNothingSelected(AdapterView<?> arg0) {}
+			
 		});
 		
 		titleField = (TextView)findViewById(R.id.assignment_add_title_field);
@@ -116,8 +143,11 @@ public class AssignmentEditFragment extends FragmentActivity {
 	}
 
 	private void populateFields() {
-		if (mAssignment != null) {
-			courseSpinner.setSelection(DbUtils.getPositionFromRowID(courseCursor, mAssignment.getCourseId()));
+		short courseId = mAssignment.getCourseId();
+		if (courseId > 0) {
+			courseSpinner.setSelection(courseIdToPos.get(courseId));
+		}
+		if (mAssignment.editingExisting()) {
 			titleField.setText(mAssignment.getTitle());
 			descriptionField.setText(mAssignment.getDescription());
 			

@@ -28,7 +28,7 @@
     <string name="setup_welcome_title">Welcome</string>
     <string name="setup_welcome_message">Let\'s take a minute to set up Assignamo. Press Next to add your teachers.</string>
     <string name="setup_teachers_title">Add Teachers</string>
-    <string name="setup_teachers_message">To begin, we will add your teachers. You do not have to enter all of your teachers at this time, you will be able to add more later. When you have finished, press Next.</string>
+    <string name="setup_teachers_message">To begin, we\'ll add your teachers. You don\'t have to enter all of your teachers at this time; you can add more later.</string>
     <string name="setup_courses_title">Add Courses</string>
     <string name="setup_courses_message">Great! Now let\'s add the courses you are taking. Again, you don\'t need to enter them all now if you don\'t want to.</string>
     <string name="setup_tips_title">A Few Tips</string>
@@ -54,6 +54,7 @@
     <string name="assignment_reminder_1">Reminder 1</string>
     <string name="assignment_reminder_2">Reminder 2</string>
     <string name="assignment_edit_add_reminder">Add reminder</string>
+    <string name="assignment_edit_new_course">New Course</string>
     
     <!--          Courses         -->
     <string name="courses_title">Courses</string>

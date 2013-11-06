@@ -28,13 +28,13 @@ public class DbUtils {
 		return -1;
 	}
 	
+	public static boolean deleteItem(Context context, String table, long rowId) {
+		DbAdapter adapter = new DbAdapter(context, null, table).open();
+		return adapter.delete(rowId);
+	}
 	
 	/*---------- Assignments ----------*/
 	
-	public static boolean deleteAssignment(Context context, long rowId) {
-		DbAdapter adapter = new DbAdapter(context, null, Assignment.TABLE_NAME).open();
-		return adapter.delete(rowId);
-	}
 	
 	
 	public synchronized static Cursor fetchAllAssignments(Context context, Short course) {

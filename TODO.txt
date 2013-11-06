@@ -50,6 +50,7 @@ Finalize CourseEdit layout
 Prevent long teacher names from overlapping buttons in Setup Wizard
 Show course days on CourseView
 All Assignments tab not getting updated when marking an assignment as completed?
+Course Day Select: time buttons not showing correct time
 
 Reminders!!
 
@@ -68,6 +69,7 @@ ListView separators between days (with number of assignments due):
    |------------------------------|
    | Monday                     2 |
    |------------------------------|
+Landscape splash screen
 
 General TODO
 -------------

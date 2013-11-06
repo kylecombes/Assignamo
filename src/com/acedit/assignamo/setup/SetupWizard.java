@@ -13,7 +13,8 @@ import android.widget.Button;
 import com.acedit.assignamo.MainActivity;
 import com.acedit.assignamo.R;
 import com.acedit.assignamo.database.Values;
-import com.acedit.assignamo.setup.BaseAddFragment.ItemExistenceMonitor;
+import com.acedit.assignamo.setup.AddFragment.DisplayState;
+import com.acedit.assignamo.setup.AddFragment.ItemExistenceMonitor;
 
 public class SetupWizard extends FragmentActivity implements ItemExistenceMonitor {
 	
@@ -21,12 +22,14 @@ public class SetupWizard extends FragmentActivity implements ItemExistenceMonito
 	
 	private static Page displayedPage;
 	private static Button backButton, nextButton;
+	private static AddFragment addFragment = new AddFragment();
 		
 	@Override
 	public void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
 		setContentView(R.layout.setup_wizard);
 		setFragmentView(new WelcomeFragment());
+		addFragment = new AddFragment();
 		displayedPage = Page.WELCOME;
 		backButton = (Button) findViewById(R.id.setup_wizard_back_button);
 		nextButton = (Button) findViewById(R.id.setup_wizard_next_button);
@@ -43,11 +46,11 @@ public class SetupWizard extends FragmentActivity implements ItemExistenceMonito
 			nextButton.setEnabled(true);
 			break;
 		case COURSES:
-			setFragmentView(new TeachersFragment());
+			addFragment.setDisplayState(DisplayState.TEACHERS);
 			displayedPage = Page.TEACHERS;
 			break;
 		case TIPS:
-			setFragmentView(new CoursesFragment());
+			setFragmentView(addFragment);
 			nextButton.setText(getString(R.string.next));
 			displayedPage = Page.COURSES;
 		}
@@ -56,12 +59,12 @@ public class SetupWizard extends FragmentActivity implements ItemExistenceMonito
 	public void nextClicked(View v) {
 		switch (displayedPage) {
 		case WELCOME:
-			setFragmentView(new TeachersFragment());
+			setFragmentView(addFragment);
 			displayedPage = Page.TEACHERS;
 			backButton.setText(getString(R.string.back));
 			break;
 		case TEACHERS:
-			setFragmentView(new CoursesFragment());
+			addFragment.setDisplayState(DisplayState.COURSES);
 			displayedPage = Page.COURSES;
 			break;
 		case COURSES:

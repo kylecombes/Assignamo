@@ -12,6 +12,7 @@
     </style>
     <style name="Setup.Fragment">
         <item name="android:paddingTop">@dimen/activity_edge_padding</item>
+        <item name="android:background">@drawable/chalkboard_texture</item>
     </style>
     <style name="Setup.AddButton">
         <item name="android:layout_width">@dimen/setup_wizard_add_button_dimen</item>
@@ -28,7 +29,6 @@
         <item name="android:layout_width">match_parent</item>
         <item name="android:layout_height">0dp</item>
         <item name="android:layout_weight">1</item>
-        <item name="android:background">@color/setup_list_background</item>
     </style>
     <style name="Setup.ListView.Item">
         <item name="android:layout_width">match_parent</item>
@@ -43,15 +43,18 @@
     <style name="Setup.ListView.Text">
         <item name="android:layout_width">wrap_content</item>
         <item name="android:textAppearance">@android:style/TextAppearance.Medium</item>
+        <item name="android:textColor">#e8bf44</item>
         <item name="android:layout_centerVertical">true</item>
     </style>
     
     <style name="Setup.TextView" parent="TextView">
         <item name="android:paddingLeft">@dimen/activity_edge_padding</item>
         <item name="android:paddingRight">@dimen/activity_edge_padding</item>
+        <item name="android:textColor">#e8bf44</item>
     </style>
     <style name="Setup.TextView.Title">
         <item name="android:textSize">30sp</item>
+        <item name="android:layout_centerHorizontal">true</item>
     </style>
     <style name="Setup.TextView.Message">
         <item name="android:textSize">15sp</item>
@@ -71,6 +74,7 @@
         <item name="android:divider">@color/list_divider</item>
         <item name="android:dividerHeight">1dip</item>
         <item name="android:cacheColorHint">@color/background</item>
+        <item name="android:background">@color/background</item>
     </style>
     
     <style name="ListView.Assignment">

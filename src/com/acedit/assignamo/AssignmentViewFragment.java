@@ -72,7 +72,7 @@ public class AssignmentViewFragment extends ViewFragment {
 	}
 
 	protected void deleteItem() {
-		DbUtils.deleteAssignment(mContext, rowId);
+		DbUtils.deleteItem(mContext, Assignment.TABLE_NAME, rowId);
 		finish();
 	}
 
