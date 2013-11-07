@@ -38,8 +38,7 @@ public class LoadingActivity extends Activity {
 	}
 	
 	private boolean isDatabaseInitialized() {
-    	java.io.File dbFile = new java.io.File("/data/data/" + getApplicationContext().getPackageName() + "/databases/" + Values.DATABASE_NAME);
-    	if (!dbFile.exists())
+    	if (getDatabasePath(Values.DATABASE_NAME).exists() == false)
     		return false;
     	SharedPreferences prefs = PreferenceManager.getDefaultSharedPreferences(this);
     	if (!prefs.getBoolean(Values.PREFS_DB_INITIALIZED, false))

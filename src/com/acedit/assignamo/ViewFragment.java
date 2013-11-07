@@ -112,7 +112,7 @@ public abstract class ViewFragment extends FragmentActivity {
 		
 		Calendar calendar = Calendar.getInstance();
 		int curYear = calendar.get(Calendar.YEAR);
-		calendar.setTimeInMillis(minutes * 60000);
+		calendar.setTimeInMillis(minutes);
 		
 		SimpleDateFormat dateFormat;
 		if (calendar.get(Calendar.YEAR) == curYear)

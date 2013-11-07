@@ -10,6 +10,8 @@ import com.acedit.assignamo.database.Values;
 
 public class Assignment implements Serializable {
 	
+	private static final long serialVersionUID = 1L;
+	
 	public static final String TABLE_NAME = "assignments", KEY_COURSE = "course",
 	KEY_DUE_DATE = "due_date", KEY_STATUS = "status", KEY_REMINDERS = "reminders",
 	KEY_POINTS = "points";

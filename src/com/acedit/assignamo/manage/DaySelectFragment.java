@@ -191,20 +191,12 @@ public class DaySelectFragment extends FragmentActivity {
 	
 	private void checkBoxToggled(int id, boolean checked) {
 		short day = checkboxMap.get(id);
-		if (checked)
-			enableRow(day);
-		else
-			disableRow(day);
+		setRowEnabled(day, checked);
 	}
 	
-	private void enableRow(short day) {
-		buttons[day][0].setEnabled(true);
-		buttons[day][1].setEnabled(true);
-	}
-	
-	private void disableRow(short day) {
-		buttons[day][0].setEnabled(false);
-		buttons[day][1].setEnabled(false);
+	private void setRowEnabled(short day, boolean isEnabled) {
+		buttons[day][0].setEnabled(isEnabled);
+		buttons[day][1].setEnabled(isEnabled);
 	}
 	
 	private void buttonPressed(int id) {
@@ -220,7 +212,7 @@ public class DaySelectFragment extends FragmentActivity {
 	private void setCheckboxStatuses() {
 		for (short i = 0; i < 7; i++)
 			if (startTimes[i] == 0)
-				disableRow(i);
+				setRowEnabled(i, false);
 			else
 				checkboxes[i].setChecked(true);
 	}
