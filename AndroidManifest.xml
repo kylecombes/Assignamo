@@ -33,7 +33,8 @@
             android:theme="@style/StyledIndicators" />
         <activity
             android:name=".AssignmentViewFragment"
-            android:label="@string/assignment_view_title" />
+            android:label="@string/assignment_view_title"
+            android:parentActivityName=".MainActivity" />
         <activity
             android:name=".AssignmentEditFragment" />
         <!-- Manage -->
@@ -44,7 +45,8 @@
             android:name=".manage.CourseListFragment" />
         <activity
             android:name=".manage.CourseViewFragment"
-            android:label="@string/course_view_title" />
+            android:label="@string/course_view_title"
+            android:parentActivityName=".manage.ManageActivity" />
         <activity
             android:name=".manage.DaySelectFragment"
             android:label="@string/course_edit_days_select_title"

@@ -14,8 +14,12 @@ import android.database.MergeCursor;
 import android.os.Bundle;
 import android.support.v4.app.DialogFragment;
 import android.support.v4.widget.SimpleCursorAdapter;
+import android.support.v7.app.ActionBar;
 import android.support.v7.app.ActionBarActivity;
 import android.text.format.DateFormat;
+import android.view.Menu;
+import android.view.MenuInflater;
+import android.view.MenuItem;
 import android.view.View;
 import android.widget.AdapterView;
 import android.widget.AdapterView.OnItemSelectedListener;
@@ -61,6 +65,9 @@ public class AssignmentEditFragment extends ActionBarActivity {
 	public void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
 		setContentView(R.layout.assignment_edit);
+		ActionBar actionBar = getSupportActionBar();
+		actionBar.setDisplayHomeAsUpEnabled(true);
+		
 		
 		mapViews();
 		if (savedInstanceState != null) {
@@ -179,7 +186,38 @@ public class AssignmentEditFragment extends ActionBarActivity {
 		mAssignment.setDescription(descriptionField.getText().toString().trim());
 		mAssignment.setDueDate(mCalendar);
 	}
+	
+	/*---------- Action Bar ----------*/
+	@Override
+	public boolean onCreateOptionsMenu(Menu menu) {
+	    // Inflate the menu items for use in the action bar
+	    MenuInflater inflater = getMenuInflater();
+	    inflater.inflate(R.menu.edit_fragment_actions, menu);
+	    return super.onCreateOptionsMenu(menu);
+	}
+	
+	@Override
+	public boolean onOptionsItemSelected(MenuItem menuItem) {
+		
+		switch (menuItem.getItemId()) {
+		
+		case R.id.action_save:
+			updateAssignmentObject();
+			mAssignment.commitToDatabase(this);
+			finish();
+			return true;
 			
+		default:
+			return false;
+		}
+	}
+	
+	@Override
+	public boolean onSupportNavigateUp() {
+		finish();
+		return true;
+	}
+	
 	/*---------- Due date and time pickers ---------*/
 	
 	private static final String CALENDAR_KEY = "mCalendar";
@@ -272,15 +310,5 @@ public class AssignmentEditFragment extends ActionBarActivity {
 			timeDueButton.setText(DateUtils.formatAsString(mCalendar, TIME_FORMAT));
 		}
 	}
-	
-	public void cancelPressed(View v) {
-		finish();
-	}
-	
-	public void savePressed(View v) {
-		updateAssignmentObject();
-		mAssignment.commitToDatabase(this);
-		finish();
-	}
-		
+			
 }

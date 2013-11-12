@@ -177,7 +177,7 @@ public class CourseListFragment extends BaseListFragment {
     	return false;
     }
     
-/*---------- Course-Delete Prompt ----------*/
+/*---------- Course Delete Prompt ----------*/
 	
 	public static class DeleteDialogFragment extends DialogFragment {
 		
@@ -188,7 +188,7 @@ public class CourseListFragment extends BaseListFragment {
 		@Override
 		public Dialog onCreateDialog(Bundle savedInstanceState) {
 			return new AlertDialog.Builder(getActivity())
-				.setIcon(android.R.drawable.ic_dialog_alert)
+				.setIcon(R.drawable.ic_action_warning)
 				.setTitle(R.string.confirm_delete)
 				.setMessage(R.string.course_delete_message)
 				.setPositiveButton(R.string.yes, new DialogInterface.OnClickListener() {
