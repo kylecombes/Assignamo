@@ -105,8 +105,8 @@ public abstract class ViewFragment extends FragmentActivity {
 	public SpannableString getDateString(long minutes, boolean withTime) {
 		
 		final float RELATIVE_SIZE = 1.0f;
-		final String DATE_FORMAT_WITH_YEAR = "c, MMMMM d, yyyy";
-		final String DATE_FORMAT_WITHOUT_YEAR = "c, MMMMM d";
+		final String DATE_FORMAT_WITH_YEAR = "c, MMMM d, yyyy";
+		final String DATE_FORMAT_WITHOUT_YEAR = "c, MMMM d";
 		final String TIME_FORMAT = "h:mm a";
 		
 		

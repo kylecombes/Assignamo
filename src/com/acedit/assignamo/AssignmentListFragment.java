@@ -48,7 +48,7 @@ public class AssignmentListFragment extends ListFragment {
 	private long selectedItem;
 	private boolean activityJustCreated;
 	
-	private static final String DATE_FORMAT = "c, MMMMM dd";
+	private static final String DATE_FORMAT = "c, MMM dd";
 	
 	// The course we are displaying assignments for. If all, -1.
 	short course = -1;
