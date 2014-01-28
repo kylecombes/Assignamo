@@ -205,12 +205,12 @@ public class ManageListFragment extends ListFragment {
 		public View getView(int position, View convertView, ViewGroup parent) {
 			
 			if (convertView == null) {
-				convertView = mInflater.inflate(R.layout.assignment_list_item, parent, false);
+				convertView = mInflater.inflate(R.layout.list_item, parent, false);
 				holder = new ViewHolder();
-				holder.colorStrip = (ColorStrip) convertView.findViewById(R.id.assignment_list_color_strip);
+				holder.colorStrip = (ColorStrip) convertView.findViewById(R.id.list_item_color_strip);
 				holder.titleLabel = (TextView) convertView.findViewById(R.id.list_title);
-				holder.descriptionLabel = (TextView) convertView.findViewById(R.id.list_description);
-				holder.dueLabel = (TextView) convertView.findViewById(R.id.list_due);
+				holder.descriptionLabel = (TextView) convertView.findViewById(R.id.list_item_bottomLeft);
+				holder.dueLabel = (TextView) convertView.findViewById(R.id.list_item_bottomRight);
 				
 				convertView.setTag(holder);
 			} else

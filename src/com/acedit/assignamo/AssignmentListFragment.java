@@ -277,12 +277,12 @@ public class AssignmentListFragment extends ListFragment {
 			//ViewHolder holder;
 			
 			//if (convertView == null) {
-				convertView = mInflater.inflate(R.layout.assignment_list_item, parent, false);
+				convertView = mInflater.inflate(R.layout.list_item, parent, false);
 				//holder = new ViewHolder();
-				ColorStrip colorStrip = (ColorStrip) convertView.findViewById(R.id.assignment_list_color_strip);
-				TextView titleLabel = (TextView) convertView.findViewById(R.id.list_title);
-				TextView descriptionLabel = (TextView) convertView.findViewById(R.id.list_description);
-				TextView dueLabel = (TextView) convertView.findViewById(R.id.list_due);
+				ColorStrip colorStrip = (ColorStrip) convertView.findViewById(R.id.list_item_color_strip);
+				TextView titleLabel = (TextView) convertView.findViewById(R.id.list_item_title);
+				TextView descriptionLabel = (TextView) convertView.findViewById(R.id.list_item_bottomLeft);
+				TextView dueLabel = (TextView) convertView.findViewById(R.id.list_item_bottomRight);
 				
 				//convertView.setTag(holder);
 			//} else

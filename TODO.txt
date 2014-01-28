@@ -44,13 +44,14 @@ Visual indicator signifying completed assignments when showing completed assignm
 Finalize teacher view
 Padding on top of Course Day Select not same as padding on bottom.
 Finalize look of setup wizard and splash screen
-Accept non-U.S. phone numbers for teachers
+Accept non-U.S. phone numbers for teachers -- look at Android contacts source
 Show assignment completion status on AssignmentView
 Finalize CourseEdit layout
 Prevent long teacher names from overlapping buttons in Setup Wizard
 Show course days on CourseView
 All Assignments tab not getting updated when marking an assignment as completed?
 Course Day Select: time buttons not showing correct time
+Definitely a bug with reloading assignments after marking as completed
 
 Reminders!!
 

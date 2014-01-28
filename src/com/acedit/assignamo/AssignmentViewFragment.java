@@ -40,7 +40,13 @@ public class AssignmentViewFragment extends ViewFragment {
 		.setText(getDateString(assignment.getDueDate(),
 			withTime), BufferType.SPANNABLE);
 		
-		((TextView)findViewById(R.id.assignment_view_description)).setText(getDescription(assignment.getDescription()));
+		TextView descTV = (TextView)findViewById(R.id.assignment_view_description);
+		String desc = assignment.getDescription();
+		if (desc.length() > 0) {
+			descTV.setText(desc);
+		} else {
+			descTV.setVisibility(0);
+		}
 	}
 		
 	/*---- Menus ----*/

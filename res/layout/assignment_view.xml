@@ -1,46 +1,53 @@
 <?xml version="1.0" encoding="utf-8"?>
-<ScrollView xmlns:android="http://schemas.android.com/apk/res/android"
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:ColorStrip="http://schemas.android.com/apk/res/com.acedit.assignamo"
     android:layout_width="match_parent"
-    android:layout_height="match_parent">
-    <LinearLayout android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:orientation="vertical">
-        
-	    <com.acedit.assignamo.ui.ColorStrip
-	        android:id="@+id/assignment_view_color_strip"
-	        android:layout_width="match_parent"
-	        android:layout_height="@dimen/assignment_view_color_strip_height" />
-	    <com.acedit.assignamo.ui.ColorStrip
-	        android:layout_width="match_parent"
-	        android:layout_height="@dimen/assignment_view_color_strip_shadow_height"
-	        ColorStrip:color="@color/assignment_view_color_strip_shadow" />
+    android:layout_height="match_parent"
+	android:orientation="vertical">
+	
+    <com.acedit.assignamo.ui.ColorStrip
+        android:id="@+id/assignment_view_color_strip"
+        android:layout_width="match_parent"
+        android:layout_height="@dimen/assignment_view_color_strip_height" />
+    
+	<LinearLayout android:orientation="vertical"
+	    android:layout_width="match_parent"
+	    android:layout_height="wrap_content"
+	    android:padding="@dimen/view_activity_padding">
+		
+	    <TextView android:id="@+id/assignment_view_title"
+	        style="@style/TextView.ViewActivity.Title"
+	        android:paddingBottom="10dp"/>
 	    
-		<LinearLayout android:layout_width="match_parent"
-		    android:layout_height="wrap_content"
-		    android:orientation="vertical"
-		    android:paddingLeft="@dimen/view_activity_padding"
-		    android:paddingRight="@dimen/view_activity_padding">
-		    
-		    <TextView android:id="@+id/assignment_view_course"
-		        android:layout_gravity="right"
-		        style="@style/TextView.ViewActivity"/>
-		
-		    <TextView android:id="@+id/assignment_view_title"
-		        style="@style/TextView.ViewActivity.Title"/>
-		    
-		    <TextView android:text="@string/assignment_due_date"
-		        style="@style/TextView.ViewActivity.Label"/>
-		
+	    <RelativeLayout
+	        android:layout_height="wrap_content"
+	        android:layout_width="match_parent">
 		    <TextView android:id="@+id/assignment_view_date"
 		        style="@style/TextView.ViewActivity"/>
+			
+		    <TextView android:id="@+id/assignment_view_course"
+		        android:layout_gravity="right"
+		        style="@style/TextView.ViewActivity"
+		        android:layout_alignParentRight="true"/>
+		</RelativeLayout>
 		
-		    <TextView android:text="@string/description"
-		        style="@style/TextView.ViewActivity.Label"/>
+	</LinearLayout>
+	
+	<com.acedit.assignamo.ui.ColorStrip
+        android:layout_width="match_parent"
+        android:layout_height="@dimen/assignment_view_color_strip_shadow_height"
+        ColorStrip:color="@color/assignment_view_color_strip_shadow" />
+    
+	<ScrollView android:layout_width="match_parent"
+	    android:layout_height="0dp"
+	    android:layout_weight="1">
+	    <LinearLayout android:orientation="vertical"
+	        android:layout_width="match_parent"
+	        android:layout_height="wrap_content"
+		    android:padding="@dimen/view_activity_padding">
 		
 		    <TextView android:id="@+id/assignment_view_description"
 		        style="@style/TextView.ViewActivity.Notes"/>
-		    
 		</LinearLayout>
-	</LinearLayout>
-</ScrollView>
+	</ScrollView>
+</LinearLayout>

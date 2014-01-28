@@ -71,15 +71,6 @@ public abstract class ViewFragment extends FragmentActivity {
 		Map<Short, String> teachers = DbUtils.getTeacherNames(getApplicationContext());
 		return teachers.get(id);
 	}
-
-	protected SpannableString getDescription(String desc) {
-		if (desc.length() == 0) {
-			String message = getString(R.string.no_description);
-			return getItalicizedString(message);
-		}
-		return new SpannableString(desc);
-	}
-	
 	
 	protected SpannableString getItalicizedString(int strId) {
 		String str = getString(strId);
