@@ -59,7 +59,7 @@ public class AssignmentEditFragment extends ActionBarActivity {
 	 */
 	private boolean justRestoredState;
 	
-	private TreeMap<Short,Short> courseIdToPos;
+	private TreeMap<Long,Short> courseIdToPos;
 	
 	@Override
 	public void onCreate(Bundle savedInstanceState) {
@@ -104,9 +104,9 @@ public class AssignmentEditFragment extends ActionBarActivity {
 		// Populate the spinner
 		Cursor courseCursor = DbUtils.getCoursesAsCursor(this);
 		courseCursor.moveToFirst();
-		courseIdToPos = new TreeMap<Short, Short>();
+		courseIdToPos = new TreeMap<Long, Short>();
 		for (short i = 0;; ++i) {
-			short id = courseCursor.getShort(0);
+			long id = courseCursor.getShort(0);
 			courseIdToPos.put(id, i);
 			if (courseCursor.moveToNext() == false) break;
 		}
@@ -150,7 +150,7 @@ public class AssignmentEditFragment extends ActionBarActivity {
 	}
 
 	private void populateFields() {
-		short courseId = mAssignment.getCourseId();
+		long courseId = mAssignment.getCourseId();
 		if (courseId > 0) {
 			courseSpinner.setSelection(courseIdToPos.get(courseId));
 		}
